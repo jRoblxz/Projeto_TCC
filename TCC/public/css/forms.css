@@ -11,10 +11,10 @@ body {
 }
 
 .container {
-    width: 500px;
+    width: 800px;
     border-radius: 24px;
     padding: 30px;
-    background: #00000035;
+    background: #4b4b4b35;
     box-shadow: 5px 5px 12px 0 #00000035;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(4px);
@@ -36,10 +36,13 @@ body {
 }
 
 .steps .active {
-    color: #ff6f61;
+    color: #851114;
     font-weight: bold;
 }
-
+.form-label {
+    font-weight: bold;
+    color: #f0f8ff;
+}
 .form-step {
     display: none;
 }
@@ -73,7 +76,7 @@ body {
     justify-content: space-between;
     margin-top: 20px;
 }
-
+/*
 .buttons button {
     background: #ff6f61;
     border: none;

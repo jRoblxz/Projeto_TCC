@@ -20,21 +20,40 @@
     <form id="signupForm">
       <!-- Etapa 1 -->
       <div class="form-step active">
-        <div class="form-group">
-          <label>Nome completo</label>
-          <input type="text" placeholder="Enter Full Name">
-        </div>
-        <div class="form-group">
-          <label>Date of Birth</label>
-          <input type="date">
-        </div>
-        <div class="form-group">
-          <label>Gender</label>
-          <select>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-        </div>
+        <div class="row inline-row mb-3">
+            <div class="col-md-8">
+                <label for="nome" class="form-label">Nome completo:</label>
+                <input type="text" id="nome" name="nome" class="form-control" step="any" required="">
+            </div>
+            <div class="col-md-2">
+                <label for="idade" class="form-label">Idade:</label>
+                <input type="number" id="idade" name="idade" class="form-control" step="any" required="">
+            </div>            
+        </div> 
+        <div class="row inline-row mb-3">
+            <div class="col-md-3">
+                <label for="nasc" class="form-label">Data Nascimento:</label>
+                <input type="date" id="nasc" name="nasc" class="form-control" step="any" required="">
+            </div>
+            <div class="col-md-5">
+                <label for="cpf" class="form-label">CPF:</label>
+                <input type="number" id="cpf" name="cpf" class="form-control" step="any" required="">
+            </div>
+            <div class="col-md-4">
+                <label for="rg" class="form-label">RG:</label>
+                <input type="number" id="rg" name="rg" class="form-control" step="any" required="">
+            </div>
+        </div> 
+        <div class="row inline-row mb-3">
+            <div class="col-md-6">
+                <label for="email" class="form-label">E-mail:</label>
+                <input type="email" id="email" name="email" class="form-control" step="any" required="">
+            </div>
+            <div class="col-md-6">
+                <label for="fone" class="form-label">Celular:</label>
+                <input type="number" id="fone" name="fone" class="form-control" step="any" required="">
+            </div>
+        </div> 
       </div>
 
       <!-- Etapa 2 -->
@@ -67,8 +86,8 @@
 
       <!-- Botões -->
       <div class="buttons">
-        <button type="button" id="prevBtn" disabled>Voltar</button>
-        <button type="button" id="nextBtn">Avançar</button>
+        <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
+        <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
       </div>
     </form>
   </div>
