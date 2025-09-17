@@ -3,92 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/forms.css') }}">
   <title>Formulário Multi-Etapas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff9a3c, #ff6f61);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: #fff;
-      width: 500px;
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    .steps {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-    }
-
-    .steps div {
-      text-align: center;
-      font-size: 14px;
-      color: #999;
-    }
-
-    .steps .active {
-      color: #ff6f61;
-      font-weight: bold;
-    }
-
-    .form-step {
-      display: none;
-    }
-
-    .form-step.active {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    .form-group input, 
-    .form-group select, 
-    .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-    }
-
-    .buttons button {
-      background: #ff6f61;
-      border: none;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .buttons button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
@@ -104,7 +21,7 @@
       <!-- Etapa 1 -->
       <div class="form-step active">
         <div class="form-group">
-          <label>Full Name</label>
+          <label>Nome completo</label>
           <input type="text" placeholder="Enter Full Name">
         </div>
         <div class="form-group">
