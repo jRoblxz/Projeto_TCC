@@ -1,9 +1,8 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url(../img/prudentao.png);
+    background-color: #851114;
     display: flex;
     background-size: cover;
-    background-position: center;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -14,13 +13,7 @@ body {
     width: 800px;
     border-radius: 24px;
     padding: 30px;
-    background: #4b4b4b35;
-    box-shadow: 5px 5px 12px 0 #00000035;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(4px);
-    border-top: 2px solid #FFFFFF75;
-    border-left: 2px solid #FFFFFF75;
-    overflow: hidden;
+    background-color: #F3F3F3;
 }
 
 .steps {
@@ -36,12 +29,13 @@ body {
 }
 
 .steps .active {
-    color: #851114;
+    color: #1B294E;
+    font-size: large;
     font-weight: bold;
 }
 .form-label {
     font-weight: bold;
-    color: #f0f8ff;
+    color: #851114;
 }
 .form-step {
     display: none;

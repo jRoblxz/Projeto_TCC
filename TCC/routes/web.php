@@ -18,6 +18,10 @@ Route::get('/form1', function () {
     return view('telas_forms.forms1');
 });
 
+Route::get('/index', function () {
+    return view('telas_forms.index');
+});
+
 Route::get('/dashboard', function () {
     // Dados fake só para teste
     $usuario = "Usuário Teste";

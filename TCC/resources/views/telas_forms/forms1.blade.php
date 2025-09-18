@@ -35,6 +35,12 @@
                 <label for="nasc" class="form-label">Data Nascimento:</label>
                 <input type="date" id="nasc" name="nasc" class="form-control" step="any" required="">
             </div>
+            <div class="col-md-6">
+                <label for="cidade" class="form-label">Cidade:</label>
+                <input type="text" id="cidade" name="cidade" class="form-control" step="any" required="">
+            </div>
+        </div>
+        <div class="row inline-row mb-3">
             <div class="col-md-5">
                 <label for="cpf" class="form-label">CPF:</label>
                 <input type="number" id="cpf" name="cpf" class="form-control" step="any" required="">
@@ -43,7 +49,7 @@
                 <label for="rg" class="form-label">RG:</label>
                 <input type="number" id="rg" name="rg" class="form-control" step="any" required="">
             </div>
-        </div> 
+        </div>  
         <div class="row inline-row mb-3">
             <div class="col-md-6">
                 <label for="email" class="form-label">E-mail:</label>
@@ -58,18 +64,66 @@
 
       <!-- Etapa 2 -->
       <div class="form-step">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="Enter Email">
+        <div class="row inline-row mb-3">
+            <div class="col-md-3">
+                <label for="nome" class="form-label">Pé dominante:</label>
+                <select class="form-control">
+                  <option value="direito">Direito</option>
+                  <option value="esquerdo">Esquerdo</option>
+                </select>
+            </div>         
+        </div> 
+        <div class="row inline-row mb-3">
+            <div class="col-md-3">
+                <label for="nasc" class="form-label">Posição principal:</label>
+                <select class="form-control">
+                  <option value="gol">Goleiro</option>
+                  <option value="ld">Lateral Direito</option>
+                  <option value="le">Lateral Esquerdo</option>
+                  <option value="ze">Zagueiro Esquerdo</option>
+                  <option value="zd">Zagueiro Direito</option>
+                  <option value="vol">Volante</option>
+                  <option value="mei">Meia</option>
+                  <option value="pe">Ponta esquerda</option>
+                  <option value="pd">Ponta direita</option>
+                  <option value="ata">Atacante</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="nasc" class="form-label">Posição secundaria:</label>
+                <select class="form-control">
+                  <option value="gol">Goleiro</option>
+                  <option value="ld">Lateral Direito</option>
+                  <option value="le">Lateral Esquerdo</option>
+                  <option value="ze">Zagueiro Esquerdo</option>
+                  <option value="zd">Zagueiro Direito</option>
+                  <option value="vol">Volante</option>
+                  <option value="mei">Meia</option>
+                  <option value="pe">Ponta esquerda</option>
+                  <option value="pd">Ponta direita</option>
+                  <option value="ata">Atacante</option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="text" placeholder="Enter Phone">
-        </div>
-        <div class="form-group">
-          <label>Address</label>
-          <textarea placeholder="Enter Address"></textarea>
-        </div>
+        <div class="row inline-row mb-3">
+            <div class="col-md-3">
+                <label for="altura" class="form-label">Altura:</label>
+                <input type="number" id="altura" name="altura" class="form-control" step="any" required="">
+            </div>
+            <div class="col-md-3">
+                <label for="peso" class="form-label">Peso:</label>
+                <input type="number" id="peso" name="peso" class="form-control" step="any" required="">
+            </div>
+        </div>  
+        <div class="row inline-row mb-3">
+            <div class="col-md-6">
+                <h2>Já fez cirurgia</h2>
+            </div>
+            <div class="col-md-6">
+                <label for="fone" class="form-label">Não:</label>
+                <input type="checkbox" id="fone" name="fone" class="form-control" step="any" required="">
+            </div>
+        </div> 
       </div>
 
       <!-- Etapa 3 -->
