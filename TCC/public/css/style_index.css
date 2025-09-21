@@ -1,35 +1,60 @@
-
-
-img {
-    height: 30vh;
-    margin-bottom: 5px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.container2 {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+@font-face {
+    font-family: 'FONTE_TESTE';
+    src: url(../fonts/fonnts.com-SQR721B.ttf) format('truetype');
+    font-display: swap;
+    font-weight: bold;
+    font-style: normal;
 }
 
-header {
-    background-image: url('/img/prudentao.png');
+body {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.9), rgba(156, 156, 156, 0.9)),
+        url(/img/prudentao.png) no-repeat;
     background-size: cover;
     /* cobre toda a tela */
     background-position: center;
-    /* centraliza */
-    background-repeat: no-repeat;
-    /* não repete */
+    /* centraliza 
+            background-repeat: no-repeat;*/
+    color: #333;
+    line-height: 1.6;
+}
+
+.container-header {
+    max-width: 1200px;
+    position: relative;
+    margin: auto;
+    padding: 20px;
+}
+.container {
+    max-width: 1200px;
+    position: relative;
+    top: -80px;
+    margin: auto;
+    padding: 20px;
+}
+
+
+header {
+    background-color: transparent;
     color: white;
     padding: 20px 0;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+h1.club-name {
     font-size: 2.5rem;
+    font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #941B1B;
+    font-family: "FONTE_TESTE", sans-serif;
 }
 
 h2 {
@@ -39,48 +64,247 @@ h2 {
     color: #d9d9d9ff;
 }
 
+.h2-1 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #d9d9d9ff;
+    background-color: #14244D;
+    padding: 5px 15px;
+    display: inline-block;
+}
+
+
+.section-title {
+    text-align: center;
+    margin: 40px 0 30px;
+    font-size: 2rem;
+    color: #941B1B;
+    position: relative;
+}
+
+.section-title:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #941B1B;
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
+.how-it-works {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.step {
+    flex: 1;
+    min-width: 200px;
+    background: #941B1B;
+    border-radius: 0px 75px 0px 75px;
+    padding: 25px 0px 0px 20px;
+    box-shadow: -5px 5px 20px 5px rgba(0, 0, 0, 0.5);
+}
+
+.step-2 {
+    flex: 1;
+    min-width: 300px;
+    border-radius: 0px 50px 0px 50px;
+    background: #14244D;
+    padding: 25px;
+    text-align: center;
+    box-shadow: -5px 0 10px -5px rgba(0, 0, 0, 0.5);
+}
+
+.step-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #d0d0d0ff;
+    margin-bottom: 15px;
+    margin-left: -25px;
+    margin-top: -25px;
+    width: 100px;
+    padding: 0 0px 0px 20px;
+    background-color: #941B1B;
+}
+
+
+.step-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #941B1B;
+    display: inline-block;    
+    padding: 5px 15px;
+}
+
+.step-content {
+    color: #efefefff;
+}
+
+.step-content ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.step-content li {
+    margin-bottom: 8px;
+    position: relative;
+    text-align: justify;
+}
+
+.step-content li:before {
+    content: "•";
+    color: #941B1B;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.website-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #14244D;
+    color: white;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.club-name {
+    font-family: "FONTE_TESTE", sans-serif;}
+
+.website-url {
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.website-url:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.club-name {
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: #666;
+    font-size: 0.9rem;
+
+    
+}
+
+@media (max-width: 768px) {
+    .how-it-works {
+        flex-direction: column;
+    }
+
+    .step {
+        min-width: 100%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .club-name {
+        font-size: 2rem;
+    }
+
+    .website-url {
+        font-size: 1.5rem;
+    }
+}
+
+img.logo {
+    height: 30vh;
+    margin-bottom: 5px;
+}
+
+img.icon {
+    width: 60px;
+    height: 60px;
+    margin-top: -10px;
+
+}
+
+img.icon-2 {
+    width: 70px;
+    height: 70px;
+    margin-top: -10px;
+
+}
+
+.header-step {
+    display: flex;
+    justify-content: flex-start;
+    gap: 130px;
+}
+
+h3.step-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #941B1B;
+    text-align: center;
+}
+
+strong {
+    color: transparent;
+}
+
+p.inst{
+    text-align: justify;
+
+}
+
+
+.step-title:after {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 1px;
+    background: #f1f1f1;
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
 .container-form {
-    margin: 20px auto;
-    width: 800px;
+    margin: auto;
+    position: relative;
+    top: -30px;
+    width: 900px;
     border-radius: 24px;
-    padding: 30px;
+    padding: 50px;
     background-color: #F3F3F3;
 }
-
-.steps {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-
-.steps div {
-    text-align: center;
-    font-size: 14px;
-    color: #999;
-}
-
-.steps .active {
-    color: #1B294E;
-    font-size: large;
-    font-weight: bold;
-}
-
-.form-label {
-    font-weight: bold;
-    color: #851114;
-}
-
-p {
-    font-weight: bold;
-    color: #851114;
-}
-
 .form-step {
     display: none;
 }
 
 .form-step.active {
     display: block;
+    padding: 20px;
 }
 
 .form-group {
@@ -202,18 +426,25 @@ p {
     user-select: none;
 }
 
-/*
-.buttons button {
-    background: #ff6f61;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
+.steps {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
 }
 
-.buttons button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
+.steps div {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+}
+
+.steps .active {
+    color: #1B294E;
+    font-size: large;
+    font-weight: bold;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #851114;
 }
