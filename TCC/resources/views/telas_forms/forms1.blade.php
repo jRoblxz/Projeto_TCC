@@ -8,7 +8,7 @@
       <div id="step-3">3. Vídeo apresentação</div>
     </div>
 
-    #KAYNAN: MENSAGENS DE ERRO AQUI ATRAVES DAS VALIDAÇÕES
+    <!--KAYNAN: MENSAGENS DE ERRO AQUI ATRAVES DAS VALIDAÇÕES-->
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -20,9 +20,9 @@
     @endif
 
     <!-- Formulário -->
-    <form action="{{ route('user-store') }}" method="POST" id="signupForm" enctype="multipart/form-data"> #KAYNAN: ROTA AQUI E RECEBIMENTO DE IMG ENCTYPE
-      @csrf #KAYNAN: SEGURANÇA
-      @method('POST') #KAYNAN: TIPO DE REQUISIÇÃO
+    <form action="{{ route('users.store') }}" method="POST" id="signupForm" enctype="multipart/form-data"> <!--KAYNAN: ROTA AQUI E RECEBIMENTO DE IMG ENCTYPE-->
+      @csrf <!--KAYNAN: SEGURANÇA -->
+      @method('POST') <!--KAYNAN: TIPO DE REQUISIÇÃO -->
       <!-- Etapa 1 -->
       <div class="form-step active">
         <div class="row inline-row mb-3">
@@ -72,7 +72,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nome" class="form-label">Pé dominante:</label>
-            <select class="form-control" id="pe" name="pe" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
+            <select class="form-control" id="pe" name="pe" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
               <option value="" {{ old('pe') == '' ? 'selected' : '' }}>Selecionar</option>
               <option value="direito" {{ old('pe') == 'direito' ? 'selected' : '' }}>Direito</option>
               <option value="esquerdo" {{ old('pe') == 'esquerdo' ? 'selected' : '' }}>Esquerdo</option>
@@ -82,7 +82,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição principal:</label>
-            <select class="form-control" id="posicao_principal" name="posicao_principal" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
+            <select class="form-control" id="posicao_principal" name="posicao_principal" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
               <option value="" {{ old('posicao_principal') == '' ? 'selected' : '' }}>Selecione a posição</option>
               <option value="gol" {{ old('posicao_principal') == 'gol' ? 'selected' : '' }}>Goleiro</option>
               <option value="ld" {{ old('posicao_principal') == 'ld' ? 'selected' : '' }}>Lateral Direito</option>
@@ -98,7 +98,7 @@
           </div>
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição secundaria:</label>
-            <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
+            <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
               <option value="" {{ old('posicao_secundaria') == '' ? 'selected' : '' }}>Selecione a posição</option>
               <option value="gol" {{ old('posicao_secundaria') == 'gol' ? 'selected' : '' }}>Goleiro</option>
               <option value="ld" {{ old('posicao_secundaria') == 'ld' ? 'selected' : '' }}>Lateral Direito</option>
@@ -143,13 +143,13 @@
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Vídeo de apresentação:</label>
-            <input type="url" id="link" name="link" class="form-control" required="" placeholder="Link do youtube" value="{{ old('link') }}">> #KAYNAN: TIPO DE DADO AQUI
+            <input type="url" id="link" name="link" class="form-control" required="" placeholder="Link do youtube" value="{{ old('link') }}"> <!--KAYNAN: TIPO DE DADO AQUI-->
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Foto 3x4:</label>
-            <input type="file" id="img" name="img" class="form-control" step="any" required="" placeholder="Imagem 3x4">> #KAYNAN: TIPO DE DADO AQUI
+            <input type="file" id="img" name="img" class="form-control" step="any" required="" placeholder="Imagem 3x4"> <!--KAYNAN: TIPO DE DADO AQUI-->
           </div>
         </div>
        

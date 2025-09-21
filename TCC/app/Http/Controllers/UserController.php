@@ -25,7 +25,7 @@ class UserController extends Controller
     public function create()
     {
         // Carregar a VIEW do formulário
-        return view('users.create');
+        return view('telas_forms.forms1');
     }
 
     public function store(UserRequest $request)

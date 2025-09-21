@@ -46,7 +46,7 @@
 
     <div class="website-section">
         <p>Visite nosso site para mais informações:</p>
-        <a href="/form1" class="website-url">INSCREVA-SE</a>
+        <a href="/forms1" class="website-url">INSCREVA-SE</a>
         <div class="club-name">PRUDENTE</div>
     </div>
 </div>
