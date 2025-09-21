@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
+
 class UserController extends Controller
 {
     public function index()
@@ -16,8 +18,9 @@ class UserController extends Controller
         return view('users.create');
     }
 
-    public function store()
+    public function store(userRequest $request)
     {
-        
+        // Validar e salvar os dados do formulário
+        $request->validated();
     }
 }

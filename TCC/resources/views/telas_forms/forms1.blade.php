@@ -18,8 +18,19 @@
       <div id="step-3">3. Vídeo apresentação</div>
     </div>
 
+    #KAYNAN: MENSAGENS DE ERRO AQUI ATRAVES DAS VALIDAÇÕES
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <!-- Formulário -->
-    <form action="{{ route('user-store') }}" method="POST" id="signupForm"> #KAYNAN: ROTA AQUI
+    <form action="{{ route('user-store') }}" method="POST" id="signupForm" enctype="multipart/form-data"> #KAYNAN: ROTA AQUI E RECEBIMENTO DE IMG ENCTYPE
       @csrf #KAYNAN: SEGURANÇA
       @method('POST') #KAYNAN: TIPO DE REQUISIÇÃO
       <!-- Etapa 1 -->
@@ -27,41 +38,41 @@
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="nome" class="form-label">Nome completo:</label>
-            <input type="text" id="nome" name="nome" class="form-control" step="any" required="" placeholder="Informe seu nome">
+            <input type="text" id="nome" name="nome" class="form-control" step="any" required="" placeholder="Informe seu nome" value="{{ old('nome') }}">
           </div>
           <div class="col-md-2">
             <label for="idade" class="form-label">Idade:</label>
-            <input type="number" id="idade" name="idade" class="form-control" step="any" required="" placeholder="Idade">
+            <input type="number" id="idade" name="idade" class="form-control" step="any" required="" placeholder="Idade" value="{{ old('idade') }}">
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nasc" class="form-label">Data Nascimento:</label>
-            <input type="date" id="nasc" name="nasc" class="form-control" step="any" required="">
+            <input type="date" id="nasc" name="nasc" class="form-control" step="any" required="" value="{{ old('nasc') }}">
           </div>
           <div class="col-md-6">
             <label for="cidade" class="form-label">Cidade:</label>
-            <input type="text" id="cidade" name="cidade" class="form-control" step="any" required=""placeholder="Informe sua cidade">
+            <input type="text" id="cidade" name="cidade" class="form-control" step="any" required=""placeholder="Informe sua cidade" value="{{ old('cidade') }}">
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-5">
             <label for="cpf" class="form-label">CPF:</label>
-            <input type="number" id="cpf" name="cpf" class="form-control" step="any" required="" placeholder="Informe seu CPF (apenas números)">
+            <input type="number" id="cpf" name="cpf" class="form-control" step="any" required="" placeholder="Informe seu CPF (apenas números)" value="{{ old('cpf') }}">
           </div>
           <div class="col-md-4">
             <label for="rg" class="form-label">RG:</label>
-            <input type="number" id="rg" name="rg" class="form-control" step="any" required="" placeholder="Informe seu RG (apenas números">
+            <input type="number" id="rg" name="rg" class="form-control" step="any" required="" placeholder="Informe seu RG (apenas números" value="{{ old('rg') }}">
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-6">
             <label for="email" class="form-label">E-mail:</label>
-            <input type="email" id="email" name="email" class="form-control" step="any" required="" placeholder="Informe seu e-mail">
+            <input type="email" id="email" name="email" class="form-control" step="any" required="" placeholder="Informe seu e-mail" value="{{ old('email') }}">
           </div>
           <div class="col-md-6">
             <label for="fone" class="form-label">Celular:</label>
-            <input type="number" id="fone" name="fone" class="form-control" step="any" required="" placeholder="Informe seu contato">
+            <input type="number" id="fone" name="fone" class="form-control" step="any" required="" placeholder="Informe seu contato" value="{{ old('fone') }}">
           </div>
         </div>
       </div>
@@ -72,9 +83,9 @@
           <div class="col-md-3">
             <label for="nome" class="form-label">Pé dominante:</label>
             <select class="form-control" id="pe" name="pe" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
-              <option value="label">Selecionar</option>
-              <option value="direito">Direito</option>
-              <option value="esquerdo">Esquerdo</option>
+              <option value="" {{ old('pe') == '' ? 'selected' : '' }}>Selecionar</option>
+              <option value="direito" {{ old('pe') == 'direito' ? 'selected' : '' }}>Direito</option>
+              <option value="esquerdo" {{ old('pe') == 'esquerdo' ? 'selected' : '' }}>Esquerdo</option>
             </select>
           </div>
         </div>
@@ -82,55 +93,55 @@
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição principal:</label>
             <select class="form-control" id="posicao_principal" name="posicao_principal" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
-              <option value="label">Selecione a posição</option>
-              <option value="gol">Goleiro</option>
-              <option value="ld">Lateral Direito</option>
-              <option value="le">Lateral Esquerdo</option>
-              <option value="ze">Zagueiro Esquerdo</option>
-              <option value="zd">Zagueiro Direito</option>
-              <option value="vol">Volante</option>
-              <option value="mei">Meia</option>
-              <option value="pe">Ponta esquerda</option>
-              <option value="pd">Ponta direita</option>
-              <option value="ata">Atacante</option>
+              <option value="" {{ old('posicao_principal') == '' ? 'selected' : '' }}>Selecione a posição</option>
+              <option value="gol" {{ old('posicao_principal') == 'gol' ? 'selected' : '' }}>Goleiro</option>
+              <option value="ld" {{ old('posicao_principal') == 'ld' ? 'selected' : '' }}>Lateral Direito</option>
+              <option value="le" {{ old('posicao_principal') == 'le' ? 'selected' : '' }}>Lateral Esquerdo</option>
+              <option value="ze" {{ old('posicao_principal') == 'ze' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+              <option value="zd" {{ old('posicao_principal') == 'zd' ? 'selected' : '' }}>Zagueiro Direito</option>
+              <option value="vol" {{ old('posicao_principal') == 'vol' ? 'selected' : '' }}>Volante</option>
+              <option value="mei" {{ old('posicao_principal') == 'mei' ? 'selected' : '' }}>Meia</option>
+              <option value="pe" {{ old('posicao_principal') == 'pe' ? 'selected' : '' }}>Ponta esquerda</option>
+              <option value="pd" {{ old('posicao_principal') == 'pd' ? 'selected' : '' }}>Ponta direita</option>
+              <option value="ata" {{ old('posicao_principal') == 'ata' ? 'selected' : '' }}>Atacante</option>
             </select>
           </div>
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição secundaria:</label>
             <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
-              <option value="label">Selecione a posição</option>
-              <option value="gol">Goleiro</option>
-              <option value="ld">Lateral Direito</option>
-              <option value="le">Lateral Esquerdo</option>
-              <option value="ze">Zagueiro Esquerdo</option>
-              <option value="zd">Zagueiro Direito</option>
-              <option value="vol">Volante</option>
-              <option value="mei">Meia</option>
-              <option value="pe">Ponta esquerda</option>
-              <option value="pd">Ponta direita</option>
-              <option value="ata">Atacante</option>
+              <option value="" {{ old('posicao_secundaria') == '' ? 'selected' : '' }}>Selecione a posição</option>
+              <option value="gol" {{ old('posicao_secundaria') == 'gol' ? 'selected' : '' }}>Goleiro</option>
+              <option value="ld" {{ old('posicao_secundaria') == 'ld' ? 'selected' : '' }}>Lateral Direito</option>
+              <option value="le" {{ old('posicao_secundaria') == 'le' ? 'selected' : '' }}>Lateral Esquerdo</option>
+              <option value="ze" {{ old('posicao_secundaria') == 'ze' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+              <option value="zd" {{ old('posicao_secundaria') == 'zd' ? 'selected' : '' }}>Zagueiro Direito</option>
+              <option value="vol" {{ old('posicao_secundaria') == 'vol' ? 'selected' : '' }}>Volante</option>
+              <option value="mei" {{ old('posicao_secundaria') == 'mei' ? 'selected' : '' }}>Meia</option>
+              <option value="pe" {{ old('posicao_secundaria') == 'pe' ? 'selected' : '' }}>Ponta esquerda</option>
+              <option value="pd" {{ old('posicao_secundaria') == 'pd' ? 'selected' : '' }}>Ponta direita</option>
+              <option value="ata" {{ old('posicao_secundaria') == 'ata' ? 'selected' : '' }}>Atacante</option>
             </select>
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="altura" class="form-label">Altura:</label>
-            <input type="number" id="altura" name="altura" class="form-control" step="any" required="" placeholder="Informe sua altura">
+            <input type="number" id="altura" name="altura" class="form-control" step="any" required="" placeholder="Informe sua altura" value="{{ old('altura') }}">
           </div>
           <div class="col-md-3">
             <label for="peso" class="form-label">Peso:</label>
-            <input type="number" id="peso" name="peso" class="form-control" step="any" required="" placeholder="Informe seu peso">
+            <input type="number" id="peso" name="peso" class="form-control" step="any" required="" placeholder="Informe seu peso" value="{{ old('peso') }}">
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <p>Já fez cirurgia?</p>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_sim" value="sim" required>
+              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_sim" value="sim" required {{ old('cirurgia') == 'sim' ? 'checked' : '' }}>
               <label class="form-check-label" for="cirurgia_sim">Sim</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_nao" value="nao" required>
+              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_nao" value="nao" required {{ old('cirurgia') == 'nao' ? 'checked' : '' }}>
               <label class="form-check-label" for="cirurgia_nao">Não</label>
             </div>
           </div>
@@ -142,13 +153,13 @@
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Vídeo de apresentação:</label>
-            <input type="link" id="file" name="link" class="form-control" step="any" required="" placeholder="Link do youtube"> #KAYNAN: TIPO DE DADO AQUI
+            <input type="url" id="link" name="link" class="form-control" required="" placeholder="Link do youtube" value="{{ old('link') }}">> #KAYNAN: TIPO DE DADO AQUI
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Foto 3x4:</label>
-            <input type="file" id="file" name="img" class="form-control" step="any" required="" placeholder="Link do youtube"> #KAYNAN: TIPO DE DADO AQUI
+            <input type="file" id="img" name="img" class="form-control" step="any" required="" placeholder="Imagem 3x4">> #KAYNAN: TIPO DE DADO AQUI
           </div>
         </div>
        

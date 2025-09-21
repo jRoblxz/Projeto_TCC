@@ -11,7 +11,7 @@ class UserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -39,6 +39,28 @@ class UserRequest extends FormRequest
             'posicao_principal' => 'required|in:gol,ld,le,ze,zd,vol,mei,pe,pd,ata',
             'posicao_secundaria' => 'required|in:gol,ld,le,ze,zd,vol,mei,pe,pd,ata',
             'cirurgia' => 'required|in:sim,nao',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'nome.required' => 'O campo nome é obrigatório.',
+            'idade.required' => 'O campo idade é obrigatório.',
+            'nasc.required' => 'O campo data de nascimento é obrigatório.',
+            'cidade.required' => 'O campo cidade é obrigatório.',
+            'cpf.required' => 'O campo CPF é obrigatório.',
+            'rg.required' => 'O campo RG é obrigatório.',
+            'email.required' => 'O campo email é obrigatório.',
+            'fone.required' => 'O campo telefone é obrigatório.',
+            'altura.required' => 'O campo altura é obrigatório.',
+            'peso.required' => 'O campo peso é obrigatório.',
+            'img.linked' => 'O campo imagem deve ser um link válido.',
+            'link.linked' => 'O campo link deve ser uma URL válida.',
+            'pe.required' => 'O campo pé preferencial é obrigatório.',
+            'posicao_principal.required' => 'O campo posição principal é obrigatório.',
+            'posicao_secundaria.required' => 'O campo posição secundária é obrigatório.',
+            'cirurgia.required' => 'O campo cirurgia é obrigatório.',
         ];
     }
 }
