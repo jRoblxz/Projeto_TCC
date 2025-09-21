@@ -159,6 +159,15 @@
       <div class="buttons">
         <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
         <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
+          <!--
+            KAYNAN: BOTÃO DE SUBMIT AQUI
+            ADICIONAR E MODIFICAR A MENSAGEM DE SUCESSO NO JS
+            @if (session('sucess'))
+                  <p style="color: #086;">
+                      {{ session('sucess') }}
+                  </p>
+            @endif  
+          -->
       </div>
     </form>
 </div>

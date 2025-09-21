@@ -56,4 +56,48 @@ class UserController extends Controller
         // Redirecionar para a lista de jogadores com uma mensagem de sucesso
         return redirect()->route('users.index')->with('success', 'Jogador cadastrado com sucesso!');
     }
+
+    public function edit(User $user)
+    {
+        // Carregar a VIEW do formulário de edição
+        return view('users.edit', ['user' => $user]);
+    }
+
+    public function update(UserRequest $request, User $user)
+    {
+        // Validar e atualizar os dados do formulário
+        $request->validated();
+
+        // Atualizar o jogador no banco de dados
+        $user->update([
+            'nome' => $request->nome,
+            'idade' => $request->idade,
+            'nasc' => $request->nasc,
+            'cidade' => $request->cidade,
+            'cpf' => $request->cpf,
+            'rg' => $request->rg,
+            'email' => $request->email,
+            'fone' => $request->fone,
+            'altura' => $request->altura,
+            'peso' => $request->peso,
+            'img' => $request->img,
+            'link' => $request->link,
+            'pe' => $request->pe,
+            'posicao_principal' => $request->posicao_principal,
+            'posicao_secundaria' => $request->posicao_secundaria,
+            'cirurgia' => $request->cirurgia,
+        ]);
+
+        // Redirecionar para a lista de jogadores com uma mensagem de sucesso
+        return redirect()->route('users.show', ['user'=> $user->id])->with('success', 'Jogador atualizado com sucesso!');
+    }
+
+    public function destroy(User $user)
+    {
+        // Deletar o jogador do banco de dados
+        $user->delete();
+
+        // Redirecionar para a lista de jogadores com uma mensagem de sucesso
+        return redirect()->route('users.index')->with('success', 'Jogador deletado com sucesso!');
+    }
 }

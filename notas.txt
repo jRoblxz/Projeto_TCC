@@ -1,18 +1,16 @@
-Apos João criar o 'Listar de Jogadores', adicionar a mensagem de sucesso dentro do Body:
-
-@if (session('sucess'))
-    <p style="color: #086;">
-        {{ session('sucess') }}
-    </p>
-@endif    
-
 --------------------------------------------------------------------------------------------
-Cód para trazer as informações do banco 
+Cód para trazer as informações do banco no index
 
 @forelse ($users as $user)
     //implementar as informações: id, nome, idade etc ...
     ID: {{ $user->id }}
     ...
+
+    adicionar link da rota de Visualizar e Editar pelo ID 
+
+    no visualizar adicionar o data de cadastro e o editado
+
+    para deletar é de uma maneira diferente. Está no minuto 1:18:30 do vídeo
 
 @empty
 
