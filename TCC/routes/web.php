@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserController::class, 'index'])->name('users.index'); #tela de visualização de usuários
+Route::get('/form1', [UserController::class, 'create'])->name('users.create'); #tela do formulário de criação de usuário
+Route::post('/form1', [UserController::class, 'store'])->name('users.store'); #rota para salvar o novo usuário
 
 Route::get('/', function () {
     return view('frontend.home');

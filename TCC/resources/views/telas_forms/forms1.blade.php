@@ -19,7 +19,9 @@
     </div>
 
     <!-- Formulário -->
-    <form id="signupForm">
+    <form action="{{ route('user-store') }}" method="POST" id="signupForm"> #KAYNAN: ROTA AQUI
+      @csrf #KAYNAN: SEGURANÇA
+      @method('POST') #KAYNAN: TIPO DE REQUISIÇÃO
       <!-- Etapa 1 -->
       <div class="form-step active">
         <div class="row inline-row mb-3">
@@ -69,7 +71,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nome" class="form-label">Pé dominante:</label>
-            <select class="form-control">
+            <select class="form-control" id="pe" name="pe" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
               <option value="label">Selecionar</option>
               <option value="direito">Direito</option>
               <option value="esquerdo">Esquerdo</option>
@@ -79,7 +81,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição principal:</label>
-            <select class="form-control">
+            <select class="form-control" id="posicao_principal" name="posicao_principal" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
               <option value="label">Selecione a posição</option>
               <option value="gol">Goleiro</option>
               <option value="ld">Lateral Direito</option>
@@ -95,7 +97,7 @@
           </div>
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição secundaria:</label>
-            <select class="form-control">
+            <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required> #KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR
               <option value="label">Selecione a posição</option>
               <option value="gol">Goleiro</option>
               <option value="ld">Lateral Direito</option>
@@ -123,11 +125,13 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <p>Já fez cirurgia?</p>
-            <div class="checkbox-wrapper-1">
-              <input id="sim" class="substituted" type="checkbox" aria-hidden="true" />
-              <label for="sim">Sim</label>
-              <input id="nao" class="substituted" type="checkbox" aria-hidden="true" />
-              <label for="nao">Não</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_sim" value="sim" required>
+              <label class="form-check-label" for="cirurgia_sim">Sim</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_nao" value="nao" required>
+              <label class="form-check-label" for="cirurgia_nao">Não</label>
             </div>
           </div>
         </div>
@@ -138,13 +142,13 @@
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Vídeo de apresentação:</label>
-            <input type="link" id="file" name="file" class="form-control" step="any" required="" placeholder="Link do youtube">
+            <input type="link" id="file" name="link" class="form-control" step="any" required="" placeholder="Link do youtube"> #KAYNAN: TIPO DE DADO AQUI
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Foto 3x4:</label>
-            <input type="file" id="file" name="file" class="form-control" step="any" required="" placeholder="Link do youtube">
+            <input type="file" id="file" name="img" class="form-control" step="any" required="" placeholder="Link do youtube"> #KAYNAN: TIPO DE DADO AQUI
           </div>
         </div>
        
