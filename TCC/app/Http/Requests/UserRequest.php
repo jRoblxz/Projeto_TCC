@@ -21,15 +21,15 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user');
+        #$pessoasId = $this->route('pessoas');
         return [
             'nome' => 'required|string|max:255',
             'idade' => 'required|integer|min:0',
             'nasc' => 'required|date',
             'cidade' => 'required|string|max:255',
-            'cpf' => 'required|string|digits:11|unique:pessoas,cpf' . ($userId ? ",$userId->id" : null),
-            'rg' => 'required|string|digits_between:7,9|unique:pessoas,rg' . ($userId ? ",$userId->id" : null),
-            'email' => 'required|string|email|max:255|unique:pessoas,email' . ($userId ? ",$userId->id" : null),
+            'cpf' => 'required|string|digits:11|unique:pessoas,cpf', # . ($pessoasId ? ",$pessoasId->id" : null),
+            'rg' => 'required|string|digits_between:7,9|unique:pessoas,rg', # . ($pessoasId ? ",$pessoasId->id" : null),
+            'email' => 'required|string|email|max:255|unique:pessoas,email', # . ($pessoasId ? ",$pessoasId->id" : null),
             'fone' => 'required|string|max:15',
             'altura' => 'required|numeric|min:0',
             'peso' => 'required|numeric|min:0',

@@ -37,32 +37,34 @@ class UserController extends Controller
 
         // Cadastrar o jogador no banco de dados
         $pessoas = Pessoas::create([
-            'nome' => $request->nome_completo,
+            'nome_completo' => $request->nome,
             'idade' => $request->idade,
-            'nasc' => $request->data_nascimento,
+            'data_nascimento' => $request->nasc,
             'cidade' => $request->cidade, #deve adicionar no banco de dados
             'cpf' => $request->cpf,
             'rg' => $request->rg,
             'email' => $request->email,
-            'fone' => $request->telefone,
-            'img' => $request->foto_perfil_url,
+            'telefone' => $request->fone,
+            'foto_perfil_url' => $request->img,
+
         ]);
 
         $jogadores = Jogadores::create([
             'id_pessoa' => $pessoas->id,
-            'pe' => $request->pe_preferido,
+            'pe_preferido' => $request->pe,
             'posicao_principal' => $request->posicao_principal,
             'posicao_secundaria' => $request->posicao_secundaria,
-            'cirurgia' => $request->historico_lesoes_cirurgias,
-            'altura' => $request->altura_cm,
-            'peso' => $request->peso_kg,
-            'link' => $request->video_apresentacao_url, #video_skills_url pode ser deletado no banco
+            'historico_lesoes_cirurgias' => $request->cirurgia,
+            'altura_cm' => $request->altura,
+            'peso_kg' => $request->peso,
+            'video_apresentacao_url' => $request->link, #video_skills_url pode ser deletado no banco
         ]);
+        
 
 
 
         // Redirecionar para a lista de jogadores com uma mensagem de sucesso
-        return redirect()->route('users.index')->with('success', 'Jogador cadastrado com sucesso!');
+        return redirect()->route('tela_forms.instrucao')->with('success', 'Jogador cadastrado com sucesso!');
     }
 
     public function edit(Pessoas $pessoas, Jogadores $jogadores)
@@ -78,26 +80,26 @@ class UserController extends Controller
 
         // Atualizar o jogador no banco de dados
         $pessoas->update([
-            'nome' => $request->nome_completo,
+            'nome_completo' => $request->nome,
             'idade' => $request->idade,
-            'nasc' => $request->data_nascimento,
+            'data_nascimento' => $request->nasc,
             'cidade' => $request->cidade,
             'cpf' => $request->cpf,
             'rg' => $request->rg,
             'email' => $request->email,
-            'fone' => $request->telefone,
-            'img' => $request->foto_perfil_url,
+            'telefone' => $request->fone,
+            'foto_perfil_url' => $request->img,
         ]);
 
         $jogadores->update([
             'id_pessoa' => $pessoas->id,
-            'pe' => $request->pe_preferido,
+            'pe_preferido' => $request->pe,
             'posicao_principal' => $request->posicao_principal,
             'posicao_secundaria' => $request->posicao_secundaria,
-            'cirurgia' => $request->historico_lesoes_cirurgias,
-            'altura' => $request->altura_cm,
-            'peso' => $request->peso_kg,
-            'link' => $request->video_apresentacao_url,
+            'historico_lesoes_cirurgias' => $request->cirurgia,
+            'altura_cm' => $request->altura,
+            'peso_kg' => $request->peso,
+            'video_apresentacao_url' => $request->link,
         ]);
 
         // Redirecionar para a lista de jogadores com uma mensagem de sucesso
