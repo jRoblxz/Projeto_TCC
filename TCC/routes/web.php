@@ -22,7 +22,10 @@ Route::get('/players', function () {
 Route::get('/player_info', function () {
     return view('telas_crud.player_info');
 });
- 
+
+Route::get('/player_edit', function () {
+    return view('telas_crud.player_edit');
+});
 
 # Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
 #Esse Rota vai na view users.index
