@@ -10,8 +10,8 @@ Route::get('/', function () {
     return view('frontend.home');
 });
 
-Route::get('/login', function () {
-    return view('login');
+Route::get('/players', function () {
+    return view('telas_crud.players');
 });
 
 Route::get('/form1', function () {
