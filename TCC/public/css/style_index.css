@@ -259,7 +259,7 @@ img.icon-2 {
 .header-step {
     display: flex;
     justify-content: flex-start;
-    gap: 130px;
+    gap: 200px;
 }
 
 h3.step-title {
