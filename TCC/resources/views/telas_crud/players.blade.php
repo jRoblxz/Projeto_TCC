@@ -1,4 +1,4 @@
-@extends('telas_crud.navbar')
+@extends('navbar')
 @section('content')
     <div class="container">
         <div class="header">
@@ -345,6 +345,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card add-card" onclick="window.location.href='forms1'">
+                <div class="add-icon">+</div>
             </div>
         </div>
     </div>

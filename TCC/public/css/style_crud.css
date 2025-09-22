@@ -382,7 +382,7 @@ h1 {
 .nav-item svg {
     width: 24px;
     height: 24px;
-    fill: #851114;
+    fill: transparent;
     opacity: 0.8;
     transition: opacity 0.3s ease;
 }
@@ -420,7 +420,7 @@ h1 {
 .main-content {
     margin-left: 80px;
     flex: 1;
-    padding: 40px;
+    padding: 0px 40px 40px 40px;
     color: white;
 }
 

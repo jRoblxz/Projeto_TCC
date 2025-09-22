@@ -1,4 +1,4 @@
-@extends('telas_crud.navbar')
+@extends('navbar')
 @section('content')
     <div class="container">
         <div class="header">
