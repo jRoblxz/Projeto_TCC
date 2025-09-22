@@ -159,6 +159,7 @@
       <div class="buttons">
         <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
         <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
+        <button class="btn btn-primary" type="button" id="finish">Finalizar</button>
           <!--
             KAYNAN: BOTÃO DE SUBMIT AQUI
             ADICIONAR E MODIFICAR A MENSAGEM DE SUCESSO NO JS

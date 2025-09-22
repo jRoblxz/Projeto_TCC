@@ -72,19 +72,11 @@
         }
 
         .card-front {
-            position: relative;
-            z-index: 2;      /* acima das pseudo-shapes azuis */
+            position: absolute;
             border: 10px solid #8B0000;
             display: flex;
             overflow: hidden;
             background: #fff; /* se precisar de branco por trás da foto */
-        }
-
-        /* Header da carta com rating */
-        .card-header {
-            background: #8B0000;
-            height: 65px;
-            width: 100px;
         }
 
         .rating {
