@@ -37,27 +37,27 @@ class UserController extends Controller
 
         // Cadastrar o jogador no banco de dados
         $pessoas = Pessoas::create([
-            'nome_completo' => $request->nome,
-            'idade' => $request->idade,
-            'data_nascimento' => $request->nasc,
-            'cidade' => $request->cidade, #deve adicionar no banco de dados
+            'nome_completo' => $request->nome_completo,
+            #'idade' => $request->idade,
+            'data_nascimento' => $request->data_nascimento,
+            #'cidade' => $request->cidade, #deve adicionar no banco de dados
             'cpf' => $request->cpf,
             'rg' => $request->rg,
             'email' => $request->email,
-            'telefone' => $request->fone,
-            'foto_perfil_url' => $request->img,
+            'telefone' => $request->telefone,
+            'foto_perfil_url' => $request->foto_perfil_url,
 
         ]);
 
         $jogadores = Jogadores::create([
-            'id_pessoa' => $pessoas->id,
-            'pe_preferido' => $request->pe,
+            'pessoa_id' => $pessoas->id,
+            'pe_preferido' => $request->pe_preferido,
             'posicao_principal' => $request->posicao_principal,
             'posicao_secundaria' => $request->posicao_secundaria,
-            'historico_lesoes_cirurgias' => $request->cirurgia,
-            'altura_cm' => $request->altura,
-            'peso_kg' => $request->peso,
-            'video_apresentacao_url' => $request->link, #video_skills_url pode ser deletado no banco
+            'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
+            'altura_cm' => $request->altura_cm,
+            'peso_kg' => $request->peso_kg,
+            'video_apresentacao_url' => $request->video_apresentacao_url, #video_skills_url pode ser deletado no banco
         ]);
         
 
@@ -80,26 +80,26 @@ class UserController extends Controller
 
         // Atualizar o jogador no banco de dados
         $pessoas->update([
-            'nome_completo' => $request->nome,
-            'idade' => $request->idade,
-            'data_nascimento' => $request->nasc,
-            'cidade' => $request->cidade,
+            'nome_completo' => $request->nome_completo,
+            #'idade' => $request->idade,
+            'data_nascimento' => $request->data_nascimento,
+            #'cidade' => $request->cidade,
             'cpf' => $request->cpf,
             'rg' => $request->rg,
             'email' => $request->email,
-            'telefone' => $request->fone,
-            'foto_perfil_url' => $request->img,
+            'telefone' => $request->telefone,
+            'foto_perfil_url' => $request->foto_perfil_url,
         ]);
 
         $jogadores->update([
-            'id_pessoa' => $pessoas->id,
-            'pe_preferido' => $request->pe,
+            'pessoa_id' => $pessoas->id,
+            'pe_preferido' => $request->pe_preferido,
             'posicao_principal' => $request->posicao_principal,
             'posicao_secundaria' => $request->posicao_secundaria,
-            'historico_lesoes_cirurgias' => $request->cirurgia,
-            'altura_cm' => $request->altura,
-            'peso_kg' => $request->peso,
-            'video_apresentacao_url' => $request->link,
+            'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
+            'altura_cm' => $request->altura_cm,
+            'peso_kg' => $request->peso_kg,
+            'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
 
         // Redirecionar para a lista de jogadores com uma mensagem de sucesso

@@ -28,7 +28,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="nome" class="form-label">Nome completo:</label>
-            <input type="text" id="nome" name="nome" class="form-control" step="any" required="" placeholder="Informe seu nome" value="{{ old('nome') }}">
+            <input type="text" id="nome" name="nome_completo" class="form-control" step="any" required="" placeholder="Informe seu nome" value="{{ old('nome') }}">
           </div>
           <div class="col-md-2">
             <label for="idade" class="form-label">Idade:</label>
@@ -38,7 +38,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nasc" class="form-label">Data Nascimento:</label>
-            <input type="date" id="nasc" name="nasc" class="form-control" step="any" required="" value="{{ old('nasc') }}">
+            <input type="date" id="nasc" name="data_nascimento" class="form-control" step="any" required="" value="{{ old('nasc') }}">
           </div>
           <div class="col-md-6">
             <label for="cidade" class="form-label">Cidade:</label>
@@ -62,7 +62,7 @@
           </div>
           <div class="col-md-6">
             <label for="fone" class="form-label">Celular:</label>
-            <input type="number" id="fone" name="fone" class="form-control" step="any" required="" placeholder="Informe seu contato" value="{{ old('fone') }}">
+            <input type="number" id="fone" name="telefone" class="form-control" step="any" required="" placeholder="Informe seu contato" value="{{ old('fone') }}">
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nome" class="form-label">Pé dominante:</label>
-            <select class="form-control" id="pe" name="pe" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
+            <select class="form-control" id="pe" name="pe_preferido" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
               <option value="" {{ old('pe') == '' ? 'selected' : '' }}>Selecionar</option>
               <option value="direito" {{ old('pe') == 'direito' ? 'selected' : '' }}>Direito</option>
               <option value="esquerdo" {{ old('pe') == 'esquerdo' ? 'selected' : '' }}>Esquerdo</option>
@@ -84,54 +84,54 @@
             <label for="nasc" class="form-label">Posição principal:</label>
             <select class="form-control" id="posicao_principal" name="posicao_principal" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
               <option value="" {{ old('posicao_principal') == '' ? 'selected' : '' }}>Selecione a posição</option>
-              <option value="gol" {{ old('posicao_principal') == 'gol' ? 'selected' : '' }}>Goleiro</option>
-              <option value="ld" {{ old('posicao_principal') == 'ld' ? 'selected' : '' }}>Lateral Direito</option>
-              <option value="le" {{ old('posicao_principal') == 'le' ? 'selected' : '' }}>Lateral Esquerdo</option>
-              <option value="ze" {{ old('posicao_principal') == 'ze' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
-              <option value="zd" {{ old('posicao_principal') == 'zd' ? 'selected' : '' }}>Zagueiro Direito</option>
-              <option value="vol" {{ old('posicao_principal') == 'vol' ? 'selected' : '' }}>Volante</option>
-              <option value="mei" {{ old('posicao_principal') == 'mei' ? 'selected' : '' }}>Meia</option>
-              <option value="pe" {{ old('posicao_principal') == 'pe' ? 'selected' : '' }}>Ponta esquerda</option>
-              <option value="pd" {{ old('posicao_principal') == 'pd' ? 'selected' : '' }}>Ponta direita</option>
-              <option value="ata" {{ old('posicao_principal') == 'ata' ? 'selected' : '' }}>Atacante</option>
+              <option value="Goleiro" {{ old('posicao_principal') == 'Goleiro' ? 'selected' : '' }}>Goleiro</option>
+              <option value="Lateral Direito" {{ old('posicao_principal') == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
+              <option value="Lateral Esquerdo" {{ old('posicao_principal') == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
+              <option value="Zagueiro" {{ old('posicao_principal') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+              <option value="Zagueiro" {{ old('posicao_principal') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Direito</option>
+              <option value="Volante" {{ old('posicao_principal') == 'Volante' ? 'selected' : '' }}>Volante</option>
+              <option value="Meia Central" {{ old('posicao_principal') == 'Meia Central' ? 'selected' : '' }}>Meia</option>
+              <option value="Ponta Esquerda" {{ old('posicao_principal') == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta esquerda</option>
+              <option value="Ponta Direita" {{ old('posicao_principal') == 'Ponta Direita' ? 'selected' : '' }}>Ponta direita</option>
+              <option value="Centroavante" {{ old('posicao_principal') == 'Centroavante' ? 'selected' : '' }}>Atacante</option>
             </select>
           </div>
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição secundaria:</label>
             <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
               <option value="" {{ old('posicao_secundaria') == '' ? 'selected' : '' }}>Selecione a posição</option>
-              <option value="gol" {{ old('posicao_secundaria') == 'gol' ? 'selected' : '' }}>Goleiro</option>
-              <option value="ld" {{ old('posicao_secundaria') == 'ld' ? 'selected' : '' }}>Lateral Direito</option>
-              <option value="le" {{ old('posicao_secundaria') == 'le' ? 'selected' : '' }}>Lateral Esquerdo</option>
-              <option value="ze" {{ old('posicao_secundaria') == 'ze' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
-              <option value="zd" {{ old('posicao_secundaria') == 'zd' ? 'selected' : '' }}>Zagueiro Direito</option>
-              <option value="vol" {{ old('posicao_secundaria') == 'vol' ? 'selected' : '' }}>Volante</option>
-              <option value="mei" {{ old('posicao_secundaria') == 'mei' ? 'selected' : '' }}>Meia</option>
-              <option value="pe" {{ old('posicao_secundaria') == 'pe' ? 'selected' : '' }}>Ponta esquerda</option>
-              <option value="pd" {{ old('posicao_secundaria') == 'pd' ? 'selected' : '' }}>Ponta direita</option>
-              <option value="ata" {{ old('posicao_secundaria') == 'ata' ? 'selected' : '' }}>Atacante</option>
+              <option value="Goleiro" {{ old('posicao_principal') == 'Goleiro' ? 'selected' : '' }}>Goleiro</option>
+              <option value="Lateral Direito" {{ old('posicao_principal') == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
+              <option value="Lateral Esquerdo" {{ old('posicao_principal') == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
+              <option value="Zagueiro" {{ old('posicao_principal') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+              <option value="Zagueiro" {{ old('posicao_principal') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Direito</option>
+              <option value="Volante" {{ old('posicao_principal') == 'Volante' ? 'selected' : '' }}>Volante</option>
+              <option value="Meia Central" {{ old('posicao_principal') == 'Meia Central' ? 'selected' : '' }}>Meia</option>
+              <option value="Ponta Esquerda" {{ old('posicao_principal') == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta esquerda</option>
+              <option value="Ponta Direita" {{ old('posicao_principal') == 'Ponta Direita' ? 'selected' : '' }}>Ponta direita</option>
+              <option value="Centroavante" {{ old('posicao_principal') == 'Centroavante' ? 'selected' : '' }}>Atacante</option>
             </select>
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="altura" class="form-label">Altura:</label>
-            <input type="number" id="altura" name="altura" class="form-control" step="any" required="" placeholder="Informe sua altura" value="{{ old('altura') }}">
+            <input type="number" id="altura" name="altura_cm" class="form-control" step="any" required="" placeholder="Informe sua altura" value="{{ old('altura') }}">
           </div>
           <div class="col-md-3">
             <label for="peso" class="form-label">Peso:</label>
-            <input type="number" id="peso" name="peso" class="form-control" step="any" required="" placeholder="Informe seu peso" value="{{ old('peso') }}">
+            <input type="number" id="peso" name="peso_kg" class="form-control" step="any" required="" placeholder="Informe seu peso" value="{{ old('peso') }}">
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <p>Já fez cirurgia?</p>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_sim" value="sim" required {{ old('cirurgia') == 'sim' ? 'checked' : '' }}>
+              <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_sim" value="sim" required {{ old('cirurgia') == 'sim' ? 'checked' : '' }}>
               <label class="form-check-label" for="cirurgia_sim">Sim</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="cirurgia" id="cirurgia_nao" value="nao" required {{ old('cirurgia') == 'nao' ? 'checked' : '' }}>
+              <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_nao" value="nao" required {{ old('cirurgia') == 'nao' ? 'checked' : '' }}>
               <label class="form-check-label" for="cirurgia_nao">Não</label>
             </div>
           </div>
@@ -143,13 +143,13 @@
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Vídeo de apresentação:</label>
-            <input type="url" id="link" name="link" class="form-control" required="" placeholder="Link do youtube" value="{{ old('link') }}"> <!--KAYNAN: TIPO DE DADO AQUI-->
+            <input type="url" id="link" name="video_apresentacao_url" class="form-control" required="" placeholder="Link do youtube" value="{{ old('link') }}"> <!--KAYNAN: TIPO DE DADO AQUI-->
           </div>
         </div>
         <div class="row inline-row mb-3">
           <div class="col-md-8">
             <label for="video" class="form-label">Foto 3x4:</label>
-            <input type="file" id="img" name="img" class="form-control" step="any" required="" placeholder="Imagem 3x4"> <!--KAYNAN: TIPO DE DADO AQUI-->
+            <input type="file" id="img" name="foto_perfil_url" class="form-control" step="any" required="" placeholder="Imagem 3x4"> <!--KAYNAN: TIPO DE DADO AQUI-->
           </div>
         </div>
        
@@ -160,15 +160,11 @@
         <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
         <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
         <button class="btn btn-primary" type="submit" id="finish">mandar</button>
-          <!--
-            KAYNAN: BOTÃO DE SUBMIT AQUI
-            ADICIONAR E MODIFICAR A MENSAGEM DE SUCESSO NO JS
-            @if (session('sucess'))
-                  <p style="color: #086;">
-                      {{ session('sucess') }}
-                  </p>
-            @endif  
-          -->
+        @if (session('success'))
+          <p style="color: #086;">
+            {{ session('success') }}
+          </p>
+        @endif
       </div>
     </form>
 </div>

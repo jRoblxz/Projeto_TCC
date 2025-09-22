@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Jogadores extends Model
 {
+
+
+    public $timestamps = false;
+    
     protected $table = 'Jogadores';
     protected $fillable = [
-        'id_pessoa',
+        'pessoa_id',
         'pe_preferido',
         'posicao_principal',
         'posicao_secundaria',
@@ -20,6 +24,6 @@ class Jogadores extends Model
 
     public function pessoa()
     {
-        return $this->belongsTo(Pessoas::class, 'id_pessoa');
+        return $this->belongsTo(Pessoas::class, 'pessoa_id');
     }
 }
