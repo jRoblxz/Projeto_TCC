@@ -14,11 +14,26 @@ Route::get('/show-user/{pessoas}', [UserController::class, 'show'])->name('users
 #Esse Rota vai na view users.index
 Route::get('/edit-user/{pessoas}/{jogadores}', [UserController::class, 'edit'])->name('users.edit'); #tela de edição de um usuário específico
 
-#esse fiu oque eu adicionei (joao)
+#Usei essas 4 rotas para ver as trelas, apaga se necessario (joao)
 Route::get('/players', function () {
     return view('telas_crud.players');
+})->name('players');
+
+Route::get('/player_info', function () {
+    return view('telas_crud.player_info');
 });
- 
+
+Route::get('/player_edit', function () {
+    return view('telas_crud.player_edit');
+});
+Route::get('/home', function () {
+    return view('dashboard');
+})->name('home');;
+
+Route::get('/login', function () {
+    return view('login');
+});
+
 
 # Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
 #Esse Rota vai na view users.index
