@@ -46,7 +46,7 @@ Route::get('/player_edit', function () {
     return view('telas_crud.player_edit');
 });
 Route::get('/home', function () {
-    return view('dashboard');
+    return view('home');
 })->name('home');;
 
 Route::get('/login', function () {
