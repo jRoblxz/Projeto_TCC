@@ -32,6 +32,7 @@ body {
     margin: auto;
     padding: 20px;
 }
+
 .container {
     max-width: 1200px;
     position: relative;
@@ -137,7 +138,7 @@ h2 {
     font-size: 1.5rem;
     margin-bottom: 15px;
     color: #941B1B;
-    display: inline-block;    
+    display: inline-block;
     padding: 5px 15px;
 }
 
@@ -175,7 +176,8 @@ h2 {
 }
 
 .club-name {
-    font-family: "FONTE_TESTE", sans-serif;}
+    font-family: "FONTE_TESTE", sans-serif;
+}
 
 .website-url {
     font-size: 2rem;
@@ -208,7 +210,7 @@ footer {
     color: #666;
     font-size: 0.9rem;
 
-    
+
 }
 
 @media (max-width: 768px) {
@@ -273,7 +275,7 @@ strong {
     color: transparent;
 }
 
-p.inst{
+p.inst {
     text-align: justify;
 
 }
@@ -298,6 +300,7 @@ p.inst{
     padding: 50px;
     background-color: #F3F3F3;
 }
+
 .form-step {
     display: none;
 }
