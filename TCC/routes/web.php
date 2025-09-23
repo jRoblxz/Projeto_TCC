@@ -4,7 +4,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdmController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/players', [AdmController::class, 'index'])->name('users.index'); #tela de visualização de usuários
+Route::get('/players', [AdmController::class, 'index'])->name('players.index'); #tela de visualização de usuários
+Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players.destroy');
 
 # Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
 #Esse Rota vai na view users.index
@@ -34,9 +35,9 @@ Route::get('/instrucao', function () {
     return view('telas_forms.instrucao');
 });
 
-Route::get('/players', function () {
-    return view('telas_crud.players');
-})->name('players');
+#Route::get('/players', function () {
+   # return view('telas_crud.players');
+#})->name('players');
 
 Route::get('/player_info', function () {
     return view('telas_crud.player_info');
@@ -49,6 +50,10 @@ Route::get('/home', function () {
     return view('home');
 })->name('home');;
 
-Route::get('/login', function () {
+Route::get('/', function () {
     return view('login');
+});
+
+Route::get('/confirm', function () {
+    return view('telas_forms.confirmacao');
 });

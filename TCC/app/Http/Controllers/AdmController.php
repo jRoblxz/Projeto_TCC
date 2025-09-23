@@ -4,9 +4,78 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
-
+use App\Models\Avaliacao;
+use App\Models\Player; // Joao testes
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+
+class AdmController{
+    public function index()
+    {
+        // Usar a view que já tem todas as informações
+        $players = DB::table('vw_perfil_jogador')->get();
+        $avaliacao = DB::table('Avaliacoes')->get();
+        
+        return view('telas_crud.players', compact('players','avaliacao'));
+    }
+    
+    public function destroy($id)
+    {
+        try {
+            // Para DELETE, usar a tabela original Jogadores
+            $player = Player::findOrFail($id);
+            
+            // Deletar avaliações relacionadas primeiro
+            Avaliacao::where('jogador_id', $id)->delete();
+            
+            // Deletar o jogador
+            $player->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Jogador deletado com sucesso!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao deletar jogador: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function update(Request $request, $id)
+    {
+        try {
+            // Para UPDATE, usar a tabela original Jogadores
+            $player = Player::findOrFail($id);
+            
+            $player->update($request->only([
+                'pe_preferido',
+                'posicao_principal', 
+                'posicao_secundaria',
+                'altura_cm',
+                'peso_kg',
+                'historico_lesoes_cirurgias',
+                'video_apresentacao_url',
+                'video_skills_url'
+            ]));
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Jogador atualizado com sucesso!',
+                'data' => $player
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao atualizar jogador: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+}
+
+/* Daqui para baixo é seu kayan
 class AdmController
 {
     public function index()
@@ -72,4 +141,4 @@ class AdmController
         return redirect()->route('users.index')->with('success', 'Jogador deletado com sucesso!');
     }
 */
-}
+

@@ -33,7 +33,7 @@ class UserRequest extends FormRequest
             'telefone' => 'required|string|max:15',
             'altura_cm' => 'required|numeric|min:0',
             'peso_kg' => 'required|numeric|min:0',
-            'foto_perfil_url' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_perfil_url' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
             'video_apresentacao_url' => 'required|url|max:255',
             # VALIDAÇÃO DAS OPÇÕES 
             'pe_preferido' => 'required|in:direito,esquerdo',
