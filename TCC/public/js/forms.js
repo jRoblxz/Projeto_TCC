@@ -1,36 +1,42 @@
 const steps = document.querySelectorAll(".form-step");
-  const stepIndicators = document.querySelectorAll(".steps div");
-  const nextBtn = document.getElementById("nextBtn");
-  const prevBtn = document.getElementById("prevBtn");
-  let currentStep = 0;
+const stepIndicators = document.querySelectorAll(".steps div");
+const nextBtn = document.getElementById("nextBtn");
+const prevBtn = document.getElementById("prevBtn");
+let currentStep = 0;
 
-  function updateForm() {
-    steps.forEach((step, index) => {
-      step.classList.toggle("active", index === currentStep);
-      stepIndicators[index].classList.toggle("active", index === currentStep);
-    });
+function updateForm() {
+  steps.forEach((step, index) => {
+    step.classList.toggle("active", index === currentStep);
+    stepIndicators[index].classList.toggle("active", index === currentStep);
+  });
 
-    prevBtn.disabled = currentStep === 0;
-    nextBtn.textContent = currentStep === steps.length - 1 ? "Finalizar" : "Avançar";
+  prevBtn.disabled = currentStep === 0;
+
+  // se for a última etapa, troca para "Finalizar"
+  if (currentStep === steps.length - 1) {
+    nextBtn.textContent = "Finalizar";
+    nextBtn.type = "submit"; // aqui o botão vira submit
+  } else {
+    nextBtn.textContent = "Avançar";
+    nextBtn.type = "button"; // aqui ele volta a ser apenas botão
   }
+}
 
-  nextBtn.addEventListener("click", () => {
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-      updateForm();
-    } else {
-      alert("Formulário concluído!");
-      document.getElementById("signupForm").reset();
-      currentStep = 0;
-      updateForm();
-    }
-  });
+nextBtn.addEventListener("click", () => {
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    updateForm();
+  } else {
+    // Última etapa -> transforma em submit
+    document.getElementById("signupForm").submit();
+  }
+});
 
-  prevBtn.addEventListener("click", () => {
-    if (currentStep > 0) {
-      currentStep--;
-      updateForm();
-    }
-  });
+prevBtn.addEventListener("click", () => {
+  if (currentStep > 0) {
+    currentStep--;
+    updateForm();
+  }
+});
 
-  updateForm();
+updateForm();
