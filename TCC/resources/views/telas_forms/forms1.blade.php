@@ -20,9 +20,9 @@
     @endif
 
     <!-- Formulário -->
-    <form action="{{ route('users.store') }}" method="POST" id="signupForm" enctype="multipart/form-data"> <!--KAYNAN: ROTA AQUI E RECEBIMENTO DE IMG ENCTYPE-->
-      @csrf <!--KAYNAN: SEGURANÇA -->
-      @method('POST') <!--KAYNAN: TIPO DE REQUISIÇÃO -->
+    <form action="{{ route('users.store') }}" method="POST" id="signupForm" enctype="multipart/form-data">
+      @csrf
+      @method('POST')
       <!-- Etapa 1 -->
       <div class="form-step active">
         <div class="row inline-row mb-3">
@@ -72,7 +72,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nome" class="form-label">Pé dominante:</label>
-            <select class="form-control" id="pe" name="pe_preferido" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
+            <select class="form-control" id="pe" name="pe_preferido" required>
               <option value="" {{ old('pe') == '' ? 'selected' : '' }}>Selecionar</option>
               <option value="direito" {{ old('pe') == 'direito' ? 'selected' : '' }}>Direito</option>
               <option value="esquerdo" {{ old('pe') == 'esquerdo' ? 'selected' : '' }}>Esquerdo</option>
@@ -82,7 +82,7 @@
         <div class="row inline-row mb-3">
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição principal:</label>
-            <select class="form-control" id="posicao_principal" name="posicao_principal" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
+            <select class="form-control" id="posicao_principal" name="posicao_principal" required>
               <option value="" {{ old('posicao_principal') == '' ? 'selected' : '' }}>Selecione a posição</option>
               <option value="Goleiro" {{ old('posicao_principal') == 'Goleiro' ? 'selected' : '' }}>Goleiro</option>
               <option value="Lateral Direito" {{ old('posicao_principal') == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
@@ -98,7 +98,7 @@
           </div>
           <div class="col-md-3">
             <label for="nasc" class="form-label">Posição secundaria:</label>
-            <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required> <!--KAYNAN: NOME DO CAMPO AQUI PARA VALIDAR -->
+            <select class="form-control" id="posicao_secundaria" name="posicao_secundaria" required>
               <option value="" {{ old('posicao_secundaria') == '' ? 'selected' : '' }}>Selecione a posição</option>
               <option value="Goleiro" {{ old('posicao_principal') == 'Goleiro' ? 'selected' : '' }}>Goleiro</option>
               <option value="Lateral Direito" {{ old('posicao_principal') == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
@@ -160,11 +160,14 @@
         <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
         <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
         <button class="btn btn-primary" type="submit" id="finish">mandar</button>
+
         @if (session('success'))
           <p style="color: #086;">
             {{ session('success') }}
           </p>
         @endif
+
+        
       </div>
     </form>
 </div>
