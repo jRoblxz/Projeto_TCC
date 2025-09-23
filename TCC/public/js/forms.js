@@ -5,38 +5,32 @@ const prevBtn = document.getElementById("prevBtn");
 let currentStep = 0;
 
 function updateForm() {
-  steps.forEach((step, index) => {
-    step.classList.toggle("active", index === currentStep);
-    stepIndicators[index].classList.toggle("active", index === currentStep);
-  });
+    steps.forEach((step, index) => {
+        step.classList.toggle("active", index === currentStep);
+        stepIndicators[index].classList.toggle("active", index === currentStep);
+    });
 
-  prevBtn.disabled = currentStep === 0;
-
-  // se for a última etapa, troca para "Finalizar"
-  if (currentStep === steps.length - 1) {
-    nextBtn.textContent = "Finalizar";
-    nextBtn.type = "submit"; // aqui o botão vira submit
-  } else {
-    nextBtn.textContent = "Avançar";
-    nextBtn.type = "button"; // aqui ele volta a ser apenas botão
-  }
+    prevBtn.disabled = currentStep === 0;
+    nextBtn.textContent =
+        currentStep === steps.length - 1 ? "Finalizar" : "Avançar";
 }
 
 nextBtn.addEventListener("click", () => {
-  if (currentStep < steps.length - 1) {
-    currentStep++;
-    updateForm();
-  } else {
-    // Última etapa -> transforma em submit
-    document.getElementById("signupForm").submit();
-  }
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        updateForm();
+    } else {
+        alert("Formulário concluído!");
+        const form = document.getElementById("signupForm");
+        form.submit();
+    }
 });
 
 prevBtn.addEventListener("click", () => {
-  if (currentStep > 0) {
-    currentStep--;
-    updateForm();
-  }
+    if (currentStep > 0) {
+        currentStep--;
+        updateForm();
+    }
 });
 
 updateForm();
