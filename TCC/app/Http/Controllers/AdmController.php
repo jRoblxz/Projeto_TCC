@@ -84,7 +84,7 @@ class AdmController
         
         
         // Carregar a VIEW de Jogadores
-        return view('telas_crud.players',['jogadores' => $jogadores]);
+        return view('teste_wiew.playerstest',['jogadores' => $jogadores]);
     }
 /*
     public function show(Jogadores $user) #alterar depois os parametros para Pessoas e Jogadores

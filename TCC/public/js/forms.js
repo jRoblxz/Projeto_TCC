@@ -5,6 +5,7 @@ const steps = document.querySelectorAll(".form-step");
     const signupForm = document.getElementById("signupForm");
     let currentStep = 0;
 
+
     // Função para atualizar a exibição dos passos e botões
     function updateForm() {
         steps.forEach((step, index) => {

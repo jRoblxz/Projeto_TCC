@@ -9,6 +9,11 @@ use App\Models\Pessoas;
 class UserController
 {
 
+    public function instrucao()
+    {
+        return view('telas_forms.instrucao');
+    }
+
     public function create()
     {
         // Carregar a VIEW do formulário
@@ -46,6 +51,9 @@ class UserController
         ]);
 
         // Redirecionar para a lista de jogadores com uma mensagem de sucesso
-        return redirect()->route('confirm')->with('success', 'Jogador cadastrado com sucesso!');
+
+        return redirect()->route('tela.instrucao')
+            ->with('success', 'Jogador cadastrado com sucesso!');
+
     }
 }
