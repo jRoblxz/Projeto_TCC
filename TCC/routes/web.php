@@ -31,7 +31,13 @@ Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players
 
 Route::get('/forms1', [UserController::class, 'create'])->name('users.create'); #tela do formulário de criação de usuário -> (OK)
 Route::post('/forms1', [UserController::class, 'store'])->name('users.store'); #rota para salvar o novo usuário -> (OK)
+Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao'); #tela de confirmacao após o cadastro -> (OK)
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
+
+
+
+
+
 #ROTAS TESTE JOÃO 
 #Route::get('/instrucao', function () {
     #return view('telas_forms.instrucao');

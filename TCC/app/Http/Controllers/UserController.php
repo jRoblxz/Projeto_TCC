@@ -14,6 +14,11 @@ class UserController
         return view('telas_forms.instrucao');
     }
 
+    public function confirmacao()
+    {
+        return view('telas_forms.confirmacao');
+    }
+
     public function create()
     {
         // Carregar a VIEW do formulário
@@ -50,10 +55,8 @@ class UserController
             'video_apresentacao_url' => $request->video_apresentacao_url, #video_skills_url pode ser deletado no banco
         ]);
 
-        // Redirecionar para a lista de jogadores com uma mensagem de sucesso
-
-        return redirect()->route('tela.instrucao')
-            ->with('success', 'Jogador cadastrado com sucesso!');
+        // Redirecionar para a tela de confirmação
+        return redirect()->route('tela.confirmacao');
 
     }
 }
