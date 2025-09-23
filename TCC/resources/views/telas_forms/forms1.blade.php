@@ -159,6 +159,7 @@
       <div class="buttons">
         <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
         <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
+
         <button class="btn btn-primary" type="submit" id="finish">mandar</button>
 
         @if (session('success'))
@@ -166,8 +167,6 @@
             {{ session('success') }}
           </p>
         @endif
-
-        
       </div>
     </form>
 </div>
