@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pessoas extends Model
 {
+
+    public $timestamps = false;
+
     protected $table = 'Pessoas';
     protected $fillable = [
         'nome_completo',
