@@ -5,7 +5,7 @@
     <div class="header-home animate-in">
         <div class="header-content">
             <div class="club-info">
-                <div class="club-logo">FC</div>
+                <img src="{{asset('img/logo-copia.png')}}" alt="logo" class="club-logo">
                 <div class="club-details">
                     <h1>Sistema de Peneiras</h1>
                     <p>Gestão e Formação • Champions FC • 2024</p>
@@ -42,7 +42,6 @@
         <!-- Peneiras ativas -->
         <div class="card-home animate-in" style="animation-delay: 0.2s;">
             <h2 class="card-title">
-                <div class="card-icon">🏃‍♂️</div>
                 Peneiras em Andamento
             </h2>
 
@@ -121,31 +120,18 @@
                 </div>
             </div>
 
-            <button class="action-button" onclick="openModal('newPeneira')">
-                ➕ Nova Peneira
-            </button>
+            <button class="button-peneira">nova peneira</button>
         </div>
 
         <!-- Candidatos recentes -->
         <div class="card-home animate-in" style="animation-delay: 0.3s;">
             <h2 class="card-title">
-                <div class="card-icon">👥</div>
-                Candidatos Recentes
+                Jogadores Destaques
             </h2>
-
-            <input type="text" class="search-bar" placeholder="Buscar candidato..."
-                onkeyup="filterCandidates(this.value)">
-
-            <div class="filter-tabs">
-                <div class="filter-tab active" onclick="filterByStatus(this, 'all')">Todos</div>
-                <div class="filter-tab" onclick="filterByStatus(this, 'pending')">Pendentes</div>
-                <div class="filter-tab" onclick="filterByStatus(this, 'approved')">Aprovados</div>
-                <div class="filter-tab" onclick="filterByStatus(this, 'rejected')">Rejeitados</div>
-            </div>
 
             <div id="candidates-list">
                 <div class="candidate-card" data-status="pending" onclick="showCandidateDetails('Carlos Silva')">
-                    <div class="candidate-avatar">CS</div>
+                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
                     <div class="candidate-info">
                         <div class="candidate-name">Carlos Silva</div>
                         <div class="candidate-details">
@@ -158,7 +144,7 @@
                 </div>
 
                 <div class="candidate-card" data-status="pending" onclick="showCandidateDetails('Marina Santos')">
-                    <div class="candidate-avatar">MS</div>
+                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
                     <div class="candidate-info">
                         <div class="candidate-name">Marina Santos</div>
                         <div class="candidate-details">
@@ -171,7 +157,7 @@
                 </div>
 
                 <div class="candidate-card" data-status="approved" onclick="showCandidateDetails('João Pedro')">
-                    <div class="candidate-avatar">JP</div>
+                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
                     <div class="candidate-info">
                         <div class="candidate-name">João Pedro</div>
                         <div class="candidate-details">
@@ -184,7 +170,7 @@
                 </div>
 
                 <div class="candidate-card" data-status="pending" onclick="showCandidateDetails('Ana Costa')">
-                    <div class="candidate-avatar">AC</div>
+                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
                     <div class="candidate-info">
                         <div class="candidate-name">Ana Costa</div>
                         <div class="candidate-details">
@@ -197,7 +183,7 @@
                 </div>
 
                 <div class="candidate-card" data-status="rejected" onclick="showCandidateDetails('Pedro Lima')">
-                    <div class="candidate-avatar">PL</div>
+                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
                     <div class="candidate-info">
                         <div class="candidate-name">Pedro Lima</div>
                         <div class="candidate-details">
@@ -209,10 +195,6 @@
                     <div class="candidate-rating rating-poor">5.8</div>
                 </div>
             </div>
-
-            <button class="action-button secondary" onclick="openModal('newCandidate')">
-                ➕ Cadastrar Candidato
-            </button>
         </div>
     </div>
 

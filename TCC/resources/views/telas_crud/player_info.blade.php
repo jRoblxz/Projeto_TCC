@@ -15,7 +15,7 @@
                         </path>
                     </svg>
                 </button>
-                <div class="player-avatar"><img src="{{ asset('img/neymar.jpeg') }}" alt="neymar"></div>
+                <div class="player-avatar-info"><img src="{{ asset('img/neymar.jpeg') }}" alt="neymar"></div>
                 <div class="player-name">Neymar Jr</div>
 
                 <div class="stats-grid">

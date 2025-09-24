@@ -74,34 +74,10 @@
                 </div>
             </div>
         </div>
-
-        <div class="actions">
-            <button class="btn btn-secondary" onclick="window.print()">
-                📄 Imprimir
-            </button>
-            <a href="#" class="btn btn-primary">
-                ✅ Concluir
-            </a>
-        </div>
     </div>
-
-    <script>
-        // Add some interactivity
-        setTimeout(() => {
-            const confettis = document.querySelectorAll('.confetti');
-            confettis.forEach(c => c.style.display = 'none');
-        }, 3000);
-
-        // Copy registration number on click
-        document.querySelector('.registration-number').addEventListener('click', function () {
-            const number = this.querySelector('.number').textContent;
-            navigator.clipboard.writeText(number).then(() => {
-                const originalText = this.querySelector('.number').textContent;
-                this.querySelector('.number').textContent = '✓ Copiado!';
-                setTimeout(() => {
-                    this.querySelector('.number').textContent = originalText;
-                }, 2000);
-            });
-        });
-    </script>
+    <footer>
+        <div>
+            <p>Grêmio Prudente &copy; 2025. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 @endsection

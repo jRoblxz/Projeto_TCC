@@ -5,7 +5,8 @@
             <h1>Perfil do Jogador</h1>
             <p>Sistema de Avaliação de Atletas</p>
         </div>
-        <form method="POST" action="/player_update" enctype="multipart/form-data"> <!-- JOAP: KAYNAN ALTERA AQUI O ACTION CERTO, E VE SE O FORM TA CORRETO-->
+        <form method="POST" action="/player_update" enctype="multipart/form-data">
+            <!-- JOAP: KAYNAN ALTERA AQUI O ACTION CERTO, E VE SE O FORM TA CORRETO-->
             @csrf
             @method('PUT')
 
@@ -50,6 +51,10 @@
                                 <input type="text" value="ATA" placeholder="Posição">
                             </div>
                         </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Posição Secundaria</div>
+                            <div class="stat-value">MEI</div>
+                        </div>
                     </div>
 
                     <div class="field-position">
@@ -73,11 +78,11 @@
                             <textarea
                                 placeholder="Análise técnica, pontos fortes, desenvolvimento e observações...">Análise Técnica: O jogador demonstra excelente técnica de finalização. Real Sporting FC (Copa do Brasil). Real Sporting 1x1 Nova Venécia Esporte 2016 Nova Venécia Vitória Esporte 2016.
 
-    Pontos Fortes: Ótima força e explosão muscular, boa velocidade principalmente nas jogadas dos primeiros 15m.
+        Pontos Fortes: Ótima força e explosão muscular, boa velocidade principalmente nas jogadas dos primeiros 15m.
 
-    Desenvolvimento: Recomenda-se melhorar seus remates. Pode melhorar o cabeceio. Pensa bem as jogadas e são bem intencionadas no meio campo. Apresenta baixa capacidade para dribles fintos e jogadas de ataque. É visto com bons olhos para sua alegada pretensão a anos.
+        Desenvolvimento: Recomenda-se melhorar seus remates. Pode melhorar o cabeceio. Pensa bem as jogadas e são bem intencionadas no meio campo. Apresenta baixa capacidade para dribles fintos e jogadas de ataque. É visto com bons olhos para sua alegada pretensão a anos.
 
-    Observações: Atleta sempre bem posicionado e busca pelo Futsal! Apresenta boa técnica necessária para merecer um olhar mais atento. Tem bons movimentos, tem times e é jogador do coração com as características do jogo infantil-juvenil. E deve se ter um agente interessado para a ascensão.</textarea>
+        Observações: Atleta sempre bem posicionado e busca pelo Futsal! Apresenta boa técnica necessária para merecer um olhar mais atento. Tem bons movimentos, tem times e é jogador do coração com as características do jogo infantil-juvenil. E deve se ter um agente interessado para a ascensão.</textarea>
                         </div>
                     </div>
 

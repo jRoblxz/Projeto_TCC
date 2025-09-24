@@ -531,6 +531,24 @@ h1 {
     background: rgba(0, 0, 0, 0.7);
 }
 
+.player-avatar-info {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    position: relative;
+    overflow: hidden;
+}
+.player-avatar-info img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+}
+
 .player-avatar img {
     width: 100%;
     height: 100%;
@@ -739,18 +757,20 @@ h1 {
 }
 
 .eval-item:hover {
-    transform: translateY(-2px);
-    border-color: #851114;
+    transform: translateY(-2px) ;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) ;
+    border-color: #851114 ;
 }
 
 .eval-item h5 {
     color: #333;
     margin-bottom: 10px;
+    font-size: 1.3rem;
 }
 
 .eval-score {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.4rem;
+    font-weight: normal;
     color: #851114;
 }
 
@@ -857,6 +877,8 @@ h1 {
 .button-delete:hover {
     border-radius: 3px;
     background-color: rgb(255, 0, 0);
+    transform: translateY(-5px) rotateX(5deg)
+    
 }
 
 .delete-section {
@@ -886,6 +908,7 @@ h1 {
 .button-save:hover {
     border-radius: 3px;
     background-color: rgb(72, 255, 0);
+    transform: translateY(-5px) rotateX(5deg)
 }
 
 .save-section {
@@ -977,7 +1000,7 @@ h1 {
 .editable-field input,
 .editable-field textarea {
     border: none;
-    background: transparent;
+    background: rgba(133, 17, 20, 0.05);
     font-size: inherit;
     font-weight: inherit;
     color: inherit;
@@ -1049,7 +1072,7 @@ h1 {
     padding: 30px;
     margin-bottom: 30px;
     border: 1px solid rgba(255, 255, 255, 0.1);    
-    box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5);
     position: relative;
     overflow: hidden;
     font-family: 'fonte_player', sans-serif;
@@ -1081,14 +1104,11 @@ h1 {
 .club-logo {
     width: 80px;
     height: 80px;
-    background: #14244D;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
     font-weight: bold;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes float {
@@ -1107,7 +1127,6 @@ h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
     color: #14244D;
-    -webkit-background-clip: text;
 }
 
 .club-details p {
@@ -1173,7 +1192,7 @@ h1 {
 }
 
 .card-home {
-    background: #f8f9fa;
+    background: #f8f8f8;
     border-radius: 20px;
     padding: 25px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1182,7 +1201,6 @@ h1 {
     overflow: hidden;
     font-family: 'fonte_player', sans-serif;
     
-    box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.5);
 }
 
 .card-home::before {
@@ -1206,7 +1224,7 @@ h1 {
 }
 
 .card-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -1214,27 +1232,17 @@ h1 {
     color: #851114;
 }
 
-.card-icon {
-    width: 30px;
-    height: 30px;
-    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-}
 
 .peneira-item {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(208, 255, 0, 0.1);
     border-radius: 15px;
     padding: 20px;
     margin-bottom: 15px;
     transition: all 0.3s ease;
     cursor: pointer;
-    border-left: 4px solid #4ECDC4;
+    border-left: 4px solid #eaee00;
     
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .peneira-item:hover {
@@ -1243,8 +1251,8 @@ h1 {
 }
 
 .peneira-item.ativa {
-    border-left-color: #851114;
-    background: rgba(255, 107, 107, 0.1);
+    border-left-color: #0c5218;
+    background: rgba(11, 136, 17, 0.1);
 }
 
 .peneira-item.encerrada {
@@ -1255,6 +1263,7 @@ h1 {
 .peneira-header {
     display: flex;
     justify-content: between;
+    gap: 6px;
     align-items: center;
     margin-bottom: 10px;
 }
@@ -1266,8 +1275,8 @@ h1 {
 }
 
 .peneira-status {
-    background: linear-gradient(45deg, #4ECDC4, #44A08D);
-    color: white;
+    background-color: #eaee00 ;
+    color: black;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -1275,7 +1284,8 @@ h1 {
 }
 
 .peneira-status.ativa {
-    background: linear-gradient(45deg, #FF6B6B, #E74C3C);
+    background-color: #0c5218;
+    color: white;
 }
 
 .peneira-status.encerrada {
@@ -1311,7 +1321,7 @@ h1 {
     transition: all 0.3s ease;
     cursor: pointer;
     border: 2px solid rgba(255, 255, 255, 1);
-    box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
 .candidate-card:hover {
@@ -1322,7 +1332,6 @@ h1 {
 .candidate-avatar {
     width: 50px;
     height: 50px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1375,7 +1384,7 @@ h1 {
 }
 
 .action-button {
-    background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    background-color: #851114;
     border: none;
     color: white;
     padding: 12px 24px;
@@ -1384,6 +1393,33 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     margin: 10px 5px;
+}
+
+.button-peneira {
+    cursor: pointer;
+    padding: 12px 20px;
+    background-color: #851114;
+    border: 2px solid rgb(0, 0, 0);
+    color: White;
+    font-size: 1.1rem;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all ease 0.3s;
+    border-radius: 7px;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset; */
+    box-shadow:
+        rgba(0, 0, 0, 0.4) 0px 2px 4px,
+        rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+        rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    margin: 10px 5px;
+    font-family: 'fonte_player', sans-serif;
+}
+
+.button-peneira:hover {
+    border-radius: 3px;
+    background-color: rgb(255, 0, 0);
+    transform: translateY(-5px) rotateX(5deg)
+    
 }
 
 .action-button:hover {
