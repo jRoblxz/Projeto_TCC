@@ -5,7 +5,6 @@ use App\Http\Requests\UserRequest;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
 use App\Models\Avaliacao;
-use App\Models\Player; // Joao testes
 use App\Models\Views\DadosJogador;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -16,18 +15,23 @@ class AdmController
 {
     public function index()
     {
+
         $jogadores = DadosJogador::orderByDesc('jogador_id')->get();
 
         return view('telas_crud.players',['jogadores' => $jogadores]);
+
     }
 
-    public function show(Jogadores $user) #alterar depois os parametros para Pessoas e Jogadores
+
+    public function show(Jogadores $jogadores)
     {
-        // Carregar a VIEW de detalhes do jogador
-        return view('users.show', ['user' => $user]);
+
+        return view('telas_crud.player_info', ['jogadores' => $jogadores]);
+        
     }
 
-        public function edit(Pessoas $pessoas, Jogadores $jogadores)
+
+    public function edit(Pessoas $pessoas, Jogadores $jogadores)
     {
         // Carregar a VIEW do formulário de edição
         return view('users.edit', ['pessoas' => $pessoas, 'jogadores' => $jogadores]);

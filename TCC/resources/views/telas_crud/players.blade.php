@@ -18,7 +18,7 @@
                             <div class="card-photo">
                                 <img src="{{ $jogador->foto_perfil_url ?? asset('img/default-player.png') }}" 
                                      alt="{{ $jogador->nome_completo }}" class="player-photo">
-                                <div class="rating">{{ $jogador->nota ?? 0 }}</div>
+                                <div class="rating">{{ $jogador->rating_medio ?? 0 }}</div>
                                 <div class="position-badge">{{ strtoupper(substr($jogador->posicao_principal ?? 'JOG', 0, 3)) }}</div>
                             </div>
                         </div>

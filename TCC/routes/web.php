@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index'); #tela de visualização de usuários -> (ok) falta as imagens
-Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players.destroy');
 
+Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok) falta as imagens
 
-# Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
-#Esse Rota vai na view users.index
-#Route::get('/show-user/{pessoas}', [AdmController::class, 'show'])->name('users.show'); #tela de visualização de um usuário específico - PRECISA ALTERAR O {#} PARA O NOME DA TABELA DO BANCO DE DADOS(LETRA MINÚSCULA E NO SINGULAR)
 
 # esse trecho e antigo
 # Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
