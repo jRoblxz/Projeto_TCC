@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdmController;
+use App\Http\Controllers\TesteController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -56,9 +57,12 @@ Route::get('/player_info', function () {
 Route::get('/player_edit', function () {
     return view('telas_crud.player_edit');
 });
-Route::get('/home', function () {
-    return view('home');
-})->name('home');;
+
+Route::get('/home', [TesteController::class, 'index'])->name('home.index'); #tela de visualização de usuários -> (ok) falta as imagens
+
+#Route::get('/home', function () {
+ #   return view('home');
+#})->name('home');;
 
 Route::get('/', function () {
     return view('login');

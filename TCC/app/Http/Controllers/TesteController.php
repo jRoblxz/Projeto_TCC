@@ -12,20 +12,20 @@ use Illuminate\Http\Request;
 
 
 
-class AdmController
+class TesteController
 {
     public function index()
     {
 
         $jogadores = DadosJogador::orderByDesc('jogador_id')->get();
 
-        return view('telas_crud.players', ['jogadores' => $jogadores]);
+        return view('home', ['jogadores' => $jogadores]);
     }
 
     public function show(Jogadores $jogadores)
     {
         $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
-        return view('telas_crud.player_info', ['jogador' => $jogadores]);
+        return view('home', ['jogador' => $jogadores]);
     }
     public function edit($id)
     {

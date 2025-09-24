@@ -28,13 +28,13 @@
         </div>
 
         <!-- Dashboard -->
-        <div onclick="window.location.href='home'" class="nav-item">
+        <div onclick="window.location.href='{{ route('home.index') }}'" class="nav-item">
             <img src="{{ asset('img/RECTANGLE.PNG') }}" alt="Dashboard" class="icon">
             <div class="tooltip">Dashboard</div>
         </div>
 
         <!-- Players -->
-        <div onclick="window.location.href='players'" class="nav-item">
+        <div  onclick="window.location.href='{{ route('jogadores.index') }}'" class="nav-item">
             <img src="{{ asset('img/jogadores.PNG') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Jogadores</div>
         </div>

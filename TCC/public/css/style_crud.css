@@ -166,9 +166,49 @@ h1 {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    height: 100%;
     transform: rotateY(180deg);
+    justify-content: space-between;
 }
 
+/* 2. Estilo para a nova área de rolagem */
+.back-content-scrollable {
+    flex-grow: 1; /* Faz esta div ocupar todo o espaço vertical disponível */
+    overflow-y: auto; /* Adiciona a barra de rolagem APENAS se o conteúdo for maior que o espaço */
+    
+    /* Dica: Adicione um pequeno padding para a barra de rolagem não colar no texto */
+    padding-right: 10px;
+    margin-bottom: 15px; /* Espaço entre o fim do texto e o botão */
+}
+*::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #DBB7B8;
+}
+
+*::-webkit-scrollbar-track:hover {
+  background-color: #8B0000;
+}
+
+*::-webkit-scrollbar-track:active {
+  background-color: #8B0000;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #14244D;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #2C4FAA;
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: #14244D;
+}
 .back-header {
     background: #8B0000;
     color: white;
@@ -211,10 +251,6 @@ h1 {
     font-size: 1.2rem;
 }
 
-.evaluation {
-    margin-top: 20px;
-}
-
 .evaluation-title {
     color: #8B0000;
     font-family: 'fonte_player', sans-serif;
@@ -233,21 +269,33 @@ h1 {
     font-family: 'fonte_player', sans-serif;
 }
 
-.evaluation-options {
-    margin-top: 15px;
-    background-color: #14244D;
+ /*.evaluation-options {
+    /*background-color: #14244D;
     display: inline-block;
-    position: absolute;
-    left: 100px;
     padding: 5px 15px;
+    align-self: center;
 }
 
 .evaluation-options:hover {
     background-color: #1e3a7a;
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-}
+}*/
 
+.btn-teste{
+    align-self: center;
+    color: white;
+    background-color: #14244D;
+    display: inline-block;
+    padding: 5px 15px;
+    margin-bottom: -20px;
+}
+.btn-teste:hover {
+    background-color: #1e3a7a;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
 .card-actions {
     position: absolute;
     top: 10px;
@@ -1019,6 +1067,10 @@ h1 {
     padding: 0;
     resize: none;
     text-align: center;
+}
+.space {
+    display: inline-block;
+    width: 100px;
 }
 
 .editable-field textarea {

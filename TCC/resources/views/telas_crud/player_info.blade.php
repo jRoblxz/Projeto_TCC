@@ -60,7 +60,16 @@
                 </div>
 
                 <div class="recommendations">
-                    <h4>Notas e Recomendações</h4>
+                    <h4>Informacoes e Notas</h4>
+                    <p><strong>Data de Nascimento:</strong> {{ $jogador->pessoa->data_nascimento }} <br>
+                       <strong> Email:</strong> {{ $jogador->pessoa->email }}<br>
+                       <strong>CPF:</strong> {{ $jogador->pessoa->cpf }} <br>
+                       <strong>Telefone:</strong> {{ $jogador->pessoa->telefone }}<br>
+                       <strong>RG:</strong> {{ $jogador->pessoa->rg }}<br>
+                       <strong>Cirurgia:</strong> {{ $jogador->historico_lesoes_cirurgias }}<br>
+                       <strong>Cidade:</strong> n/a <br>
+                       <strong>Video Skills:</strong> {{ $jogador->video_apresentacao_url }}<br>
+                    </p><br>
                     <p><strong>Análise Técnica:</strong> O jogador demonstra excelente técnica de finalização. Real Sporting
                         FC (Copa do Brasil). Real Sporting 1x1 Nova Venécia Esporte 2016 Nova Venécia Vitória Esporte 2016.
                     </p>

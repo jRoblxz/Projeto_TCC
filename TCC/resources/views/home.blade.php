@@ -130,93 +130,26 @@
             </h2>
 
             <div id="candidates-list">
-                <div class="candidate-card" data-status="pending" onclick="showCandidateDetails('Carlos Silva')">
-                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
-                    <div class="candidate-info">
-                        <div class="candidate-name">Carlos Silva</div>
-                        <div class="candidate-details">
-                            <span>17 anos</span>
-                            <span>Atacante</span>
-                            <span>Sub-17</span>
+                @if(isset($jogadores) && $jogadores->count() > 0)
+                    @foreach($jogadores as $jogador)
+                        <div class="candidate-card" data-status="pending" onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">
+                            <img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}" alt="jogador" class="candidate-avatar">
+                            <div class="candidate-info">
+                                <div class="candidate-name">{{ $jogador->nome_completo }}</div>
+                                <div class="candidate-details">
+                                    <span>{{ $jogador->pessoa->idade ?? 'N/A' }} anos</span>
+                                    <span>{{ $jogador->posicao_principal }}</span>
+                                    <span>Sub-{{ $jogador->pessoa->idade ?? 'N/A' }}</span>
+                                </div>
+                            </div>
+                            <div class="candidate-rating rating-excellent">{{ $jogador->rating_medio ?? 0 }}</div>
                         </div>
+                    @endforeach
+                @else
+                    <div class="no-players">
+                        <p>Nenhum jogador cadastrado ainda.</p>
                     </div>
-                    <div class="candidate-rating rating-excellent">9.2</div>
-                </div>
-
-                <div class="candidate-card" data-status="pending" onclick="showCandidateDetails('Marina Santos')">
-                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
-                    <div class="candidate-info">
-                        <div class="candidate-name">Marina Santos</div>
-                        <div class="candidate-details">
-                            <span>19 anos</span>
-                            <span>Meio-campo</span>
-                            <span>Sub-20</span>
-                        </div>
-                    </div>
-                    <div class="candidate-rating rating-good">8.5</div>
-                </div>
-
-                <div class="candidate-card" data-status="approved" onclick="showCandidateDetails('João Pedro')">
-                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
-                    <div class="candidate-info">
-                        <div class="candidate-name">João Pedro</div>
-                        <div class="candidate-details">
-                            <span>18 anos</span>
-                            <span>Goleiro</span>
-                            <span>Sub-20</span>
-                        </div>
-                    </div>
-                    <div class="candidate-rating rating-excellent">9.8</div>
-                </div>
-
-                <div class="candidate-card" data-status="pending" onclick="showCandidateDetails('Ana Costa')">
-                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
-                    <div class="candidate-info">
-                        <div class="candidate-name">Ana Costa</div>
-                        <div class="candidate-details">
-                            <span>16 anos</span>
-                            <span>Zagueiro</span>
-                            <span>Sub-17</span>
-                        </div>
-                    </div>
-                    <div class="candidate-rating rating-average">7.3</div>
-                </div>
-
-                <div class="candidate-card" data-status="rejected" onclick="showCandidateDetails('Pedro Lima')">
-                    <img src="{{asset("img/neymar.jpeg")}}" alt="jogador" class="candidate-avatar">
-                    <div class="candidate-info">
-                        <div class="candidate-name">Pedro Lima</div>
-                        <div class="candidate-details">
-                            <span>20 anos</span>
-                            <span>Lateral</span>
-                            <span>Profissional</span>
-                        </div>
-                    </div>
-                    <div class="candidate-rating rating-poor">5.8</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Gráfico de avaliações -->
-    <div class="card-home animate-in" style="animation-delay: 0.4s;">
-        <h2 class="card-title">
-            <div class="card-icon">📊</div>
-            Estatísticas de Avaliação - Última Peneira
-        </h2>
-
-        <div class="evaluation-chart">
-            <div class="chart-bar" style="height: 85%;" data-value="8.5">
-                <div class="chart-label">Técnica</div>
-            </div>
-            <div class="chart-bar" style="height: 92%;" data-value="9.2">
-                <div class="chart-label">Físico</div>
-            </div>
-            <div class="chart-bar" style="height: 76%;" data-value="7.6">
-                <div class="chart-label">Tático</div>
-            </div>
-            <div class="chart-bar" style="height: 88%;" data-value="8.8">
-                <div class="chart-label">Mental</div>
+                @endif
             </div>
         </div>
     </div>

@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="button-save delete-section" onclick="window.location.href='player_info'">SALVAR</button>
+                <button class="button-save delete-section" onclick="window.location.href='player_info'" type="submit">SALVAR</button>
                 <button class="button-delete save-section">DELETAR JOGADOR</button>
 
 

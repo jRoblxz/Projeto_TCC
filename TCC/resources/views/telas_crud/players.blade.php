@@ -24,8 +24,8 @@
                                 </div>
                             </div>
                             <div class="card-back">
-                                <div class="back-header">{{ $jogador->nome_completo }}</div>
-                                <div class="player-info">
+                                <div class="back-header ">{{ $jogador->nome_completo }}</div>
+                                <div class="player-info back-content-scrollable">
                                     <div class="info-row">
                                         <span class="info-label">Altura:</span>
                                         <span class="info-value">{{ $jogador->altura_cm }} cm</span>
@@ -38,20 +38,18 @@
                                         <span class="info-label">Pé:</span>
                                         <span class="info-value">{{ $jogador->pe_preferido }}</span>
                                     </div>
-                                </div>
-                                <div class="evaluation">
-                                    <div class="evaluation-title">Avaliação</div>
-                                    <div class="evaluation-text">
-                                        Principal: {{ $jogador->posicao_principal }}<br>
-                                        Secundária: {{ $jogador->posicao_secundaria ?? 'Não informado' }}<br>
-                                        Email: {{ $jogador->email }}
-                                    </div>
-                                    <div class="evaluation-options">
-                                        <span class="ver_mais-btn"
-                                            onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">Ver
-                                            Mais</span>
+                                    <div class="evaluation">
+                                        <div class="evaluation-title">Avaliação</div>
+                                        <div class="evaluation-text">
+                                            Principal: {{ $jogador->posicao_principal }}<br>
+                                            Secundária: {{ $jogador->posicao_secundaria ?? 'Não informado' }}<br>
+                                            Email: {{ $jogador->email }}
+                                        </div>
                                     </div>
                                 </div>
+                                <span class="ver_mais-btn btn-teste"
+                                    onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">Ver
+                                    Mais</span>
                             </div>
                         </div>
                     </div>
