@@ -30,7 +30,7 @@ class UserController
         $request->validated();
 
         $path = null;
-        if ($request->hasFile('foto')) {
+        if ($request->hasFile('foto_perfil_url')) {
             $path = $request->file('foto')->store('user' ,'public');
         }    
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\UserRequest;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
@@ -18,21 +19,64 @@ class AdmController
 
         $jogadores = DadosJogador::orderByDesc('jogador_id')->get();
 
-        return view('telas_crud.players',['jogadores' => $jogadores]);
-
+        return view('telas_crud.players', ['jogadores' => $jogadores]);
     }
 
 
     public function show(Jogadores $jogadores)
     {
+        $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
+        return view('telas_crud.player_info', ['jogador' => $jogadores]);
+    }
+    public function edit($id)
+    {
+        // Buscar o jogador com os dados da pessoa relacionada
+        $jogador = Jogadores::with('pessoa')->findOrFail($id);
 
-        return view('telas_crud.player_info', ['jogadores' => $jogadores]);
-        
+        // OU se você quer usar a view DadosJogador (recomendado)
+        // $jogador = DadosJogador::where('jogador_id', $id)->firstOrFail();
+
+        return view('telas_crud.player_edit', ['jogador' => $jogador]);
     }
 
+    public function update(UserRequest $request, $id)
+    {
+        $request->validated();
 
+        // Buscar o jogador e pessoa
+        $jogador = Jogadores::with('pessoa')->findOrFail($id);
+        $pessoa = $jogador->pessoa;
+
+        // Atualizar dados da pessoa
+        $pessoa->update([
+            'nome_completo' => $request->nome_completo,
+            'data_nascimento' => $request->data_nascimento,
+            'cpf' => $request->cpf,
+            'rg' => $request->rg,
+            'email' => $request->email,
+            'telefone' => $request->telefone,
+            'foto_perfil_url' => $request->foto_perfil_url,
+        ]);
+
+        // Atualizar dados do jogador
+        $jogador->update([
+            'pe_preferido' => $request->pe_preferido,
+            'posicao_principal' => $request->posicao_principal,
+            'posicao_secundaria' => $request->posicao_secundaria,
+            'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
+            'altura_cm' => $request->altura_cm,
+            'peso_kg' => $request->peso_kg,
+            'video_apresentacao_url' => $request->video_apresentacao_url,
+        ]);
+
+        // Redirecionar para a página do jogador
+        return redirect()->route('jogadores.info', $id)->with('success', 'Jogador atualizado com sucesso!');
+    }
+
+    /* ESSE TRECHO COMENTADO E O SEU KAYANAN, ESSE DE CIMA ESTOU TESTANDO
     public function edit(Pessoas $pessoas, Jogadores $jogadores)
     {
+        
         // Carregar a VIEW do formulário de edição
         return view('users.edit', ['pessoas' => $pessoas, 'jogadores' => $jogadores]);
     }
@@ -68,7 +112,7 @@ class AdmController
 
         // Redirecionar para a lista de jogadores com uma mensagem de sucesso
         return redirect()->route('users.show', ['pessoas'=> $pessoas->id])->with('success', 'Jogador atualizado com sucesso!');
-    }
+    }*/
 
     public function destroy(Pessoas $pessoas)
     {

@@ -9,6 +9,11 @@ Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index')
 
 Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok) falta as imagens
 
+#testes joao para edit
+
+Route::get('/player_edit/{id}', [AdmController::class, 'edit'])->name('jogadores.edit');
+Route::put('/player_update/{id}', [AdmController::class, 'update'])->name('jogadores.update');
+
 
 # esse trecho e antigo
 # Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller

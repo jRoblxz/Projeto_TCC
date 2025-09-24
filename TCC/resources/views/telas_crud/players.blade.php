@@ -16,7 +16,7 @@
                                     title="Deletar">🗑️</button>
                             </div>
                             <div class="card-photo">
-                                <img src="{{ asset('storage/' . $jogador->foto) }}" 
+                                <img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}" 
                                      alt="{{ $jogador->nome_completo }}" class="player-photo">
                                 <div class="rating">{{ $jogador->rating_medio ?? 0 }}</div>
                                 <div class="position-badge">{{ strtoupper(substr($jogador->posicao_principal ?? 'JOG', 0, 3)) }}</div>
@@ -27,7 +27,7 @@
                             <div class="player-info">
                                 <div class="info-row">
                                     <span class="info-label">Altura:</span>
-                                    <span class="info-value">{{ $jogador->altura_cm }}cm</span>
+                                    <span class="info-value">{{ $jogador->altura_cm }} cm</span>
                                 </div>
                                 <div class="info-row">
                                     <span class="info-label">Peso:</span>
@@ -46,7 +46,7 @@
                                     Email: {{ $jogador->email }}
                                 </div>
                                 <div class="evaluation-options">
-                                    <span class="ver_mais-btn" onclick="window.location.href='/player_info/{{ $jogador->jogador_id }}'">Ver Mais</span>
+                                    <span class="ver_mais-btn" onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">Ver Mais</span>
                                 </div>
                             </div>
                         </div>

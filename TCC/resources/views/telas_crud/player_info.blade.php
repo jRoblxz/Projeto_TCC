@@ -8,15 +8,16 @@
 
         <div class="content">
             <div class="player-infos">
-                <button class="edit-button" onclick="window.location.href='player_edit'">
+                <button class="edit-button" onclick="window.location.href='{{ route('jogadores.edit', $jogador->id ?? $jogador->jogador_id) }}'">
                     <svg class="edit-svgIcon" viewBox="0 0 512 512">
                         <path
                             d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z">
                         </path>
                     </svg>
                 </button>
-                <div class="player-avatar-info"><img src="{{ asset('img/neymar.jpeg') }}" alt="neymar"></div>
-                <div class="player-name">Neymar Jr</div>
+                <div class="player-avatar-info"><img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}"
+                        alt="{{ $jogador->nome_completo }}"></div>
+                <div class="player-name">{{ $jogador->pessoa->nome_completo }}</div>
 
                 <div class="stats-grid">
                     <div class="stat-item">
@@ -25,23 +26,23 @@
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Altura (cm)</div>
-                        <div class="stat-value">1,87m</div>
+                        <div class="stat-value">{{ $jogador->altura_cm }} cm</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Pé</div>
-                        <div class="stat-value">Direito</div>
+                        <div class="stat-value">{{ $jogador->pe_preferido }}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Peso</div>
-                        <div class="stat-value">84kg</div>
+                        <div class="stat-value">{{ $jogador->peso_kg }} kg</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Posição Principal</div>
-                        <div class="stat-value">ATA</div>
+                        <div class="stat-label ">Posição Principal</div>
+                        <div class="stat-value-prim">{{ $jogador->posicao_principal }}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Posição Secundaria</div>
-                        <div class="stat-value">MEI</div>
+                        <div class="stat-value-sec">{{ $jogador->posicao_secundaria }}</div>
                     </div>
                 </div>
 
@@ -55,7 +56,7 @@
             <div class="details-section">
                 <div class="overall-score">
                     <h3>Overall Score</h3>
-                    <div class="score-value">89</div>
+                    <div class="score-value">{{ $jogador->rating_medio ?? 0 }}</div>
                 </div>
 
                 <div class="recommendations">
@@ -80,33 +81,32 @@
                 <div class="evaluations">
                     <div class="eval-item">
                         <h5>Técnica</h5>
-                        <div class="eval-score">82</div>
+                        <div class="eval-score">N/A</div>
                     </div>
                     <div class="eval-item">
                         <h5>Condicionamento</h5>
-                        <div class="eval-score">88</div>
+                        <div class="eval-score">N/A</div>
                     </div>
                     <div class="eval-item">
                         <h5>Finalização</h5>
-                        <div class="eval-score">85</div>
+                        <div class="eval-score">N/A</div>
                     </div>
                     <div class="eval-item">
                         <h5>Velocidade</h5>
-                        <div class="eval-score">79</div>
+                        <div class="eval-score">N/A</div>
                     </div>
                     <div class="eval-item">
                         <h5>Posicionamento</h5>
-                        <div class="eval-score">90</div>
+                        <div class="eval-score">N/A</div>
                     </div>
                     <div class="eval-item">
                         <h5>Cabeceio</h5>
-                        <div class="eval-score">73</div>
+                        <div class="eval-score">N/A</div>
                     </div>
                 </div>
             </div>
             <button class="button-delete delete-section">DELETAR JOGADOR</button>
         </div>
-
-        
     </div>
+    <script src="{{ asset('js/campo.js') }}"></script>
 @endsection
