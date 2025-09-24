@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Avaliacao extends Model
 {
-    use HasFactory;
+
+    public $timestamps = false;
 
     protected $table = 'Avaliacoes';
-
     protected $fillable = [
         'jogador_id',
         'treinador_id',
@@ -20,11 +19,9 @@ class Avaliacao extends Model
         'data_avaliacao'
     ];
 
-    public $timestamps = false; // Sua tabela usa data_avaliacao ao invés de created_at/updated_at
-
     // Relacionamento com jogador
     public function jogador()
     {
-        return $this->belongsTo(Player::class, 'jogador_id');
+        return $this->belongsTo(Jogadores::class, 'jogador_id');
     }
 }

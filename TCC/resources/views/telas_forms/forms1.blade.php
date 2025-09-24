@@ -159,13 +159,6 @@
       <div class="buttons">
         <button class="btn btn-secondary" type="button" id="prevBtn" disabled>Voltar</button>
         <button class="btn btn-primary" type="button" id="nextBtn">Avançar</button>
-        
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
       </div>
     </form>
 </div>

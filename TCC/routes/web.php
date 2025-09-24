@@ -5,13 +5,10 @@ use App\Http\Controllers\AdmController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/players', [AdmController::class, 'index'])->name('players.index'); #tela de visualização de usuários
-Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players.destroy');
+Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index'); #tela de visualização de usuários -> (ok) falta as imagens
 
+Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok) falta as imagens
 
-# Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
-#Esse Rota vai na view users.index
-#Route::get('/show-user/{pessoas}', [AdmController::class, 'show'])->name('users.show'); #tela de visualização de um usuário específico - PRECISA ALTERAR O {#} PARA O NOME DA TABELA DO BANCO DE DADOS(LETRA MINÚSCULA E NO SINGULAR)
 
 # esse trecho e antigo
 # Rota que falta ser criada na view, assim que criada alterar o nome da rota aqui e na controller
@@ -29,13 +26,19 @@ Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players
 #Route::delete('/destroy-user/{pessoas}', [AdmController::class, 'destroy'])->name('users.destroy');
 
 
-Route::get('/forms1', [UserController::class, 'create'])->name('users.create'); #tela do formulário de criação de usuário -> (OK)
-Route::post('/forms1', [UserController::class, 'store'])->name('users.store'); #rota para salvar o novo usuário -> (OK)
+
+// ROTAS DE DE INSCRIÇÃO DE JOGADOR FUNCIONANDO CORRETAMENTE
+Route::get('/forms1', [UserController::class, 'create'])->name('users.create');
+Route::post('/forms1', [UserController::class, 'store'])->name('users.store');
+Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao');
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
+// --------------------------------------------------------------------------------------------
+
+
+
+
+
 #ROTAS TESTE JOÃO 
-#Route::get('/instrucao', function () {
-    #return view('telas_forms.instrucao');
-#});
 
 #Route::get('/players', function () {
    # return view('telas_crud.players');
@@ -54,8 +57,4 @@ Route::get('/home', function () {
 
 Route::get('/', function () {
     return view('login');
-});
-
-Route::get('/confirm', function () {
-    return view('telas_forms.confirmacao');
 });
