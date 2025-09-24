@@ -133,7 +133,9 @@
                 @if(isset($jogadores) && $jogadores->count() > 0)
                     @foreach($jogadores as $jogador)
                         <div class="candidate-card" data-status="pending" onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">
-                            <img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}" alt="jogador" class="candidate-avatar">
+                            <div class="candidate-avatar">
+                                <img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}" alt="jogador" class="candidate-avatar-foto">
+                            </div>
                             <div class="candidate-info">
                                 <div class="candidate-name">{{ $jogador->nome_completo }}</div>
                                 <div class="candidate-details">

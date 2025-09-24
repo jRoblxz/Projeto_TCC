@@ -7,6 +7,7 @@
     <title></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/style_login.css') }}">
+    <link rel="icon" type="imag/png" href="{{ asset('img/logo-copia.png') }}">
 
 
 </head>
@@ -15,8 +16,7 @@
     <div class="container">
         <div class="login-box">
             <div class="left">
-                <img src="{{asset('img/logo-copia.png')}}" alt="Logo Prudente" class="logo">
-                <h2>PRUDENTE</h2>
+                <img src="{{asset('img/logo.png')}}" alt="Logo Prudente" class="logo">
             </div>
             <div class="right">
                 <h3>BEM VINDO DE VOLTA!</h3>
@@ -28,10 +28,10 @@
                     <div class="input-group">
                         <input type="password" placeholder="Senha">
                     </div>
-                    <button class="button" onclick="window.location.href='home'">
+                    <button class="button" onclick="window.location.href='{{ route('home.index') }}'">
                         <div class="bgContainer">
-                            <span>Hover</span>
-                            <span>Hover</span>
+                            <span>Login</span>
+                            <span>Login</span>
                         </div>
                         <div class="arrowContainer">
                             <svg width="25" height="25" viewBox="0 0 45 38" fill="none"
