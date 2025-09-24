@@ -21,7 +21,6 @@ class UserController
 
     public function create()
     {
-        // Carregar a VIEW do formulário
         return view('telas_forms.forms1');
     }
 

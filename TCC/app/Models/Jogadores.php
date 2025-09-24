@@ -26,4 +26,21 @@ class Jogadores extends Model
     {
         return $this->belongsTo(Pessoas::class, 'pessoa_id');
     }
+
+    // Relacionamento com avaliações ------
+    public function avaliacoes()
+    {
+        return $this->hasMany(Avaliacao::class, 'jogador_id');
+    }
+
+    public function getUltimaAvaliacaoAttribute()
+    {
+        return $this->avaliacoes()->latest('data_avaliacao')->first();
+    }
+
+    public function getRatingMedioAttribute()
+    {
+        return round($this->avaliacoes()->avg('nota') ?? 0);
+    }
+    // ----------------------------
 }

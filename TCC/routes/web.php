@@ -5,7 +5,7 @@ use App\Http\Controllers\AdmController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/players', [AdmController::class, 'index'])->name('players.index'); #tela de visualização de usuários
+Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index'); #tela de visualização de usuários -> (ok) falta as imagens
 Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players.destroy');
 
 
@@ -29,19 +29,19 @@ Route::delete('/players/{id}', [AdmController::class, 'destroy'])->name('players
 #Route::delete('/destroy-user/{pessoas}', [AdmController::class, 'destroy'])->name('users.destroy');
 
 
-Route::get('/forms1', [UserController::class, 'create'])->name('users.create'); #tela do formulário de criação de usuário -> (OK)
-Route::post('/forms1', [UserController::class, 'store'])->name('users.store'); #rota para salvar o novo usuário -> (OK)
-Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao'); #tela de confirmacao após o cadastro -> (OK)
+
+// ROTAS DE DE INSCRIÇÃO DE JOGADOR FUNCIONANDO CORRETAMENTE
+Route::get('/forms1', [UserController::class, 'create'])->name('users.create');
+Route::post('/forms1', [UserController::class, 'store'])->name('users.store');
+Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao');
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
+// --------------------------------------------------------------------------------------------
 
 
 
 
 
 #ROTAS TESTE JOÃO 
-#Route::get('/instrucao', function () {
-    #return view('telas_forms.instrucao');
-#});
 
 #Route::get('/players', function () {
    # return view('telas_crud.players');
@@ -60,8 +60,4 @@ Route::get('/home', function () {
 
 Route::get('/', function () {
     return view('login');
-});
-
-Route::get('/confirm', function () {
-    return view('telas_forms.confirmacao');
 });

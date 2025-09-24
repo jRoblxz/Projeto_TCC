@@ -6,47 +6,47 @@
             <p>Sistema de Avaliação de Atletas</p>
         </div>
         <div class="cards-grid" id="cardsGrid">
-            @if(isset($players) && $players->count() > 0)
-                @foreach($players as $player)
-                <div class="card" data-id="{{ $player->jogador_id }}">
+            @if(isset($jogadores) && $jogadores->count() > 0)
+                @foreach($jogadores as $jogador)
+                <div class="card" data-id="{{ $jogador->jogador_id }}">
                     <div class="card-inner">
                         <div class="card-front">
                             <div class="card-actions">
-                                <button class="action-btn delete-btn" onclick="deleteCard({{ $player->jogador_id }}, event)"
+                                <button class="action-btn delete-btn" onclick="deleteCard({{ $jogador->jogador_id }}, event)"
                                     title="Deletar">🗑️</button>
                             </div>
                             <div class="card-photo">
-                                <img src="{{ $player->foto_perfil_url ?? asset('img/default-player.png') }}" 
-                                     alt="{{ $player->nome_completo }}" class="player-photo">
-                                <div class="rating">{{ $player->nota ?? 0 }}</div>
-                                <div class="position-badge">{{ strtoupper(substr($player->posicao_principal ?? 'JOG', 0, 3)) }}</div>
+                                <img src="{{ $jogador->foto_perfil_url ?? asset('img/default-player.png') }}" 
+                                     alt="{{ $jogador->nome_completo }}" class="player-photo">
+                                <div class="rating">{{ $jogador->nota ?? 0 }}</div>
+                                <div class="position-badge">{{ strtoupper(substr($jogador->posicao_principal ?? 'JOG', 0, 3)) }}</div>
                             </div>
                         </div>
                         <div class="card-back">
-                            <div class="back-header">{{ $player->nome_completo }}</div>
+                            <div class="back-header">{{ $jogador->nome_completo }}</div>
                             <div class="player-info">
                                 <div class="info-row">
                                     <span class="info-label">Altura:</span>
-                                    <span class="info-value">{{ $player->altura_cm }}cm</span>
+                                    <span class="info-value">{{ $jogador->altura_cm }}cm</span>
                                 </div>
                                 <div class="info-row">
                                     <span class="info-label">Peso:</span>
-                                    <span class="info-value">{{ $player->peso_kg }}kg</span>
+                                    <span class="info-value">{{ $jogador->peso_kg }}kg</span>
                                 </div>
                                 <div class="info-row">
                                     <span class="info-label">Pé:</span>
-                                    <span class="info-value">{{ $player->pe_preferido }}</span>
+                                    <span class="info-value">{{ $jogador->pe_preferido }}</span>
                                 </div>
                             </div>
                             <div class="evaluation">
                                 <div class="evaluation-title">Avaliação</div>
                                 <div class="evaluation-text">
-                                    Principal: {{ $player->posicao_principal }}<br>
-                                    Secundária: {{ $player->posicao_secundaria ?? 'Não informado' }}<br>
-                                    Email: {{ $player->email }}
+                                    Principal: {{ $jogador->posicao_principal }}<br>
+                                    Secundária: {{ $jogador->posicao_secundaria ?? 'Não informado' }}<br>
+                                    Email: {{ $jogador->email }}
                                 </div>
                                 <div class="evaluation-options">
-                                    <span class="ver_mais-btn" onclick="window.location.href='/player_info/{{ $player->jogador_id }}'">Ver Mais</span>
+                                    <span class="ver_mais-btn" onclick="window.location.href='/player_info/{{ $jogador->jogador_id }}'">Ver Mais</span>
                                 </div>
                             </div>
                         </div>
