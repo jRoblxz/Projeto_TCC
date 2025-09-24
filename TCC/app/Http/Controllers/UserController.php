@@ -31,7 +31,7 @@ class UserController
 
         $path = null;
         if ($request->hasFile('foto_perfil_url')) {
-            $path = $request->file('foto')->store('user' ,'public');
+            $path = $request->file('foto_perfil_url')->store('user' ,'public');
         }    
 
         // Cadastrar o jogador no banco de dados

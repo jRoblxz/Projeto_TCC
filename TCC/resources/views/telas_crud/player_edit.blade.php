@@ -14,7 +14,7 @@
             <div class="content">
                 <div class="player-infos">
                     <div class="player-avatar">
-                        <img id="playerImage" src="{{ asset('img/neymar.jpeg') }}" alt="Jogador" />
+                        <img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}" alt="sem foto" id="playerImage">
                         <input type="file" name="image" id="imageUploade" accept="image/*">
                     </div>
                     <div class="player-name editable-field">
@@ -25,7 +25,7 @@
                         <div class="stat-item">
                             <div class="stat-label">Idade</div>
                             <div class="stat-value editable-field">
-                                <input type="text" value="32" placeholder="Idade">
+                                <input type="text" value="{{ $jogador->pessoa->idade ?? 'N/A' }}" placeholder="Idade">
                             </div>
                         </div>
                         <div class="stat-item">

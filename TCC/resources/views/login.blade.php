@@ -28,7 +28,7 @@
                     <div class="input-group">
                         <input type="password" placeholder="Senha">
                     </div>
-                    <button class="button">
+                    <button class="button" onclick="window.location.href='home'">
                         <div class="bgContainer">
                             <span>Hover</span>
                             <span>Hover</span>
