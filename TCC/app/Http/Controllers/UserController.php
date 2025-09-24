@@ -25,6 +25,11 @@ class UserController
         // Validar e salvar os dados do formulário
         $request->validated();
 
+        $path = null;
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('user' ,'public');
+        }    
+
         // Cadastrar o jogador no banco de dados
         $pessoas = Pessoas::create([
             'nome_completo' => $request->nome_completo,
@@ -35,7 +40,7 @@ class UserController
             'rg' => $request->rg,
             'email' => $request->email,
             'telefone' => $request->telefone,
-            'foto_perfil_url' => $request->foto_perfil_url,
+            'foto_perfil_url' => $path,
 
         ]);
 

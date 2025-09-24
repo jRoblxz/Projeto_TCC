@@ -16,7 +16,7 @@
                                     title="Deletar">🗑️</button>
                             </div>
                             <div class="card-photo">
-                                <img src="{{ $player->foto_perfil_url ?? asset('img/default-player.png') }}" 
+                                <img src="{{ asset('storage/' . $player->foto) }}" 
                                      alt="{{ $player->nome_completo }}" class="player-photo">
                                 <div class="rating">{{ $player->nota ?? 0 }}</div>
                                 <div class="position-badge">{{ strtoupper(substr($player->posicao_principal ?? 'JOG', 0, 3)) }}</div>
