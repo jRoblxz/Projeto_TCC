@@ -71,21 +71,11 @@
                         <strong>Cidade:</strong> n/a <br>
                         <strong>Video Skills:</strong> {{ $jogador->video_apresentacao_url }}<br>
                     </p><br>
-                    <p><strong>Análise Técnica:</strong> O jogador demonstra excelente técnica de finalização. Real Sporting
-                        FC (Copa do Brasil). Real Sporting 1x1 Nova Venécia Esporte 2016 Nova Venécia Vitória Esporte 2016.
-                    </p>
 
-                    <p><strong>Pontos Fortes:</strong> Ótima força e explosão muscular, boa velocidade principalmente nas
-                        jogadas dos primeiros 15m.</p>
+                    <h4>Avaliação</h4>
+                    <p>{{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}</p>
 
-                    <p><strong>Desenvolvimento:</strong> Recomenda-se melhorar seus remates. Pode melhorar o cabeceio. Pensa
-                        bem as jogadas e são bem intencionadas no meio campo. Apresenta baixa capacidade para dribles fintos
-                        e jogadas de ataque. É visto com bons olhos para sua alegada pretensão a anos.</p>
-
-                    <p><strong>Observações:</strong> Atleta sempre bem posicionado e busca pelo Futsal! Apresenta boa
-                        técnica necessária para merecer um olhar mais atento. Tem bons movimentos, tem times e é jogador do
-                        coração com as características do jogo infantil-juvenil. E deve se ter um agente interessado para a
-                        ascensão.</p>
+                    
                 </div>
 
                 <div class="evaluations">

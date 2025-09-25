@@ -38,6 +38,10 @@ class Jogadores extends Model
     {
         return $this->avaliacoes()->latest('data_avaliacao')->first();
     }
+    public function getNotaAttribute()
+    {
+        return $this->avaliacoes()->latest('observacoes')->first();
+    }
 
     public function getRatingMedioAttribute()
     {

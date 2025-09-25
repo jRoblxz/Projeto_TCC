@@ -81,8 +81,7 @@
                     <div class="recommendations">
                         <h4>Notas e Recomendações</h4>
                         <h4>Informacoes e Notas</h4>
-                        <p><strong>Data de Nascimento:</strong><input type="date" name="data_nascimento"
-                                value="{{ $jogador->pessoa->data_nascimento}}" placeholder="Data de nascuimentoi"> <br>
+                        <p>
                             <strong> Email:</strong><input type="email" name="email" value="{{ $jogador->pessoa->email }}"
                                 placeholder="email"> <br>
                             <strong>Cidade:</strong><input type="text" name="cidade" value="{{ $jogador->pessoa->cidade }}"
