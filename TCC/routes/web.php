@@ -8,14 +8,14 @@ use Illuminate\Support\Facades\Route;
 // ROTAS DE ADMINISTRAÇÃO DE JOGADORES (CRUD) - OK
 Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index'); #tela de visualização de usuários -> (ok)
 Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok)
+Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit'); #tela de edição de um usuário específico (ok)
 //------------------------------------------------------------------------------------------------------------
 
 
 
-Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit'); #tela de edição de um usuário específico (ok)
 // ROTAS DE EDIÇÃO E DELEÇÃO DE JOGADORES (CRUD) - não está funcionando a deleção e edição
-Route::put('/player_upd/{jogador}', [AdmController::class, 'update'])->name('jogadores.update');
-Route::delete('/destroy-user/{pessoas}', [AdmController::class, 'destroy'])->name('jogadores.delete');
+Route::put('/player_upd/{jogadores}', [AdmController::class, 'update'])->name('jogadores.update');
+Route::delete('/destroy-user/{jogadores}', [AdmController::class, 'destroy'])->name('jogadores.delete');
 //------------------------------------------------------------------------------------------------------------
 
 

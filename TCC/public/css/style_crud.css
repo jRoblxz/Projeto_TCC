@@ -937,8 +937,12 @@ h1 {
     
 }
 
-.delete-section {
-    grid-column: 1 / -1;
+.centralizar  {
+    margin: auto;
+    display: flex;
+    justify-content: center; /* centraliza horizontal */
+    gap: 1px;
+    align-items: center;     /* centraliza vertical, se precisar */
 }
 
 .button-save {
@@ -957,7 +961,27 @@ h1 {
         rgba(0, 0, 0, 0.4) 0px 2px 4px,
         rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
         rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
-    margin: auto;
+    margin: 0 10px;
+    font-family: 'fonte_player', sans-serif;
+}
+
+.button-cancel {
+    cursor: pointer;
+    padding: 12px 20px;
+    background-color: rgb(187, 72, 56);
+    border: 2px solid rgb(0, 0, 0);
+    color: White;
+    font-size: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    transition: all ease 0.3s;
+    border-radius: 7px;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset; */
+    box-shadow:
+        rgba(0, 0, 0, 0.4) 0px 2px 4px,
+        rgba(0, 0, 0, 0.3) 0px 7px 13px -3px,
+        rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    margin: 0 10px;
     font-family: 'fonte_player', sans-serif;
 }
 
@@ -970,6 +994,8 @@ h1 {
 .save-section {
     grid-column: 1 / -1;
 }
+
+
 
 .edit-mode .image-upload-overlay {
     display: flex;
@@ -1776,4 +1802,8 @@ h1 {
     font-size: 4rem;
     margin-bottom: 20px;
     opacity: 0.5;
+}
+
+.delete-central{
+    margin: auto;
 }

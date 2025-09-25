@@ -16,13 +16,14 @@
                         </path>
                     </svg>
                 </button>
-                <div class="player-avatar-info"><img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}" alt="sem foto"></div>
+                <div class="player-avatar-info"><img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}"
+                        alt="sem foto"></div>
                 <div class="player-name">{{ $jogador->pessoa->nome_completo }}</div>
 
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-label">Idade</div>
-                        <div class="stat-value">{{ $jogador->pessoa->idade ?? 'N/A' }}</div>
+                        <div class="stat-value">{{ $jogador->pessoa->data_nascimento->age}}</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">Altura (cm)</div>
@@ -62,13 +63,13 @@
                 <div class="recommendations">
                     <h4>Informacoes e Notas</h4>
                     <p><strong>Data de Nascimento:</strong> {{ $jogador->pessoa->data_nascimento }} <br>
-                       <strong> Email:</strong> {{ $jogador->pessoa->email }}<br>
-                       <strong>CPF:</strong> {{ $jogador->pessoa->cpf }} <br>
-                       <strong>Telefone:</strong> {{ $jogador->pessoa->telefone }}<br>
-                       <strong>RG:</strong> {{ $jogador->pessoa->rg }}<br>
-                       <strong>Cirurgia:</strong> {{ $jogador->historico_lesoes_cirurgias }}<br>
-                       <strong>Cidade:</strong> n/a <br>
-                       <strong>Video Skills:</strong> {{ $jogador->video_apresentacao_url }}<br>
+                        <strong> Email:</strong> {{ $jogador->pessoa->email }}<br>
+                        <strong>CPF:</strong> {{ $jogador->pessoa->cpf }} <br>
+                        <strong>Telefone:</strong> {{ $jogador->pessoa->telefone }}<br>
+                        <strong>RG:</strong> {{ $jogador->pessoa->rg }}<br>
+                        <strong>Cirurgia:</strong> {{ $jogador->historico_lesoes_cirurgias }}<br>
+                        <strong>Cidade:</strong> n/a <br>
+                        <strong>Video Skills:</strong> {{ $jogador->video_apresentacao_url }}<br>
                     </p><br>
                     <p><strong>Análise Técnica:</strong> O jogador demonstra excelente técnica de finalização. Real Sporting
                         FC (Copa do Brasil). Real Sporting 1x1 Nova Venécia Esporte 2016 Nova Venécia Vitória Esporte 2016.
@@ -114,7 +115,15 @@
                     </div>
                 </div>
             </div>
-            <button class="button-delete delete-section">DELETAR JOGADOR</button>
+        </div>
+         <div class="centralizar">
+            <form method="POST" action="{{ route('jogadores.delete', $jogador->id) }}"
+                onsubmit="return confirm('Tem certeza que deseja deletar este jogador? Esta ação não pode ser desfeita.')"
+                class="delete-section">
+                @csrf
+                @method('DELETE')
+                <button class="button-delete save-section" type="submit">DELETAR JOGADOR</button>
+            </form>
         </div>
     </div>
     <script>// Executar quando o DOM estiver completamente carregado

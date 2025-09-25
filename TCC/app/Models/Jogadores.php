@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Jogadores extends Model
 {
 
 
     public $timestamps = false;
-    
+
     protected $table = 'Jogadores';
     protected $fillable = [
         'pessoa_id',
@@ -42,5 +43,29 @@ class Jogadores extends Model
     {
         return round($this->avaliacoes()->avg('nota') ?? 0);
     }
+
+    public function getPosicaoAbreviadaAttribute(): string
+    {
+        $posicao = $this->posicao_principal ?? '';
+
+        // A estrutura 'match' é uma versão moderna e mais legível do 'switch'
+        $abreviacao = match ($posicao) {
+            'Goleiro' => 'GOL',
+            'Zagueiro Direito' => 'ZGD',
+            'Zagueiro Esquerdo' => 'ZGE',
+            'Lateral Direito' => 'LTD',
+            'Lateral Esquerdo' => 'LTE',
+            'Volante' => 'VOL',
+            'Meia' => 'MEI',
+            'Ponta Direita' => 'PD',
+            'Ponta Esquerda' => 'PE',
+            'Centroavante', 'Atacante' => 'ATA', // Múltiplas opções para o mesmo resultado
+            default => strtoupper(substr($posicao, 0, 3)), // Lógica antiga como fallback
+        };
+
+        return $abreviacao;
+    }
+
+    
     // ----------------------------
 }

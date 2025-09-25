@@ -87,13 +87,13 @@
               <option value="Goleiro" {{ old('posicao_principal') == 'Goleiro' ? 'selected' : '' }}>Goleiro</option>
               <option value="Lateral Direito" {{ old('posicao_principal') == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
               <option value="Lateral Esquerdo" {{ old('posicao_principal') == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
-              <option value="Zagueiro" {{ old('posicao_principal') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
-              <option value="Zagueiro" {{ old('posicao_principal') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Direito</option>
+              <option value="Zagueiro Esquerdo" {{ old('posicao_principal') == 'Zagueiro Esquerdo' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+              <option value="Zagueiro Direito" {{ old('posicao_principal') == 'Zagueiro Direito' ? 'selected' : '' }}>Zagueiro Direito</option>
               <option value="Volante" {{ old('posicao_principal') == 'Volante' ? 'selected' : '' }}>Volante</option>
-              <option value="Meia Central" {{ old('posicao_principal') == 'Meia Central' ? 'selected' : '' }}>Meia</option>
+              <option value="Meia" {{ old('posicao_principal') == 'Meia' ? 'selected' : '' }}>Meia</option>
               <option value="Ponta Esquerda" {{ old('posicao_principal') == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta esquerda</option>
               <option value="Ponta Direita" {{ old('posicao_principal') == 'Ponta Direita' ? 'selected' : '' }}>Ponta direita</option>
-              <option value="Centroavante" {{ old('posicao_principal') == 'Centroavante' ? 'selected' : '' }}>Atacante</option>
+              <option value="Atacante" {{ old('posicao_principal') == 'Atacante' ? 'selected' : '' }}>Atacante</option>
             </select>
           </div>
           <div class="col-md-3">
@@ -103,13 +103,13 @@
               <option value="Goleiro" {{ old('posicao_secundaria') == 'Goleiro' ? 'selected' : '' }}>Goleiro</option>
               <option value="Lateral Direito" {{ old('posicao_secundaria') == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
               <option value="Lateral Esquerdo" {{ old('posicao_secundaria') == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
-              <option value="Zagueiro" {{ old('posicao_secundaria') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
-              <option value="Zagueiro" {{ old('posicao_secundaria') == 'Zagueiro' ? 'selected' : '' }}>Zagueiro Direito</option>
+              <option value="Zagueiro Esquerdo" {{ old('posicao_secundaria') == 'Zagueiro Esquerdo' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+              <option value="Zagueiro Direito" {{ old('posicao_secundaria') == 'Zagueiro Direito' ? 'selected' : '' }}>Zagueiro Direito</option>
               <option value="Volante" {{ old('posicao_secundaria') == 'Volante' ? 'selected' : '' }}>Volante</option>
-              <option value="Meia Central" {{ old('posicao_secundaria') == 'Meia Central' ? 'selected' : '' }}>Meia</option>
+              <option value="Meia" {{ old('posicao_secundaria') == 'Meia' ? 'selected' : '' }}>Meia</option>
               <option value="Ponta Esquerda" {{ old('posicao_secundaria') == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta esquerda</option>
               <option value="Ponta Direita" {{ old('posicao_secundaria') == 'Ponta Direita' ? 'selected' : '' }}>Ponta direita</option>
-              <option value="Centroavante" {{ old('posicao_secundaria') == 'Centroavante' ? 'selected' : '' }}>Atacante</option>
+              <option value="Atacante" {{ old('posicao_secundaria') == 'Atacante' ? 'selected' : '' }}>Atacante</option>
             </select>
           </div>
         </div>

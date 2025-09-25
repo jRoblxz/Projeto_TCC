@@ -132,16 +132,17 @@
             <div id="candidates-list">
                 @if(isset($jogadores) && $jogadores->count() > 0)
                     @foreach($jogadores as $jogador)
-                        <div class="candidate-card" data-status="pending" onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">
+                        <div class="candidate-card" data-status="pending"
+                            onclick="window.location.href='{{ route('jogadores.info', ['jogadores' => $jogador->id]) }}'">
                             <div class="candidate-avatar">
-                                <img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}" alt="jogador" class="candidate-avatar-foto">
+                                <img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}" alt="jogador"
+                                    class="candidate-avatar-foto">
                             </div>
                             <div class="candidate-info">
-                                <div class="candidate-name">{{ $jogador->nome_completo }}</div>
+                                <div class="candidate-name">{{ $jogador->pessoa->nome_completo }} </div>
                                 <div class="candidate-details">
-                                    <span>{{ $jogador->pessoa->idade ?? 'N/A' }} anos</span>
-                                    <span>{{ $jogador->posicao_principal }}</span>
-                                    <span>Sub-{{ $jogador->pessoa->idade ?? 'N/A' }}</span>
+                                    <span>{{ $jogador->pessoa->data_nascimento->age}} anos</span>
+                                    <span>{{ $jogador->pessoa->sub_divisao }}</span>
                                 </div>
                             </div>
                             <div class="candidate-rating rating-excellent">{{ $jogador->rating_medio ?? 0 }}</div>

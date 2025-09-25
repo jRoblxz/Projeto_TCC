@@ -11,15 +11,11 @@
                     <div class="card" data-id="{{ $jogador->jogador_id }}">
                         <div class="card-inner">
                             <div class="card-front">
-                                <div class="card-actions">
-                                    <button class="action-btn delete-btn" onclick="deleteCard({{ $jogador->jogador_id }}, event)"
-                                        title="Deletar">🗑️</button>
-                                </div>
                                 <div class="card-photo">
-                                    <img src="{{ asset('storage/' . $jogador->foto_perfil_url) }}" alt="sem foto"
+                                    <img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}" alt="sem foto"
                                         class="player-photo">
                                     <div class="rating">{{ $jogador->rating_medio ?? 0 }}</div>
-                                    <div class="position-badge">{{ strtoupper(substr($jogador->posicao_principal ?? 'JOG', 0, 3)) }}
+                                    <div class="position-badge">{{ $jogador->posicao_abreviada }}
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +44,7 @@
                                     </div>
                                 </div>
                                 <span class="ver_mais-btn btn-teste"
-                                    onclick="window.location.href='{{ route('jogadores.info', $jogador->jogador_id) }}'">Ver
+                                    onclick="window.location.href='{{ route('jogadores.info', ['jogadores' => $jogador->id]) }}'">Ver
                                     Mais</span>
                             </div>
                         </div>

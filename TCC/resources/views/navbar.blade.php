@@ -7,6 +7,7 @@
     <title>Grêmio Prudente - Scouting</title>
     <link rel="stylesheet" href="{{ asset('css/style_crud.css') }}">
     <link rel="icon" type="imag/png" href="{{ asset('img/logo-copia.png') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>

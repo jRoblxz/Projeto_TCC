@@ -12,12 +12,12 @@ use Illuminate\Http\Request;
 use PDO;
 use Illuminate\Support\Facades\Storage;
 
-class AdmController
+class BackupController
 {
     public function index()
     {
 
-        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
+        $jogadores = DadosJogador::orderByDesc('jogador_id')->get();
 
         return view('telas_crud.players', ['jogadores' => $jogadores]);
     }
