@@ -5,12 +5,10 @@
             <h1>Perfil do Jogador</h1>
             <p>Sistema de Avaliação de Atletas</p>
         </div>
-        <form method="POST" action="{{ route('jogadores.update', $jogador->id ?? $jogador->jogador_id) }}"
-            enctype="multipart/form-data">
-            <!-- JOAP: KAYNAN ALTERA AQUI O ACTION CERTO, E VE SE O FORM TA CORRETO-->
+        <form action="{{ route('jogadores.update', $jogador->id) }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @method('PUT')
-
+            
             <div class="content">
                 <div class="player-infos">
                     <div class="player-avatar">
@@ -18,44 +16,44 @@
                         <input type="file" name="image" id="imageUploade" accept="image/*">
                     </div>
                     <div class="player-name editable-field">
-                        <input type="text" value="{{ $jogador->pessoa->nome_completo }}" placeholder="Nome do jogador">
+                        <input type="text" name="nome_completo" value="{{ $jogador->pessoa->nome_completo }}" placeholder="Nome do jogador">
                     </div>
 
                     <div class="stats-grid">
                         <div class="stat-item">
                             <div class="stat-label">Idade</div>
                             <div class="stat-value editable-field">
-                                <input type="text" value="{{ $jogador->pessoa->idade ?? 'N/A' }}" placeholder="Idade">
+                                <input type="text" name="idade" value="{{ $jogador->pessoa->idade ?? 'N/A' }}" placeholder="Idade">
                             </div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">Altura</div>
                             <div class="stat-value editable-field">
-                                <input type="text" value="{{ $jogador->altura_cm }}" placeholder="Altura">
+                                <input type="text" name="altura_cm" value="{{ $jogador->altura_cm }}" placeholder="Altura">
                             </div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">Pé</div>
                             <div class="stat-value editable-field">
-                                <input type="text" value="{{ $jogador->pe_preferido }}" placeholder="Pé preferido">
+                                <input type="text" name="pe_preferido" value="{{ $jogador->pe_preferido }}" placeholder="Pé preferido">
                             </div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">Peso</div>
                             <div class="stat-value editable-field">
-                                <input type="text" value="{{ $jogador->peso_kg }} kg" placeholder="Peso">
+                                <input type="text" name="peso_kg" value="{{ $jogador->peso_kg }} kg" placeholder="Peso">
                             </div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">Posição Principal</div>
                             <div class="stat-value-prim editable-field">
-                                <input type="text" value="{{ $jogador->posicao_principal }}" placeholder="Posição">
+                                <input type="text" name="posicao_principal" value="{{ $jogador->posicao_principal }}" placeholder="Posição">
                             </div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">Posição Secundaria</div>
                             <div class="stat-value-sec editable-field">
-                                <input type="text" value="{{ $jogador->posicao_secundaria }}" placeholder="Posição">
+                                <input type="text"  name="posicao_secundaria" value="{{ $jogador->posicao_secundaria }}" placeholder="Posição">
                             </div>
                         </div>
                     </div>
@@ -126,7 +124,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="button-save delete-section" onclick="window.location.href='player_info'" type="submit">SALVAR</button>
+                <button class="button-save delete-section" type="submit">SALVAR</button>
                 <button class="button-delete save-section">DELETAR JOGADOR</button>
 
 

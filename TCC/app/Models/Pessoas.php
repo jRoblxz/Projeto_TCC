@@ -25,7 +25,7 @@ class Pessoas extends Model
 
     ];
     // Converter data_nascimento para Carbon automaticamente
-    protected $casts = [
+    /*protected $casts = [
         'data_nascimento' => 'date',
     ];
 
@@ -47,5 +47,5 @@ class Pessoas extends Model
         }
         
         return Carbon::parse($this->data_nascimento)->age;
-    }
+    }*/
 }

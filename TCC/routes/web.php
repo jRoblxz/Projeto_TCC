@@ -6,14 +6,12 @@ use App\Http\Controllers\TesteController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index'); #tela de visualização de usuários -> (ok) falta as imagens
+Route::get('/players', [AdmController::class, 'index'])->name('jogadores.index'); #tela de visualização de usuários -> (ok)
+Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok)
 
-Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok) falta as imagens
 
-#testes joao para edit
-
-Route::get('/player_edit/{id}', [AdmController::class, 'edit'])->name('jogadores.edit');
-Route::put('/player_update/{id}', [AdmController::class, 'update'])->name('jogadores.update');
+Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit');
+Route::put('/player_update/{jogadores}', [AdmController::class, 'update'])->name('jogadores.update');
 
 
 # esse trecho e antigo
@@ -45,10 +43,6 @@ Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instr
 
 
 #ROTAS TESTE JOÃO 
-
-#Route::get('/players', function () {
-   # return view('telas_crud.players');
-#})->name('players');
 
 Route::get('/player_info', function () {
     return view('telas_crud.player_info');

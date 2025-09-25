@@ -27,27 +27,19 @@ class AdmController
         $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
         return view('telas_crud.player_info', ['jogador' => $jogadores]);
     }
-    public function edit($id)
+    public function edit(Jogadores $jogadores)
     {
-        // Buscar o jogador com os dados da pessoa relacionada
-        $jogador = Jogadores::with('pessoa')->findOrFail($id);
 
-        // OU se você quer usar a view DadosJogador (recomendado)
-        // $jogador = DadosJogador::where('jogador_id', $id)->firstOrFail();
-
+        $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
         return view('telas_crud.player_edit', ['jogador' => $jogador]);
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, Jogadores $jogador)
     {
         $request->validated();
 
-        // Buscar o jogador e pessoa
-        $jogador = Jogadores::with('pessoa')->findOrFail($id);
-        $pessoa = $jogador->pessoa;
-
         // Atualizar dados da pessoa
-        $pessoa->update([
+        $jogador->pessoa->update([
             'nome_completo' => $request->nome_completo,
             'data_nascimento' => $request->data_nascimento,
             'cpf' => $request->cpf,
@@ -68,8 +60,9 @@ class AdmController
             'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
 
-        // Redirecionar para a página do jogador
-        return redirect()->route('jogadores.info', $id)->with('success', 'Jogador atualizado com sucesso!');
+        return redirect()->route('jogadores.info', ['jogadores' => $jogador->id]);
+
+
     }
 
     /* ESSE TRECHO COMENTADO E O SEU KAYANAN, ESSE DE CIMA ESTOU TESTANDO
@@ -113,27 +106,11 @@ class AdmController
         return redirect()->route('users.show', ['pessoas'=> $pessoas->id])->with('success', 'Jogador atualizado com sucesso!');
     }*/
 
-    public function destroy(Pessoas $pessoas)
-    {
-        // Deletar o jogador do banco de dados
-        $pessoas->delete();
-
-        // Redirecionar para a lista de jogadores com uma mensagem de sucesso
-        return redirect()->route('users.index')->with('success', 'Jogador deletado com sucesso!');
-    }
 }
 
 /*
 class AdmController{
-    public function index()
-    {
-        // Usar a view que já tem todas as informações
-        $players = DB::table('vw_perfil_jogador')->get();
-        $avaliacao = DB::table('Avaliacoes')->get();
-        
-        return view('telas_crud.players', compact('players','avaliacao'));
-    }
-    
+
     public function destroy($id)
     {
         try {
