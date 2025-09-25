@@ -9,8 +9,7 @@ use App\Models\Avaliacao;
 use App\Models\Views\DadosJogador;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
-
+use PDO;
 
 class AdmController
 {
@@ -36,6 +35,7 @@ class AdmController
 
     public function update(UserRequest $request, Jogadores $jogador)
     {
+        
         $request->validated();
 
         // Atualizar dados da pessoa
@@ -62,7 +62,24 @@ class AdmController
 
         return redirect()->route('jogadores.info', ['jogadores' => $jogador->id]);
 
+    }
 
+    public function destroy(Pessoas $pessoas)
+    {
+        // Encontrar o jogador associado à pessoa
+        $jogador = Jogadores::where('pessoa_id', $pessoas->id);
+
+        if ($jogador) {
+            // Deletar avaliações associadas ao jogador, se houver
+            Avaliacao::where('jogador_id', $jogador->id)->delete();
+            // Deletar o jogador
+            $jogador->delete();
+        }
+
+        // Deletar a pessoa
+        $pessoas->delete();
+
+        return redirect()->route('jogadores.index');
     }
 
     /* ESSE TRECHO COMENTADO E O SEU KAYANAN, ESSE DE CIMA ESTOU TESTANDO
@@ -107,62 +124,3 @@ class AdmController
     }*/
 
 }
-
-/*
-class AdmController{
-
-    public function destroy($id)
-    {
-        try {
-            // Para DELETE, usar a tabela original Jogadores
-            $player = Player::findOrFail($id);
-            
-            // Deletar avaliações relacionadas primeiro
-            Avaliacao::where('jogador_id', $id)->delete();
-            
-            // Deletar o jogador
-            $player->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Jogador deletado com sucesso!'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao deletar jogador: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-    
-    public function update(Request $request, $id)
-    {
-        try {
-            // Para UPDATE, usar a tabela original Jogadores
-            $player = Player::findOrFail($id);
-            
-            $player->update($request->only([
-                'pe_preferido',
-                'posicao_principal', 
-                'posicao_secundaria',
-                'altura_cm',
-                'peso_kg',
-                'historico_lesoes_cirurgias',
-                'video_apresentacao_url',
-                'video_skills_url'
-            ]));
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Jogador atualizado com sucesso!',
-                'data' => $player
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao atualizar jogador: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-}
-*/

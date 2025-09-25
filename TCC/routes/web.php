@@ -11,7 +11,9 @@ Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jo
 
 
 Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit');
-Route::put('/player_update/{jogadores}', [AdmController::class, 'update'])->name('jogadores.update');
+Route::put('/player_upd/{jogador}', [AdmController::class, 'update'])->name('jogadores.update');
+
+Route::delete('/destroy-user/{pessoas}', [AdmController::class, 'destroy'])->name('jogadores.delete');
 
 
 # esse trecho e antigo
@@ -40,10 +42,11 @@ Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instr
 
 
 
+Route::get('/home', [TesteController::class, 'index'])->name('home.index'); #tela de visualização de usuários -> (ok) falta as imagens
 
 
 #ROTAS TESTE JOÃO 
-
+/*
 Route::get('/player_info', function () {
     return view('telas_crud.player_info');
 });
@@ -52,7 +55,6 @@ Route::get('/player_edit', function () {
     return view('telas_crud.player_edit');
 });
 
-Route::get('/home', [TesteController::class, 'index'])->name('home.index'); #tela de visualização de usuários -> (ok) falta as imagens
 
 #Route::get('/home', function () {
  #   return view('home');
@@ -61,3 +63,4 @@ Route::get('/home', [TesteController::class, 'index'])->name('home.index'); #tel
 Route::get('/', function () {
     return view('login');
 });
+*/

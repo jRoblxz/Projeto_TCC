@@ -5,7 +5,7 @@
             <h1>Perfil do Jogador</h1>
             <p>Sistema de Avaliação de Atletas</p>
         </div>
-        <form action="{{ route('jogadores.update', $jogador->id) }}" method="POST" enctype="multipart/form-data" novalidate>
+        <form action="{{ route('jogadores.update', ['jogador' => $jogador->id ]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             
@@ -41,7 +41,7 @@
                         <div class="stat-item">
                             <div class="stat-label">Peso</div>
                             <div class="stat-value editable-field">
-                                <input type="text" name="peso_kg" value="{{ $jogador->peso_kg }} kg" placeholder="Peso">
+                                <input type="text" name="peso_kg" value="{{ $jogador->peso_kg }} " placeholder="Peso">
                             </div>
                         </div>
                         <div class="stat-item">
@@ -124,8 +124,14 @@
                         </div>
                     </div>
                 </div>
+
                 <button class="button-save delete-section" type="submit">SALVAR</button>
-                <button class="button-delete save-section">DELETAR JOGADOR</button>
+                <form method="POST" action="{{ route('jogadores.delete', ['pessoas' => $jogador->pessoa->id]) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button class="button-delete save-section" type="submit">DELETAR JOGADOR</button>
+                </form>
+                
 
 
             </div>
