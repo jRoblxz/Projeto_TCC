@@ -1080,6 +1080,7 @@ h1 {
 }
 
 .editable-field input,
+.editable-field select,
 .editable-field textarea {
     border: none;
     background: rgba(133, 17, 20, 0.05);

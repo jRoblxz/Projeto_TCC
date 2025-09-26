@@ -87,7 +87,6 @@ class AdmController
             'peso_kg' => $request->peso_kg,
           //  'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
-        
 
         return redirect()->route('jogadores.info', ['jogadores' => $jogador->id])
             ->with('success', 'Jogador atualizado com sucesso!');;
