@@ -20,7 +20,7 @@
                                 </div>
                             </div>
                             <div class="card-back">
-                                <div class="back-header ">{{ $jogador->nome_completo }}</div>
+                                <div class="back-header ">{{ $jogador->pessoa->nome_completo }}</div>
                                 <div class="player-info back-content-scrollable">
                                     <div class="info-row">
                                         <span class="info-label">Altura:</span>
@@ -37,9 +37,7 @@
                                     <div class="evaluation">
                                         <div class="evaluation-title">Avaliação</div>
                                         <div class="evaluation-text">
-                                            Principal: {{ $jogador->posicao_principal }}<br>
-                                            Secundária: {{ $jogador->posicao_secundaria ?? 'Não informado' }}<br>
-                                            Email: {{ $jogador->email }}
+                                            {{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}
                                         </div>
                                     </div>
                                 </div>

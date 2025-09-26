@@ -129,12 +129,9 @@
                 'lateral-esquerdo': { top: 60, left: 15 },
                 'volante': { top: 60, left: 50 },
                 'meio-central': { top: 45, left: 50 },
-                'meio-direito': { top: 45, left: 70 },
-                'meio-esquerdo': { top: 45, left: 30 },
-                'atacante-central': { top: 30, left: 50 },
                 'ponta-direita': { top: 25, left: 80 },
                 'ponta-esquerda': { top: 25, left: 20 },
-                'centroavante': { top: 15, left: 50 }
+                'atacante': { top: 15, left: 50 }
             };
 
             /**
@@ -179,8 +176,8 @@
                     if (position.includes('esquerda')) return fieldPositions['ponta-esquerda'];
                 }
 
-                if (position.includes('centroavante')) return fieldPositions['centroavante'];
-                if (position.includes('atacante')) return fieldPositions['atacante-central'];
+                
+                if (position.includes('atacante')) return fieldPositions['atacante'];
 
                 // Se nada for encontrado, retorna nulo
                 return null;

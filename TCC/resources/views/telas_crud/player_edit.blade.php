@@ -25,10 +25,7 @@
                     <div class="stats-grid">
                         <div class="stat-item">
                             <div class="stat-label">Idade</div>
-                            <div class="stat-value editable-field">
-                                <input type="date" name="data_nascimento" value="{{ $jogador->pessoa->data_nascimento}}"
-                                    placeholder="Idade">
-                            </div>
+                            <div class="stat-value">{{ $jogador->pessoa->data_nascimento->age}}</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-label">Altura</div>
@@ -81,33 +78,42 @@
                     <div class="recommendations">
                         <h4>Notas e Recomendações</h4>
                         <h4>Informacoes e Notas</h4>
-                        <p>
-                            <strong> Email:</strong><input type="email" name="email" value="{{ $jogador->pessoa->email }}"
-                                placeholder="email"> <br>
-                            <strong>Cidade:</strong><input type="text" name="cidade" value="{{ $jogador->pessoa->cidade }}"
-                                placeholder="cidade"> <br>
-                            <strong>CPF:</strong><input type="number" name="cpf" value="{{ $jogador->pessoa->cpf }}"
-                                placeholder="cpf"> <br>
-                            <strong>Telefone:</strong><input type="number" name="telefone"
-                                value="{{ $jogador->pessoa->telefone }}" placeholder="telefone"> <br>
-                            <strong>RG:</strong><input type="number" name="rg" value="{{ $jogador->pessoa->rg }}"
-                                placeholder="Score">
-                            <br>
-                            <strong>Video Skills:</strong><input type="url" name="video_apresentacao_url"
-                                value="{{ $jogador->video_apresentacao_url }}" placeholder="video"> <br>
-                            <strong>Fez cirugias:</strong>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_sim"
-                                value="sim" {{ $jogador->historico_lesoes_cirurgias == 'sim' ? 'checked' : '' }}>
-                            <label class="form-check-label" for="cirurgia_sim">Sim</label>
-                        </div>
+                        <p><strong>Data de Nascimento:</strong> {{ $jogador->pessoa->data_nascimento }} <br>
+                                <strong> Email:</strong> {{ $jogador->pessoa->email }}<br>
+                                <strong>CPF:</strong> {{ $jogador->pessoa->cpf }} <br>
+                                <strong>Telefone:</strong> {{ $jogador->pessoa->telefone }}<br>
+                                <strong>RG:</strong> {{ $jogador->pessoa->rg }}<br>
+                                <strong>Cirurgia:</strong> {{ $jogador->historico_lesoes_cirurgias }}<br>
+                                <strong>Cidade:</strong> n/a <br>
+                                <strong>Video Skills:</strong> {{ $jogador->video_apresentacao_url }}<br>
+                              <!--   <strong> Email:</strong><input type="email" name="email" value="{{ $jogador->pessoa->email }}"
+                                        placeholder="email"> <br>
+                                    <strong>Cidade:</strong><input type="text" name="cidade" value="{{ $jogador->pessoa->cidade }}"
+                                        placeholder="cidade"> <br>
+                                    <strong>CPF:</strong><input type="number" name="cpf" value="{{ $jogador->pessoa->cpf }}"
+                                        placeholder="cpf"> <br>
+                                    <strong>Telefone:</strong><input type="number" name="telefone"
+                                        value="{{ $jogador->pessoa->telefone }}" placeholder="telefone"> <br>
+                                    <strong>RG:</strong><input type="number" name="rg" value="{{ $jogador->pessoa->rg }}"
+                                        placeholder="Score">
+                                    <br>
+                                    <strong>Video Skills:</strong><input type="url" name="video_apresentacao_url"
+                                        value="{{ $jogador->video_apresentacao_url }}" placeholder="video"> <br>
+                                    <strong>Fez cirugias:</strong>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_sim"
+                                        value="sim" {{ $jogador->historico_lesoes_cirurgias == 'sim' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="cirurgia_sim">Sim</label>
+                                </div>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_nao"
-                                value="nao" {{ $jogador->historico_lesoes_cirurgias == 'nao' ? 'checked' : '' }}>
-                            <label class="form-check-label" for="cirurgia_nao">Não</label>
-                        </div>
-                        </p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_nao"
+                                        value="nao" {{ $jogador->historico_lesoes_cirurgias == 'nao' ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="cirurgia_nao">Não</label>
+                                </div>-->
+                        </p><br>
+                        <h4>Avaliação</h4>
+                        <p>{{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}</p>
                     </div>
 
                     <div class="evaluations">
