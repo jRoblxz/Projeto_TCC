@@ -14,7 +14,7 @@
 
             <div class="quick-stats">
                 <div class="stat-item" onclick="animateStats(this)">
-                    <div class="stat-number" data-target="145">0</div>
+                    <div class="stat-number" data-target="145">{{ $totalJogadores }}</div>
                     <div class="stat-label">Candidatos Total</div>
                 </div>
                 <div class="stat-item" onclick="animateStats(this)">

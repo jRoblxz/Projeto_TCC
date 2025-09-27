@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use PhpParser\Node\Expr\Cast\Void_;
 
 class Jogadores extends Model
 {
@@ -67,5 +68,7 @@ class Jogadores extends Model
     }
 
     
+
+
     // ----------------------------
 }

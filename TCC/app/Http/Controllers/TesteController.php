@@ -18,8 +18,9 @@ class TesteController
     {
 
         $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
+        $totalJogadores= Jogadores::count(); //contagem de jogadores
 
-        return view('home', ['jogadores' => $jogadores]);
+        return view('home', ['jogadores' => $jogadores, 'totalJogadores' => $totalJogadores]);
     }
 
     public function show(Jogadores $jogadores)

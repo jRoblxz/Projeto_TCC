@@ -46,9 +46,9 @@ class AdmController
             'pe_preferido' => 'nullable|string',
             'posicao_principal' => 'nullable|string',
             'posicao_secundaria' => 'nullable|string',
-          //  'historico_lesoes_cirurgias' => 'nullable|string',
-          //  'video_apresentacao_url' => 'nullable|url',
-           // 'foto_perfil_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            //  'historico_lesoes_cirurgias' => 'nullable|string',
+            //  'video_apresentacao_url' => 'nullable|url',
+            // 'foto_perfil_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Buscar o jogador com pessoa
@@ -69,11 +69,11 @@ class AdmController
         // Atualizar dados da pessoa
         $jogador->pessoa->update([
             'nome_completo' => $request->nome_completo,
-           // 'data_nascimento' => $request->data_nascimento,
-         //   'cpf' => $request->cpf,
-          //  'rg' => $request->rg,
-          //  'email' => $request->email,
-         //   'telefone' => $request->telefone,
+            // 'data_nascimento' => $request->data_nascimento,
+            //   'cpf' => $request->cpf,
+            //  'rg' => $request->rg,
+            //  'email' => $request->email,
+            //   'telefone' => $request->telefone,
             'foto_perfil_url' => $fotoPath,
         ]);
 
@@ -82,18 +82,17 @@ class AdmController
             'pe_preferido' => $request->pe_preferido,
             'posicao_principal' => $request->posicao_principal,
             'posicao_secundaria' => $request->posicao_secundaria,
-           // 'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
+            // 'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
             'altura_cm' => $request->altura_cm,
             'peso_kg' => $request->peso_kg,
-          //  'video_apresentacao_url' => $request->video_apresentacao_url,
+            //  'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
 
         return redirect()->route('jogadores.info', ['jogadores' => $jogador->id])
             ->with('success', 'Jogador atualizado com sucesso!');;
     }
 
-    //NÃO FUNCIONANDO POR ENQUANTO
-    // CORREÇÃO 4: Método destroy corrigido
+    
     public function destroy(Jogadores $jogadores)
     {
         try {
@@ -123,5 +122,16 @@ class AdmController
             return redirect()->back()
                 ->with('error', 'Erro ao deletar jogador: ' . $e->getMessage());
         }
+    }
+
+    public function cont()
+    {
+        $jogadores = Jogadores::all();
+        $totalJogadores = Jogadores::count();
+
+        return view('home', [
+            'jogadores' => $jogadores,
+            'totalJogadores' => $totalJogadores
+        ]);
     }
 }

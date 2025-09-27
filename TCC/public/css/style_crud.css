@@ -1423,7 +1423,7 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 10px auto;
     position: relative;
     overflow: hidden;
     font-size: 16px;
@@ -1440,11 +1440,13 @@ h1 {
 
 .candidate-info {
     flex: 1;
+    margin-bottom: 20px;
 }
 
 .candidate-name {
     font-weight: bold;
     margin-bottom: 5px;
+    font-size: 1.5rem;
 }
 
 .candidate-details {
@@ -1455,15 +1457,15 @@ h1 {
 }
 
 .candidate-rating {
-    background: linear-gradient(45deg, #4ECDC4, #44A08D);
+    background-color: #851114;
     color: white;
     padding: 5px 10px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 1.4rem;
     font-weight: bold;
     flex-shrink: 0;
 }
-
+/*
 .rating-excellent {
     background: linear-gradient(45deg, #4ECDC4, #44A08D);
 }
@@ -1478,7 +1480,7 @@ h1 {
 
 .rating-poor {
     background: linear-gradient(45deg, #e74c3c, #c0392b);
-}
+}*/
 
 .action-button {
     background-color: #851114;
@@ -1689,6 +1691,10 @@ h1 {
     margin-bottom: 8px;
     font-weight: bold;
     color: #4ECDC4;
+}
+
+select{
+    cursor: pointer;
 }
 
 .form-group input,

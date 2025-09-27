@@ -36,8 +36,14 @@
                         <div class="stat-item">
                             <div class="stat-label">Pé</div>
                             <div class="stat-value editable-field">
-                                <input type="text" name="pe_preferido" value="{{ $jogador->pe_preferido }}"
-                                    placeholder="Pé preferido">
+                                <select name="pe_preferido" class="form-control">
+                                    <option value="{{ $jogador->pe_preferido }}">{{ $jogador->pe_preferido }}
+                                    </option>
+                                    <option value="Direito" {{ $jogador->pe_preferido == 'Direito' ? 'selected' : '' }}>
+                                        Direito</option>
+                                        <option value="Esquerdo" {{ $jogador->pe_preferido == 'Esquerdo' ? 'selected' : '' }}>
+                                        Esquerdo</option>
+                                </select>
                             </div>
                         </div>
                         <div class="stat-item">
@@ -52,22 +58,18 @@
                                 <select name="posicao_principal" class="form-control">
                                     <option value="{{ $jogador->posicao_principal }}">{{ $jogador->posicao_principal }}
                                     </option>
-                                    <option value="goleiro" {{ $jogador->posicao_principal == 'goleiro' ? 'selected' : '' }}>
+                                    <option value="Goleiro" {{ $jogador->posicao_principal == 'Goleiro' ? 'selected' : '' }}>
                                         Goleiro</option>
-                                    <option value="zagueiro-central" {{ $jogador->posicao_principal == 'zagueiro-central' ? 'selected' : '' }}>Zagueiro Central</option>
-                                    <option value="zagueiro-direito" {{ $jogador->posicao_principal == 'zagueiro-direito' ? 'selected' : '' }}>Zagueiro Direito</option>
-                                    <option value="zagueiro-esquerdo" {{ $jogador->posicao_principal == 'zagueiro-esquerdo' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
-                                    <option value="lateral-direito" {{ $jogador->posicao_principal == 'lateral-direito' ? 'selected' : '' }}>Lateral Direito</option>
-                                    <option value="lateral-esquerdo" {{ $jogador->posicao_principal == 'lateral-esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
-                                    <option value="volante" {{ $jogador->posicao_principal == 'volante' ? 'selected' : '' }}>
+                                    <option value="Zagueiro Direito" {{ $jogador->posicao_principal == 'Zagueiro Direito' ? 'selected' : '' }}>Zagueiro Direito</option>
+                                    <option value="Zagueiro Esquerdo" {{ $jogador->posicao_principal == 'Zagueiro Esquerdo' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+                                    <option value="Lateral Direito" {{ $jogador->posicao_principal == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
+                                    <option value="Lateral Esquerdo" {{ $jogador->posicao_principal == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
+                                    <option value="Volante" {{ $jogador->posicao_principal == 'Volante' ? 'selected' : '' }}>
                                         Volante</option>
-                                    <option value="meio-central" {{ $jogador->posicao_principal == 'meio-central' ? 'selected' : '' }}>Meio Central</option>
-                                    <option value="meio-direito" {{ $jogador->posicao_principal == 'meio-direito' ? 'selected' : '' }}>Meio Direito</option>
-                                    <option value="meio-esquerdo" {{ $jogador->posicao_principal == 'meio-esquerdo' ? 'selected' : '' }}>Meio Esquerdo</option>
-                                    <option value="atacante-central" {{ $jogador->posicao_principal == 'atacante-central' ? 'selected' : '' }}>Atacante Central</option>
-                                    <option value="ponta-direita" {{ $jogador->posicao_principal == 'ponta-direita' ? 'selected' : '' }}>Ponta Direita</option>
-                                    <option value="ponta-esquerda" {{ $jogador->posicao_principal == 'ponta-esquerda' ? 'selected' : '' }}>Ponta Esquerda</option>
-                                    <option value="centroavante" {{ $jogador->posicao_principal == 'centroavante' ? 'selected' : '' }}>Centroavante</option>
+                                    <option value="Meia" {{ $jogador->posicao_principal == 'Meia' ? 'selected' : '' }}>Meio Central</option>
+                                    <option value="Ponta Direita" {{ $jogador->posicao_principal == 'Ponta Direita' ? 'selected' : '' }}>Ponta Direita</option>
+                                    <option value="Ponta Esquerda" {{ $jogador->posicao_principal == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta Esquerda</option>
+                                    <option value="Atacante" {{ $jogador->posicao_principal == 'Atacante' ? 'selected' : '' }}>Centroavante</option>
                                 </select>
                             </div>
                         </div>
@@ -76,22 +78,18 @@
                             <div class="stat-value-sec editable-field">
                                 <select name="posicao_secundaria" class="form-control">
                                     <option value="">{{ $jogador->posicao_secundaria }}</option>
-                                    <option value="goleiro" {{ $jogador->posicao_secundaria == 'goleiro' ? 'selected' : '' }}>
+                                    <option value="Goleiro" {{ $jogador->posicao_secundaria == 'Goleiro' ? 'selected' : '' }}>
                                         Goleiro</option>
-                                    <option value="zagueiro-central" {{ $jogador->posicao_secundaria == 'zagueiro-central' ? 'selected' : '' }}>Zagueiro Central</option>
-                                    <option value="zagueiro-direito" {{ $jogador->posicao_secundaria == 'zagueiro-direito' ? 'selected' : '' }}>Zagueiro Direito</option>
-                                    <option value="zagueiro-esquerdo" {{ $jogador->posicao_secundaria == 'zagueiro-esquerdo' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
-                                    <option value="lateral-direito" {{ $jogador->posicao_secundaria == 'lateral-direito' ? 'selected' : '' }}>Lateral Direito</option>
-                                    <option value="lateral-esquerdo" {{ $jogador->posicao_secundaria == 'lateral-esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
-                                    <option value="volante" {{ $jogador->posicao_secundaria == 'volante' ? 'selected' : '' }}>
+                                    <option value="Zagueiro Direito" {{ $jogador->posicao_secundaria == 'Zagueiro Direito' ? 'selected' : '' }}>Zagueiro Direito</option>
+                                    <option value="Zagueiro Esquerdo" {{ $jogador->posicao_secundaria == 'Zagueiro Esquerdo' ? 'selected' : '' }}>Zagueiro Esquerdo</option>
+                                    <option value="Lateral Direito" {{ $jogador->posicao_secundaria == 'Lateral Direito' ? 'selected' : '' }}>Lateral Direito</option>
+                                    <option value="Lateral Esquerdo" {{ $jogador->posicao_secundaria == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
+                                    <option value="Volante" {{ $jogador->posicao_secundaria == 'Volante' ? 'selected' : '' }}>
                                         Volante</option>
-                                    <option value="meio-central" {{ $jogador->posicao_secundaria == 'meio-central' ? 'selected' : '' }}>Meio Central</option>
-                                    <option value="meio-direito" {{ $jogador->posicao_secundaria == 'meio-direito' ? 'selected' : '' }}>Meio Direito</option>
-                                    <option value="meio-esquerdo" {{ $jogador->posicao_secundaria == 'meio-esquerdo' ? 'selected' : '' }}>Meio Esquerdo</option>
-                                    <option value="atacante-central" {{ $jogador->posicao_secundaria == 'atacante-central' ? 'selected' : '' }}>Atacante Central</option>
-                                    <option value="ponta-direita" {{ $jogador->posicao_secundaria == 'ponta-direita' ? 'selected' : '' }}>Ponta Direita</option>
-                                    <option value="ponta-esquerda" {{ $jogador->posicao_secundaria == 'ponta-esquerda' ? 'selected' : '' }}>Ponta Esquerda</option>
-                                    <option value="centroavante" {{ $jogador->posicao_secundaria == 'centroavante' ? 'selected' : '' }}>Centroavante</option>
+                                    <option value="Meia" {{ $jogador->posicao_secundaria == 'Meia' ? 'selected' : '' }}>Meia</option>
+                                    <option value="Ponta Direita" {{ $jogador->posicao_secundaria == 'Ponta Direita' ? 'selected' : '' }}>Ponta Direita</option>
+                                    <option value="Ponta Esquerda" {{ $jogador->posicao_secundaria == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta Esquerda</option>
+                                    <option value="Atacante" {{ $jogador->posicao_secundaria == 'Atacante' ? 'selected' : '' }}>Centroavante</option>
                                 </select>
                             </div>
                         </div>
