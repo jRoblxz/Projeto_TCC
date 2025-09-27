@@ -11,15 +11,13 @@ Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jo
 Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit'); #tela de edição de um usuário específico (ok)
 //------------------------------------------------------------------------------------------------------------
 
-
-
 // ROTAS DE EDIÇÃO E DELEÇÃO DE JOGADORES (CRUD) - não está funcionando a deleção e edição
 Route::put('/player_upd/{jogadores}', [AdmController::class, 'update'])->name('jogadores.update');
 Route::delete('/destroy-user/{jogadores}', [AdmController::class, 'destroy'])->name('jogadores.delete');
 //------------------------------------------------------------------------------------------------------------
 
-
-
+// ROTAS DEDashboard / HomePage
+Route::get('/home', [AdmController::class, 'homepage'])->name('home.index');
 
 // ROTAS DE DE INSCRIÇÃO DE JOGADOR FUNCIONANDO CORRETAMENTE
 Route::get('/forms1', [UserController::class, 'create'])->name('users.create');
@@ -33,7 +31,7 @@ Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instr
 
 
 
-#ROTAS TESTE JOÃO 
+#ROTAS frontend JOÃO 
 /*
 Route::get('/player_info', function () {
     return view('telas_crud.player_info');
@@ -43,7 +41,6 @@ Route::get('/player_edit', function () {
     return view('telas_crud.player_edit');
 });
 */
-Route::get('/home', [TesteController::class, 'index'])->name('home.index'); #tela de visualização de usuários -> (ok) falta as imagens
 
 /*
 #Route::get('/home', function () {

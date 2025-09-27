@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AdmController
 {
+    //tela/rota  da view Players
     public function index()
     {
 
@@ -22,12 +23,23 @@ class AdmController
         return view('telas_crud.players', ['jogadores' => $jogadores]);
     }
 
+    //tela/rota  da view Home
+    public function homepage()
+    {
+
+        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
+        $totalJogadores= Jogadores::count(); //contagem de jogadores
+
+        return view('home', ['jogadores' => $jogadores, 'totalJogadores' => $totalJogadores]);
+    }
+
+    //tela/rota da view Player_info
     public function show(Jogadores $jogadores)
     {
         $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
         return view('telas_crud.player_info', ['jogador' => $jogador]);
     }
-
+    //tela/rota da view Player_edit
     public function edit(Jogadores $jogadores)
     {
 
@@ -35,7 +47,7 @@ class AdmController
         return view('telas_crud.player_edit', ['jogador' => $jogador]);
     }
 
-    //NÃO FUNCIONANDO POR ENQUANTO 
+    //Update da crud
     public function update(Request $request, Jogadores $jogadores)
     {
 
@@ -92,7 +104,7 @@ class AdmController
             ->with('success', 'Jogador atualizado com sucesso!');;
     }
 
-    
+       //Delete da crud
     public function destroy(Jogadores $jogadores)
     {
         try {
@@ -122,16 +134,5 @@ class AdmController
             return redirect()->back()
                 ->with('error', 'Erro ao deletar jogador: ' . $e->getMessage());
         }
-    }
-
-    public function cont()
-    {
-        $jogadores = Jogadores::all();
-        $totalJogadores = Jogadores::count();
-
-        return view('home', [
-            'jogadores' => $jogadores,
-            'totalJogadores' => $totalJogadores
-        ]);
     }
 }
