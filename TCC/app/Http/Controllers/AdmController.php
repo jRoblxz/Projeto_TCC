@@ -24,13 +24,24 @@ class AdmController
     }
 
     //tela/rota  da view Home
-    public function homepage()
+    public function homepage(Request $request)
     {
+        $query = Jogadores::with('pessoa')->orderByDesc('id');
 
-        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
-        $totalJogadores= Jogadores::count(); //contagem de jogadores
+        // Filtro por subdivisão
+        if ($request->filled('subdivisao')) {
+            $query->whereHas('pessoa', function ($q) use ($request) {
+                $q->where('sub_divisao', $request->subdivisao);
+            });
+        }
 
-        return view('home', ['jogadores' => $jogadores, 'totalJogadores' => $totalJogadores]);
+        $jogadores = $query->get();
+        $totalJogadores = $query->count(); // conta já filtrado
+
+        return view('home', [
+            'jogadores' => $jogadores,
+            'totalJogadores' => $totalJogadores
+        ]);
     }
 
     //tela/rota da view Player_info
@@ -89,6 +100,11 @@ class AdmController
             'foto_perfil_url' => $fotoPath,
         ]);
 
+        $jogador->avaliacoes()->update([
+            'nota' => $request->nota,
+            'observacoes' => $request->observacoes,
+        ]);
+
         // Atualizar dados do jogador
         $jogador->update([
             'pe_preferido' => $request->pe_preferido,
@@ -104,7 +120,7 @@ class AdmController
             ->with('success', 'Jogador atualizado com sucesso!');;
     }
 
-       //Delete da crud
+    //Delete da crud
     public function destroy(Jogadores $jogadores)
     {
         try {

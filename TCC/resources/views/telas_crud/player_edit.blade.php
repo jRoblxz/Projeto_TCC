@@ -41,7 +41,7 @@
                                     </option>
                                     <option value="Direito" {{ $jogador->pe_preferido == 'Direito' ? 'selected' : '' }}>
                                         Direito</option>
-                                        <option value="Esquerdo" {{ $jogador->pe_preferido == 'Esquerdo' ? 'selected' : '' }}>
+                                    <option value="Esquerdo" {{ $jogador->pe_preferido == 'Esquerdo' ? 'selected' : '' }}>
                                         Esquerdo</option>
                                 </select>
                             </div>
@@ -66,7 +66,8 @@
                                     <option value="Lateral Esquerdo" {{ $jogador->posicao_principal == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
                                     <option value="Volante" {{ $jogador->posicao_principal == 'Volante' ? 'selected' : '' }}>
                                         Volante</option>
-                                    <option value="Meia" {{ $jogador->posicao_principal == 'Meia' ? 'selected' : '' }}>Meio Central</option>
+                                    <option value="Meia" {{ $jogador->posicao_principal == 'Meia' ? 'selected' : '' }}>Meio
+                                        Central</option>
                                     <option value="Ponta Direita" {{ $jogador->posicao_principal == 'Ponta Direita' ? 'selected' : '' }}>Ponta Direita</option>
                                     <option value="Ponta Esquerda" {{ $jogador->posicao_principal == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta Esquerda</option>
                                     <option value="Atacante" {{ $jogador->posicao_principal == 'Atacante' ? 'selected' : '' }}>Centroavante</option>
@@ -86,7 +87,8 @@
                                     <option value="Lateral Esquerdo" {{ $jogador->posicao_secundaria == 'Lateral Esquerdo' ? 'selected' : '' }}>Lateral Esquerdo</option>
                                     <option value="Volante" {{ $jogador->posicao_secundaria == 'Volante' ? 'selected' : '' }}>
                                         Volante</option>
-                                    <option value="Meia" {{ $jogador->posicao_secundaria == 'Meia' ? 'selected' : '' }}>Meia</option>
+                                    <option value="Meia" {{ $jogador->posicao_secundaria == 'Meia' ? 'selected' : '' }}>Meia
+                                    </option>
                                     <option value="Ponta Direita" {{ $jogador->posicao_secundaria == 'Ponta Direita' ? 'selected' : '' }}>Ponta Direita</option>
                                     <option value="Ponta Esquerda" {{ $jogador->posicao_secundaria == 'Ponta Esquerda' ? 'selected' : '' }}>Ponta Esquerda</option>
                                     <option value="Atacante" {{ $jogador->posicao_secundaria == 'Atacante' ? 'selected' : '' }}>Centroavante</option>
@@ -104,10 +106,11 @@
                     <div class="overall-score">
                         <h3>Overall Score</h3>
                         <div class="score-value editable-field">
-                            <!<input type="text" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Score">
-                                <input type="number" step="0.1" name="nota"
-                                    value="{{ old('nota', $jogador->ultima_avaliacao->nota) }}" placeholder="Nota de 0 a 10"
-                                    class="form-control">
+                            <input type="number" name="nota" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Nota">
+                            <!--<!<input type="text" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Score">
+                                    <input type="number" step="0.1" name="nota"
+                                        value="{{ old('nota', $jogador->ultima_avaliacao->nota) }}" placeholder="Nota de 0 a 10"
+                                        class="form-control">-->
                         </div>
                     </div>
 
@@ -123,33 +126,36 @@
                             <strong>Cidade:</strong> n/a <br>
                             <strong>Video Skills:</strong> {{ $jogador->video_apresentacao_url }}<br>
                             <!--   <strong> Email:</strong><input type="email" name="email" value="{{ $jogador->pessoa->email }}"
-                                                            placeholder="email"> <br>
-                                                        <strong>Cidade:</strong><input type="text" name="cidade" value="{{ $jogador->pessoa->cidade }}"
-                                                            placeholder="cidade"> <br>
-                                                        <strong>CPF:</strong><input type="number" name="cpf" value="{{ $jogador->pessoa->cpf }}"
-                                                            placeholder="cpf"> <br>
-                                                        <strong>Telefone:</strong><input type="number" name="telefone"
-                                                            value="{{ $jogador->pessoa->telefone }}" placeholder="telefone"> <br>
-                                                        <strong>RG:</strong><input type="number" name="rg" value="{{ $jogador->pessoa->rg }}"
-                                                            placeholder="Score">
-                                                        <br>
-                                                        <strong>Video Skills:</strong><input type="url" name="video_apresentacao_url"
-                                                            value="{{ $jogador->video_apresentacao_url }}" placeholder="video"> <br>
-                                                        <strong>Fez cirugias:</strong>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_sim"
-                                                            value="sim" {{ $jogador->historico_lesoes_cirurgias == 'sim' ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="cirurgia_sim">Sim</label>
-                                                    </div>
+                                                                placeholder="email"> <br>
+                                                            <strong>Cidade:</strong><input type="text" name="cidade" value="{{ $jogador->pessoa->cidade }}"
+                                                                placeholder="cidade"> <br>
+                                                            <strong>CPF:</strong><input type="number" name="cpf" value="{{ $jogador->pessoa->cpf }}"
+                                                                placeholder="cpf"> <br>
+                                                            <strong>Telefone:</strong><input type="number" name="telefone"
+                                                                value="{{ $jogador->pessoa->telefone }}" placeholder="telefone"> <br>
+                                                            <strong>RG:</strong><input type="number" name="rg" value="{{ $jogador->pessoa->rg }}"
+                                                                placeholder="Score">
+                                                            <br>
+                                                            <strong>Video Skills:</strong><input type="url" name="video_apresentacao_url"
+                                                                value="{{ $jogador->video_apresentacao_url }}" placeholder="video"> <br>
+                                                            <strong>Fez cirugias:</strong>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_sim"
+                                                                value="sim" {{ $jogador->historico_lesoes_cirurgias == 'sim' ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="cirurgia_sim">Sim</label>
+                                                        </div>
 
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_nao"
-                                                            value="nao" {{ $jogador->historico_lesoes_cirurgias == 'nao' ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="cirurgia_nao">Não</label>
-                                                    </div>-->
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="historico_lesoes_cirurgias" id="cirurgia_nao"
+                                                                value="nao" {{ $jogador->historico_lesoes_cirurgias == 'nao' ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="cirurgia_nao">Não</label>
+                                                        </div>-->
                         </p><br>
                         <h4>Avaliação</h4>
-                        <p>{{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}</p>
+                        <textarea name="observacoes" placeholder="Observações" rows="6"
+                            class="form-control">{{ $jogador->ultima_avaliacao?->observacoes ?? '' }}</textarea>
+
+                        <!-- <p>{{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}</p>-->
                     </div>
 
                     <div class="evaluations">
@@ -197,10 +203,11 @@
                 <a href="{{ route('jogadores.info', ['jogadores' => $jogador->id]) }}"
                     class="button-cancel delete-section">CANCELAR</a>
             </div>
+
         </form>
     </div>
     <script>
-        // JavaScript do upload de imagem (que você já tem)
+        // JavaScript do upload de imagem
         const imageUpload = document.getElementById('imageUploade');
         const playerImage = document.getElementById('playerImage');
 
@@ -215,50 +222,44 @@
             }
         });
 
-            / JavaScript do upload de imagem
-        const imageUpload = document.getElementById('imageUploade');
-        const playerImage = document.getElementById('playerImage');
-
-        imageUpload.addEventListener('change', function () {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    playerImage.setAttribute('src', e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // OBJETO COM AS POSIÇÕES DO CAMPO - ESTA PARTE ESTAVA FALTANDO!
+        // MAPEAMENTO CORRETO DAS POSIÇÕES - valores exatamente como no HTML
         const fieldPositions = {
+            // Valores em português (exatamente como no HTML)
             'goleiro': { top: 95, left: 50 },
-            'zagueiro-central': { top: 80, left: 50 },
-            'zagueiro-direito': { top: 80, left: 70 },
-            'zagueiro-esquerdo': { top: 80, left: 30 },
-            'lateral-direito': { top: 60, left: 85 },
-            'lateral-esquerdo': { top: 60, left: 15 },
+            'zagueiro direito': { top: 80, left: 70 },
+            'zagueiro esquerdo': { top: 80, left: 30 },
+            'lateral direito': { top: 60, left: 85 },
+            'lateral esquerdo': { top: 60, left: 15 },
             'volante': { top: 60, left: 50 },
-            'meio-central': { top: 45, left: 50 },
-            'meio-direito': { top: 45, left: 70 },
-            'meio-esquerdo': { top: 45, left: 30 },
-            'atacante-central': { top: 30, left: 50 },
-            'ponta-direita': { top: 25, left: 80 },
-            'ponta-esquerda': { top: 25, left: 20 },
-            'centroavante': { top: 15, left: 50 }
+            'meia': { top: 45, left: 50 },
+            'ponta direita': { top: 25, left: 80 },
+            'ponta esquerda': { top: 25, left: 20 },
+            'atacante': { top: 15, left: 50 }
         };
 
-        // JavaScript atualizado para trabalhar com selects
+        // Função para normalizar posição
+        function normalizePosition(position) {
+            if (!position) return '';
+            return position.toLowerCase().trim();
+        }
+
+        // Função para atualizar posições no campo quando select muda
         function updateFieldPositions() {
             const primarySelect = document.querySelector('select[name="posicao_principal"]');
             const secondarySelect = document.querySelector('select[name="posicao_secundaria"]');
 
-            const primaryPos = fieldPositions[primarySelect.value];
-            const secondaryPos = fieldPositions[secondarySelect.value];
+            if (!primarySelect || !secondarySelect) return;
+
+            const primaryValue = normalizePosition(primarySelect.value);
+            const secondaryValue = normalizePosition(secondarySelect.value);
+
+            const primaryPos = fieldPositions[primaryValue];
+            const secondaryPos = fieldPositions[secondaryValue];
 
             const primaryDot = document.querySelector('.player-position-prim');
             const secondaryDot = document.querySelector('.player-position-sec');
 
+            // Posição principal
             if (primaryPos && primaryDot) {
                 primaryDot.style.top = primaryPos.top + '%';
                 primaryDot.style.left = primaryPos.left + '%';
@@ -267,6 +268,7 @@
                 primaryDot.style.display = 'none';
             }
 
+            // Posição secundária
             if (secondaryPos && secondaryDot) {
                 secondaryDot.style.top = secondaryPos.top + '%';
                 secondaryDot.style.left = secondaryPos.left + '%';
@@ -276,46 +278,51 @@
             }
         }
 
-        // Função para posicionar jogadores baseado nos dados do banco
+        // Função para posicionar baseado nos dados do banco
         function positionPlayers() {
-            // Pega as posições dos dados do jogador vindos do Blade
-            const primaryPositionName = "{{ strtolower(trim($jogador->posicao_principal ?? '')) }}";
-            const secondaryPositionName = "{{ strtolower(trim($jogador->posicao_secundaria ?? '')) }}";
+            const primaryPositionName = normalizePosition("{{ $jogador->posicao_principal ?? '' }}");
+            const secondaryPositionName = normalizePosition("{{ $jogador->posicao_secundaria ?? '' }}");
 
             const primaryDot = document.querySelector('.player-position-prim');
             const secondaryDot = document.querySelector('.player-position-sec');
 
-            // Encontra as coordenadas para a posição principal
+            // Posição principal
             const primaryCoords = fieldPositions[primaryPositionName];
             if (primaryCoords && primaryDot) {
                 primaryDot.style.top = primaryCoords.top + '%';
                 primaryDot.style.left = primaryCoords.left + '%';
                 primaryDot.style.display = 'block';
+            } else if (primaryDot) {
+                primaryDot.style.display = 'none';
             }
 
-            // Encontra as coordenadas para a posição secundária
+            // Posição secundária
             const secondaryCoords = fieldPositions[secondaryPositionName];
             if (secondaryCoords && secondaryDot) {
                 secondaryDot.style.top = secondaryCoords.top + '%';
                 secondaryDot.style.left = secondaryCoords.left + '%';
                 secondaryDot.style.display = 'block';
+            } else if (secondaryDot) {
+                secondaryDot.style.display = 'none';
             }
 
-            // Debug - verifique no console do navegador (F12)
-            console.log('Posição Principal do Banco:', "{{ $jogador->posicao_principal ?? 'null' }}");
-            console.log('Posição Secundária do Banco:', "{{ $jogador->posicao_secundaria ?? 'null' }}");
-            console.log('Posição Principal Normalizada:', primaryPositionName);
-            console.log('Posição Secundária Normalizada:', secondaryPositionName);
-            console.log('Coordenadas Principais:', primaryCoords);
-            console.log('Coordenadas Secundárias:', secondaryCoords);
+            // Debug completo
+            console.log('=== DEBUG POSIÇÕES ===');
+            console.log('Posição Principal (banco):', "{{ $jogador->posicao_principal ?? 'null' }}");
+            console.log('Posição Secundária (banco):', "{{ $jogador->posicao_secundaria ?? 'null' }}");
+            console.log('Principal normalizada:', primaryPositionName);
+            console.log('Secundária normalizada:', secondaryPositionName);
+            console.log('Coordenadas principal:', primaryCoords);
+            console.log('Coordenadas secundária:', secondaryCoords);
+            console.log('Posições disponíveis:', Object.keys(fieldPositions));
         }
 
-        // Inicialização quando a página carregar
+        // Inicialização
         document.addEventListener('DOMContentLoaded', function () {
             // Primeiro posiciona baseado nos dados do banco
             positionPlayers();
 
-            // Depois adiciona os listeners para mudanças nos selects
+            // Depois adiciona listeners para os selects
             const primarySelect = document.querySelector('select[name="posicao_principal"]');
             const secondarySelect = document.querySelector('select[name="posicao_secundaria"]');
 

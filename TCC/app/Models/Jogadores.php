@@ -32,7 +32,7 @@ class Jogadores extends Model
     // Relacionamento com avaliações ------
     public function avaliacoes()
     {
-        return $this->hasMany(Avaliacao::class, 'jogador_id');
+        return $this->hasOne(Avaliacao::class, 'jogador_id');
     }
 
     public function getUltimaAvaliacaoAttribute()

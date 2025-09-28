@@ -10,6 +10,20 @@
                     <h1>Sistema de Peneiras</h1>
                     <p>Gestão e Formação • Champions FC • 2024</p>
                 </div>
+                <label for="subdivisao">Filtrar por subdivisão:</label>
+                <select name="subdivisao" id="subdivisao" onchange="this.form.submit()">
+                    <option value="">Todas</option>
+                    <option value="Sub-17" {{ request('subdivisao') == 'Sub-17' ? 'selected' : '' }}>Sub-17</option>
+                    <option value="Sub-20" {{ request('subdivisao') == 'Sub-20' ? 'selected' : '' }}>Sub-20</option>
+                    <option value="Profissional" {{ request('subdivisao') == 'Profissional' ? 'selected' : '' }}>
+                        Profissional</option>
+                </select>
+                <button class="setting-btn">
+                    <span class="bar bar1"></span>
+                    <span class="bar bar2"></span>
+                    <span class="bar bar1"></span>
+                    
+                </button>
             </div>
 
             <div class="quick-stats">
@@ -157,3 +171,4 @@
         </div>
     </div>
 </div>
+@endsection
