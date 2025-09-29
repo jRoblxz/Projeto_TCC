@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
+use App\Models\Peneiras;
 
 class UserController
 {
@@ -21,7 +22,9 @@ class UserController
 
     public function create()
     {
-        return view('telas_forms.forms1');
+        $peneiras = Peneiras::where('status', 'agendada')->get();
+
+        return view('telas_forms.forms1', compact('peneiras'));
     }
 
     public function store(UserRequest $request)

@@ -32,7 +32,7 @@
               <option value="" selected disabled>Selecione</option>
               @foreach($peneiras as $peneira)
                 <option value="{{ $peneira->id }}" {{ old('peneira_id') == $peneira->id ? 'selected' : '' }}>
-                  {{ $peneira->nome }} - {{ \Carbon\Carbon::parse($peneira->data)->format('d/m/Y') }}
+                  {{ $peneira->nome_evento }}
                 </option>
               @endforeach
             </select>          

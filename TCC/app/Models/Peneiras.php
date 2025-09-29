@@ -12,5 +12,9 @@ class Peneiras extends Model
     protected $fillable = [
         'nome_evento',
         'data_evento',
+        'local',
+        'descricao',
+        'status',
+        'sub_divisao',
     ];
 }
