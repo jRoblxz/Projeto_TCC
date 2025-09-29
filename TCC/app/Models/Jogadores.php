@@ -66,9 +66,5 @@ class Jogadores extends Model
 
         return $abreviacao;
     }
-
-    
-
-
     // ----------------------------
 }

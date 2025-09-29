@@ -37,9 +37,8 @@ class UserController
         // Cadastrar o jogador no banco de dados
         $pessoas = Pessoas::create([
             'nome_completo' => $request->nome_completo,
-            #'idade' => $request->idade,
             'data_nascimento' => $request->data_nascimento,
-            #'cidade' => $request->cidade, #deve adicionar no banco de dados
+            'cidade' => $request->cidade,
             'cpf' => $request->cpf,
             'rg' => $request->rg,
             'email' => $request->email,
@@ -56,7 +55,7 @@ class UserController
             'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
             'altura_cm' => $request->altura_cm,
             'peso_kg' => $request->peso_kg,
-            'video_apresentacao_url' => $request->video_apresentacao_url, #video_skills_url pode ser deletado no banco
+            'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
 
         // Redirecionar para a tela de confirmação
