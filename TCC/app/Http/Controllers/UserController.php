@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Inscricoes;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
 use App\Models\Peneiras;
+use Carbon\Carbon;
 
 class UserController
 {
@@ -61,8 +63,14 @@ class UserController
             'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
 
+        $inscricao = Inscricoes::create([
+            'jogador_id' => $jogadores->id,
+            'peneira_id' => $request->peneira_id,
+            'data_inscricao' => Carbon::now(),
+        ]);
+
         // Redirecionar para a tela de confirmação
-        return redirect()->route('tela.confirmacao');
+        return view('telas_forms.confirmacao', compact('inscricao'));
 
     }
 }
