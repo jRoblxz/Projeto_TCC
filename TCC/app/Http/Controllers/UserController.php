@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Inscricoes;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
+use App\Models\Peneiras;
+use Carbon\Carbon;
 
 class UserController
 {
@@ -21,7 +24,9 @@ class UserController
 
     public function create()
     {
-        return view('telas_forms.forms1');
+        $peneiras = Peneiras::where('status', 'agendada')->get();
+
+        return view('telas_forms.forms1', compact('peneiras'));
     }
 
     public function store(UserRequest $request)
@@ -37,9 +42,8 @@ class UserController
         // Cadastrar o jogador no banco de dados
         $pessoas = Pessoas::create([
             'nome_completo' => $request->nome_completo,
-            #'idade' => $request->idade,
             'data_nascimento' => $request->data_nascimento,
-            #'cidade' => $request->cidade, #deve adicionar no banco de dados
+            'cidade' => $request->cidade,
             'cpf' => $request->cpf,
             'rg' => $request->rg,
             'email' => $request->email,
@@ -56,11 +60,17 @@ class UserController
             'historico_lesoes_cirurgias' => $request->historico_lesoes_cirurgias,
             'altura_cm' => $request->altura_cm,
             'peso_kg' => $request->peso_kg,
-            'video_apresentacao_url' => $request->video_apresentacao_url, #video_skills_url pode ser deletado no banco
+            'video_apresentacao_url' => $request->video_apresentacao_url,
+        ]);
+
+        $inscricao = Inscricoes::create([
+            'jogador_id' => $jogadores->id,
+            'peneira_id' => $request->peneira_id,
+            'data_inscricao' => Carbon::now(),
         ]);
 
         // Redirecionar para a tela de confirmação
-        return redirect()->route('tela.confirmacao');
+        return view('telas_forms.confirmacao', compact('inscricao'));
 
     }
 }

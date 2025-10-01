@@ -28,7 +28,7 @@
 
         <div class="registration-number">
             <label>Número de Inscrição</label>
-            <div class="number">PEN-2024-0847</div>
+            <div class="number">{{ $inscricao->numero_inscricao }} </div>
         </div>
 
         <div class="divider"></div>
