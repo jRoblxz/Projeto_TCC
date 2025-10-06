@@ -106,11 +106,7 @@
                     <div class="overall-score">
                         <h3>Overall Score</h3>
                         <div class="score-value editable-field">
-                            <input type="number" name="nota" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Nota">
-                            <!--<!<input type="text" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Score">
-                                    <input type="number" step="0.1" name="nota"
-                                        value="{{ old('nota', $jogador->ultima_avaliacao->nota) }}" placeholder="Nota de 0 a 10"
-                                        class="form-control">-->
+                            <input type="number" name="nota" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Nota">                           
                         </div>
                     </div>
 
