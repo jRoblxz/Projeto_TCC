@@ -139,10 +139,10 @@ class AdmController
             $pessoa = $jogador->pessoa;
 
             // Deletar o jogador primeiro
-            $jogador->delete();
+           // $jogador->delete();
 
             // Deletar a pessoa
-            $pessoa->delete();
+            $jogador->pessoa->delete();
 
             return redirect()->route('jogadores.index')
                 ->with('success', 'Jogador deletado com sucesso!');
