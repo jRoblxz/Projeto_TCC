@@ -105,8 +105,9 @@
                 <div class="details-section">
                     <div class="overall-score">
                         <h3>Overall Score</h3>
-                        <div class="score-value editable-field">
-                            <input type="number" name="nota" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Nota">                           
+                        <div class="score-value">
+                            {{ $jogador->rating_medio ?? 0 }}
+                            {{-- <input type="number" name="nota" value="{{ $jogador->rating_medio ?? 0 }}" placeholder="Nota">                            --}}
                         </div>
                     </div>
 
@@ -147,11 +148,11 @@
                                                             <label class="form-check-label" for="cirurgia_nao">Não</label>
                                                         </div>-->
                         </p><br>
-                        <h4>Avaliação</h4>
+                        {{-- <h4>Avaliação</h4>
                         <textarea name="observacoes" placeholder="Observações" rows="6"
                             class="form-control">{{ $jogador->ultima_avaliacao?->observacoes ?? '' }}</textarea>
 
-                        <!-- <p>{{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}</p>-->
+                        <!-- <p>{{ $jogador->ultima_avaliacao?->observacoes ?? 'Nenhuma observação.' }}</p>--> --}}
                     </div>
 
                     <div class="evaluations">

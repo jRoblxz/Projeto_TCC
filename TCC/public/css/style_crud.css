@@ -1806,7 +1806,7 @@ h1 {
     font-family: "fonte_player", sans-serif;
 }
 
-.header-peneira h1 {
+.titulo-peneira h1 {
     color: white;
     font-size: 2.5em;
 }
@@ -1994,6 +1994,7 @@ h1 {
 
 .card-peneira-actions {
     display: flex;
+    justify-content: space-around;
     gap: 5px;
     padding-top: 15px;
     border-top: 1px solid #e2e8f0;
