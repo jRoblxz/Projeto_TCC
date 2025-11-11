@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdmController;
+use App\Http\Controllers\TesteController;
 use App\Http\Controllers\PeneiraController;
+use App\Http\Controllers\EquipeController;
 use Illuminate\Support\Facades\Route;
 
 // ROTAS DE ADMINISTRAÇÃO DE JOGADORES (CRUD) - OK
@@ -28,8 +30,10 @@ Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.c
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
 // --------------------------------------------------------------------------------------------
 
-// ROTAS DE PENEIRAS
-Route::resource('peneiras', PeneiraController::class);
+// ROTA PARA LÓGICA DE MONTAR EQUIPE
+Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
+Route::get('/peneiras/{id}', [PeneiraController::class, 'show'])->name('peneira.show');
+
 
 
 

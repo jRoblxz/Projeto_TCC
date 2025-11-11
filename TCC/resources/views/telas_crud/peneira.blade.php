@@ -1,5 +1,4 @@
-@extends('navbar')
-@section('content')
+@extends('navbar') @section('content')
     <div class="container">
         <div class="header-peneira">
             <h1>Gerenciamento de Peneiras</h1>
@@ -12,6 +11,7 @@
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
                 </div>
+
                 <button class="btn-peneira btn-primary" onclick="abrirFormModal('nova')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -109,8 +109,8 @@
                 </div>
             @endif
         </div>
-    </div>
 
+    
     <div class="modal" id="modal-form-peneira">
         <div class="modal-content">
             <button class="modal-close" onclick="fecharModal('modal-form-peneira')">&times;</button>

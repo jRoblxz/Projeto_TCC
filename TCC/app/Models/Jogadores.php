@@ -67,4 +67,13 @@ class Jogadores extends Model
         return $abreviacao;
     }
     // ----------------------------
+    public function equipes()
+    {
+        return $this->belongsToMany(
+            Equipe::class,          
+            'JogadoresPorEquipe', 
+            'jogador_id',         
+            'equipe_id'           
+        );
+    }
 }
