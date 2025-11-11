@@ -32,7 +32,9 @@ Route::resource('peneiras', PeneiraController::class);
 
 
 
-
+Route::get('/peneira', function () {
+    return view('telas_crud.peneira');
+});
 
 
 #ROTAS frontend JOÃO 
@@ -41,8 +43,8 @@ Route::get('/player_info', function () {
     return view('telas_crud.player_info');
 });
 
-Route::get('/player_edit', function () {
-    return view('telas_crud.player_edit');
+Route::get('/peneira', function () {
+    return view('telas_crud.peneira');
 });
 */
 
