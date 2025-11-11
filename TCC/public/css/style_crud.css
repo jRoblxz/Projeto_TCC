@@ -1817,8 +1817,8 @@ select {
 }
 
 .header-peneira h1 {
-    color: #333;
-    font-size: 28px;
+    color: #14244d;
+    font-size: 2.5em;
 }
 
 .header-actions {
@@ -1936,7 +1936,7 @@ select {
     left: 0;
     right: 0;
     height: 5px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    background: #14244d;
 }
 
 .card-header-peneira {
@@ -1949,7 +1949,7 @@ select {
 .card-title-peneira {
     font-size: 20px;
     font-weight: 700;
-    color: #2d3748;
+    color: #851114;
     margin-bottom: 5px;
 }
 
@@ -2002,7 +2002,7 @@ select {
     margin-bottom: 20px;
 }
 
-.card-actions {
+.card-actions-peneira {
     display: flex;
     gap: 10px;
     padding-top: 15px;
@@ -2012,129 +2012,4 @@ select {
 .btn-sm {
     padding: 8px 16px;
     font-size: 13px;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 15px;
-    padding: 30px;
-    max-width: 600px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideIn 0.3s;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateY(-50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.modal-header h2 {
-    color: #2d3748;
-    font-size: 24px;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    color: #a0aec0;
-    transition: color 0.3s;
-}
-
-.close-btn:hover {
-    color: #2d3748;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #2d3748;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 14px;
-    transition: border-color 0.3s;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #667eea;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-@media (max-width: 768px) {
-    .cards-grid-peneira {
-        grid-template-columns: 1fr;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .search-box {
-        max-width: 100%;
-    }
 }
