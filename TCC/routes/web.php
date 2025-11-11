@@ -35,6 +35,8 @@ Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEq
 Route::get('/peneiras/{id}', [PeneiraController::class, 'show'])->name('peneira.show');
 
 
+// ROTAS DE PENEIRAS
+Route::resource('peneiras', PeneiraController::class);
 
 
 

@@ -577,9 +577,9 @@
         <div class="header-peneira-id">
             <div class="header-top">
                 <div>
-                    <h1 class="titulo-peneira">Peneira Sub-17 São Paulo FC</h1>
+                    <h1 class="titulo-peneira">{{ $peneiras->nome_evento }}</h1>
                 </div>
-                <span class="status-badge">Aberta</span>
+                <span class="status-badge">{{ $peneiras->status }}</span>
             </div>
 
             <div class="info-grid">
@@ -594,7 +594,7 @@
                     </div>
                     <div class="info-content">
                         <h4>Data e Horário</h4>
-                        <p>15/12/2025 - 14:00</p>
+                        <p>{{ $peneiras->data_evento }}</p>
                     </div>
                 </div>
 
@@ -607,7 +607,7 @@
                     </div>
                     <div class="info-content">
                         <h4>Local</h4>
-                        <p>CT Barra Funda</p>
+                        <p>{{ $peneiras->local }}</p>
                     </div>
                 </div>
 
@@ -622,7 +622,7 @@
                     </div>
                     <div class="info-content">
                         <h4>Faixa Etária</h4>
-                        <p>15 - 17 anos</p>
+                        <p>{{ $peneiras->sub_divisao }}</p>
                     </div>
                 </div>
 
@@ -642,21 +642,32 @@
 
             <div class="descricao-peneira">
                 <h3>Sobre a Peneira</h3>
-                <p>Avaliação técnica para a categoria Sub-17 do São Paulo FC. Os testes incluirão avaliações físicas,
-                    fundamentos técnicos individuais e jogo coletivo. É necessário trazer documento com foto e atestado
-                    médico atualizado. A seleção será feita por comissão técnica especializada.</p>
+                <p>{{ $peneiras->descricao }}</p>
             </div>
 
             <div class="acoes-principais">
-                <button class="btn-peneira-id btn-primary-peneira-id" onclick="abrirModalFormacao()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
-                    </svg>
-                    Formar Times
-                </button>
+                <h3>Gerador de Equipes</h3>
+
+                <form action="{{ route('peneiras.montarEquipes', ['id' => $peneiras->id]) }}" method="POST">
+                    @csrf <p>Clique no botão abaixo para montar automaticamente as equipes com os jogadores inscritos e
+                        disponíveis.</p>
+
+                    <button type="submit" class="btn-peneira btn-primary" style="background-color: #007bff; color: white;">
+                        Gerar Equipes Agora
+                    </button>
+                </form>
+
+                @if (session('success'))
+                    <div style="color: green; margin-top: 10px; font-weight: bold;">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div style="color: red; margin-top: 10px; font-weight: bold;">
+                        {{ session('error') }}
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -752,7 +763,7 @@
             </div>
         </div>
     </div>
-            
+
     <script src="{{ asset('js/player.js') }}"></script>
     </body>
 

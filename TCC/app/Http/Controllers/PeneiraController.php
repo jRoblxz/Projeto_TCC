@@ -19,11 +19,16 @@ class PeneiraController
         // Lógica para listar as peneiras
         // [CORREÇÃO] Adicionado ->get() para executar a consulta
         $peneiras = Peneiras::orderByDesc('data_evento')->get(); 
+
+        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
         
         // [NOTA] Certifique-se que este view path está correto.
         // Se seu arquivo está em /resources/views/telas_crud/peneira.blade.php
         // você deve usar: return view('telas_crud.peneira', compact('peneiras'));
-        return view('telas_crud.peneira', compact('peneiras')); 
+        return view('telas_crud.peneira', [
+            'peneiras' => $peneiras,
+            'jogadores' => $jogadores
+        ]);
     }
     
     public function store(Request $request)
@@ -44,11 +49,21 @@ class PeneiraController
     
     public function show($id)
     {
-        // Lógica para mostrar detalhes de uma peneira específica
+        // 1. Lógica para mostrar detalhes de uma peneira específica (você já tinha)
         $peneiras = Peneiras::findOrFail($id);
         
-        // [NOTA] Você precisa criar este arquivo de view: /resources/views/peneiras/show.blade.php
-        return view('peneiras.show', compact('peneiras'));
+        // 2. [CORREÇÃO] Adicione esta linha para buscar os jogadores
+        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
+
+        // 3. [CORREÇÃO] Altere o return para enviar AMBAS as variáveis
+        return view('telas_crud.peneira_id', [
+            'peneiras' => $peneiras,
+            'jogadores' => $jogadores
+        ]);
+
+        /* // O seu código antigo estava assim e só enviava 'peneiras':
+        return view('telas_crud.peneira_id', compact('peneiras'));
+        */
     }
     
     public function edit($id)
