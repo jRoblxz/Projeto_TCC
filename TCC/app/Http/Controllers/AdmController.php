@@ -20,7 +20,7 @@ class AdmController
 
         $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
 
-        return view('telas_crud.players', ['jogadores' => $jogadores]);
+        return view('telas_crud.peneira_id', ['jogadores' => $jogadores]);
     }
 
     //tela/rota  da view Home
