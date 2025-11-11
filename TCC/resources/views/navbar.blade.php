@@ -36,7 +36,7 @@
         </div>
 
         <!-- Players -->
-        <div  onclick="window.location.href='{{ route('tela.peneira') }}'" class="nav-item">
+        <div  onclick="window.location.href='{{ route('peneiras.index') }}'" class="nav-item">
             <img src="{{ asset('img/jogadores.PNG') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Jogadores</div>
         </div>

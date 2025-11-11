@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 // ROTAS DE ADMINISTRAÇÃO DE JOGADORES (CRUD) - OK
 Route::get('/peneira_id', [AdmController::class, 'index'])->name('peneira.index'); #tela de visualização de usuários -> (ok)
+
+
 Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info'); #tela de detalhes de um usuário específico (ok)
 Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit'); #tela de edição de um usuário específico (ok)
 //------------------------------------------------------------------------------------------------------------
@@ -31,8 +33,6 @@ Route::resource('peneiras', PeneiraController::class);
 
 
 
-
-Route::get('/peneira', function () { return view('telas_crud.peneira');})->name('tela.peneira');
 
 Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index'); #tela de visualização de usuários -> (ok)
 
