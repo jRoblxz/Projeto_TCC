@@ -1,16 +1,17 @@
-@extends('navbar')
-@section('content')
+@extends('navbar') @section('content')
     <div class="container">
         <div class="header-peneira">
             <h1>Gerenciamento de Peneiras</h1>
             <div class="header-actions">
                 <div class="search-box">
                     <input type="text" placeholder="Buscar peneiras..." id="searchInput">
+                    
                     <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
                 </div>
+
                 <button class="btn-peneira btn-primary" onclick="abrirFormModal('nova')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -23,71 +24,66 @@
 
         <div class="cards-grid-peneira" id="peneirasGrid">
             
-            <div class="card-peneira">
-                <div class="card-header-peneira">
-                    <div>
-                        <div class="card-title-peneira">Peneira Sub-17 São Paulo FC</div>
+            @forelse($peneiras as $peneira)
+                <div class="card-peneira">
+                    <div class="card-header-peneira">
+                        <div>
+                            <div class="card-title-peneira">{{ $peneira->nome_evento }}</div>
+                        </div>
+                        <span class="card-status-peneira status-{{ $peneira->status }}">
+                            {{ ucfirst($peneira->status) }} </span>
                     </div>
-                    <span class="card-status-peneira status-aberta">Aberta</span>
-                </div>
-                <div class="card-info-peneira">
-                    <div class="info-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                        <span>15 de Dezembro de 2025 às 14:00</span>
+                    <div class="card-info-peneira">
+                        <div class="info-item">
+                            <svg viewBox="0 0 24 24" ...> </svg>
+                            <span>
+                                {{ $peneira->data_evento ? \Carbon\Carbon::parse($peneira->data_evento)->format('d/m/Y \à\s H:i') : 'Data não definida' }}
+                            </span>
+                        </div>
+                        <div class="info-item">
+                            <svg viewBox="0 0 24 24" ...> </svg>
+                            <span>{{ $peneira->local }}</span>
+                        </div>
+                        <div class="info-item">
+                            <svg viewBox="0 0 24 24" ...> </svg>
+                            <span>{{ $peneira->sub_divisao }}</span>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span>CT Barra Funda - São Paulo, SP</span>
+                    <div class="card-description">
+                        {{ $peneira->descricao }}
                     </div>
-                    <div class="info-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-                        <span>Idade: 15-17 anos | 30 vagas</span>
+                    
+                    <div class="card-peneira-actions">
+                        <a class="btn-peneira btn-success btn-sm-peneira" 
+                           href="{{ route('peneira.show', ['id' => $peneira->id]) }}">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            Visualizar
+                        </a>
+                        
+                        <button class="btn-peneira btn-warning btn-sm-peneira" onclick="abrirFormModal('editar')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" ...> </svg>
+                            Editar
+                        </button>
+                        <button class="btn-peneira btn-danger btn-sm" onclick="abrirExcluirModal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" ...> </svg>
+                            Excluir
+                        </button>
                     </div>
                 </div>
-                <div class="card-description">
-                    Avaliação técnica para a categoria Sub-17. Testes físicos, fundamentos e jogo coletivo. Traga documento com foto e atestado médico.
+            @empty
+                <div class="card-peneira" style="text-align: center; padding: 20px;">
+                    <p>Nenhuma peneira cadastrada no momento.</p>
+                    <p>Clique em "Nova Peneira" para começar.</p>
                 </div>
-                
-                <div class="card-peneira-actions">
-                    <button class="btn-peneira btn-success btn-sm-peneira" onclick="window.location.href='{{ route('peneira.index') }}'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        Visualizar
-                    </button>
-                    <button class="btn-peneira btn-warning btn-sm-peneira" onclick="abrirFormModal('editar')">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        Editar
-                    </button>
-                    <button class="btn-peneira btn-danger btn-sm" onclick="abrirExcluirModal()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        </svg>
-                        Excluir
-                    </button>
-                </div>
-            </div>
+            @endforelse
+            
         </div>
-    </div>
+        </div>
 
+    
     <div class="modal" id="modal-form-peneira">
         <div class="modal-content">
             <button class="modal-close" onclick="fecharModal('modal-form-peneira')">&times;</button>
@@ -147,6 +143,7 @@
             <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
                 <input type="hidden" id="excluir-peneira-id">
                 <button class="btn-peneira btn-primary" onclick="fecharModal('modal-excluir-peneira')">Cancelar</button>
+                
                 <button class="btn-peneira btn-danger" onclick="confirmarExclusao()">Excluir</button>
             </div>
         </div>
@@ -165,7 +162,7 @@
         document.getElementById(modalId).classList.remove('show');
     }
 
-    // [ALTERADO] A função agora usa dados falsos para 'editar'
+    // Função que abre o modal, limpa o form e preenche (se for edição)
     function abrirFormModal(modo) {
         peneiraForm.reset(); // Limpa o formulário
         document.getElementById('peneira_id').value = ''; // Limpa o ID
@@ -178,6 +175,7 @@
             modalTitulo.innerText = 'Editar Peneira (Estático)';
             
             // Preenche o formulário com dados FALSOS (hardcoded)
+            // TODO: Depois temos que fazer um fetch/AJAX pra buscar os dados reais
             document.getElementById('peneira_id').value = '999'; // ID falso
             document.getElementById('titulo').value = 'Peneira de Edição Estática';
             document.getElementById('data').value = '2025-12-01T10:00'; // Data falsa
@@ -193,6 +191,7 @@
     // [ALTERADO] A função agora usa dados falsos
     function abrirExcluirModal() {
         // Preenche com dados FALSOS (hardcoded)
+        // TODO: Buscar o ID e o Título real do card que foi clicado
         document.getElementById('excluir-peneira-titulo').innerText = 'Peneira Falsa (ID: 999)';
         document.getElementById('excluir-peneira-id').value = '999';
 
@@ -210,6 +209,8 @@
             console.log('Salvando (Create) Nova Peneira');
         }
         
+        // TODO: Substituir esse alert por um submit de form real
+        // ou uma chamada AJAX.
         alert('Peneira salva com sucesso! (simulação)');
         fecharModal('modal-form-peneira');
     }
@@ -218,6 +219,7 @@
         const id = document.getElementById('excluir-peneira-id').value;
         console.log('Excluindo Peneira ID:', id);
 
+        // TODO: Fazer o AJAX de DELETE aqui...
         alert('Peneira excluída com sucesso! (simulação)');
         fecharModal('modal-excluir-peneira');
     }
