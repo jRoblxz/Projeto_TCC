@@ -1,4 +1,4 @@
-@extends('navbar')
+@extends('navbarCandidato')
 @section('content')
     <div class="container">
         <div class="header">

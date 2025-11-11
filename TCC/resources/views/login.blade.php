@@ -21,14 +21,26 @@
             <div class="right">
                 <h3>BEM VINDO DE VOLTA!</h3>
                 <p>Faça seu login</p>
-                <form>
+
+                <form method="POST" action="{{ route('login') }}">
+
+                    @csrf
+
                     <div class="input-group">
-                        <input type="text" placeholder="Usuário">
+                        <input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
                     </div>
+
+                    @error('email')
+                        <div class="alert-danger">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
                     <div class="input-group">
-                        <input type="password" placeholder="Senha">
+                        <input type="password" name="password" placeholder="Senha" required>
                     </div>
-                    <button class="button" onclick="window.location.href='{{ route('home.index') }}'">
+
+                    <button class="button" type="submit">
                         <div class="bgContainer">
                             <span>Login</span>
                             <span>Login</span>
@@ -44,6 +56,20 @@
                     </button>
                 </form>
                 <a href="#" class="forgot">Esqueceu a senha</a>
+
+                <style>
+                    .alert-danger {
+                        font-size: 0.9em;
+                        color: #D8000C;
+                        /* Vermelho */
+                        background-color: #FFD2D2;
+                        /* Fundo vermelho claro */
+                        padding: 8px;
+                        border-radius: 4px;
+                        margin-bottom: 15px;
+                        text-align: center;
+                    }
+                </style>
             </div>
         </div>
     </div>
