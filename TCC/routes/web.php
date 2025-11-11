@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdmController;
-use App\Http\Controllers\TesteController;
+use App\Http\Controllers\PeneiraController;
 use Illuminate\Support\Facades\Route;
 
 // ROTAS DE ADMINISTRAÇÃO DE JOGADORES (CRUD) - OK
@@ -16,15 +16,19 @@ Route::put('/player_upd/{jogadores}', [AdmController::class, 'update'])->name('j
 Route::delete('/destroy-user/{jogadores}', [AdmController::class, 'destroy'])->name('jogadores.delete');
 //------------------------------------------------------------------------------------------------------------
 
-// ROTAS DEDashboard / HomePage
+// ROTAS DE DASHBOARD / HOMEPAGE
 Route::get('/home', [AdmController::class, 'homepage'])->name('home.index');
 
-// ROTAS DE DE INSCRIÇÃO DE JOGADOR FUNCIONANDO CORRETAMENTE
+// ROTAS DE DE INSCRIÇÃO DE JOGADOR
 Route::get('/forms1', [UserController::class, 'create'])->name('users.create');
 Route::post('/forms1', [UserController::class, 'store'])->name('users.store');
 Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao');
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
 // --------------------------------------------------------------------------------------------
+
+// ROTAS DE PENEIRAS
+Route::resource('peneiras', PeneiraController::class);
+
 
 
 
