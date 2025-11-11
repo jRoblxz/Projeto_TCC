@@ -23,6 +23,14 @@ class AdmController
         return view('telas_crud.peneira_id', ['jogadores' => $jogadores]);
     }
 
+    public function Jogadores()
+    {
+
+        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
+
+        return view('telas_crud.players', ['jogadores' => $jogadores]);
+    }
+
     //tela/rota  da view Home
     public function homepage(Request $request)
     {
