@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdmController;
+use App\Http\Controllers\TesteController;
 use App\Http\Controllers\PeneiraController;
 use App\Http\Controllers\LoginController; // Importa o controller de login
+
+use App\Http\Controllers\EquipeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,7 +37,8 @@ Route::post('/forms1', [UserController::class, 'store'])->name('users.store');
 Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao');
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
 
-
+// ROTA PARA LÓGICA DE MONTAR EQUIPE
+Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
 /*
 |--------------------------------------------------------------------------
 | ROTAS PROTEGIDAS
