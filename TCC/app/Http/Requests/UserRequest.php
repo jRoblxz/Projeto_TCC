@@ -23,17 +23,25 @@ class UserRequest extends FormRequest
     {
         
         return [
+            // [CORREÇÃO 1] Campo obrigatório que estava faltando
+            'peneira_id' => 'required|exists:Peneiras,id',
+
             'nome_completo' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
             'cidade' => 'required|string|max:255',
             'cpf' => 'required|string|digits:11|unique:Pessoas,cpf',
             'rg' => 'required|string|digits_between:7,9|unique:Pessoas,rg',
-            'email' => 'required|string|max:255|unique:Pessoas,email',
+            
+            // [CORREÇÃO 2] Checa ambas as tabelas
+            'email' => 'required|string|max:255|unique:Pessoas,email|unique:users,email',
+            
             'telefone' => 'required|string|max:15',
             'altura_cm' => 'required|numeric|min:0',
             'peso_kg' => 'required|numeric|min:0',
-            'foto_perfil_url' => 'nullable|image|mimes:jpg,jpeg,png,gif',
-            'video_apresentacao_url' => 'nullable|url|max:255',
+
+            // [CORREÇÃO 3] Alinhado com o HTML 'required'
+            'foto_perfil_url' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'video_apresentacao_url' => 'required|url|max:255',
 
             # VALIDAÇÃO DAS OPÇÕES 
             'pe_preferido' => 'required|in:direito,esquerdo',

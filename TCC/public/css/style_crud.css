@@ -1951,17 +1951,21 @@ h1 {
     text-transform: uppercase;
 }
 
-.status-aberta {
+.status-EM_ANDAMENTO{
     background: #c6f6d5;
     color: #22543d;
 }
 
-.status-encerrada {
+.status-FINALIZADA {
+    background: #fed7d7;
+    color: #742a2a;
+}
+.status-CANCELADA {
     background: #fed7d7;
     color: #742a2a;
 }
 
-.status-agendada {
+.status-AGENDADA {
     background: #bee3f8;
     color: #2c5282;
 }

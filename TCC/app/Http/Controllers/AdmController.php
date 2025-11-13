@@ -21,7 +21,7 @@ class AdmController
         $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
         
 
-        return view('telas_crud.peneira_id', ['jogadores' => $jogadores]);
+        return view('telas_crud.players', ['jogadores' => $jogadores]);
     }
 
     public function Jogadores()

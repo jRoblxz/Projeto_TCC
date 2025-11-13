@@ -7,37 +7,31 @@
     <title>Grêmio Prudente - Scouting</title>
     <link rel="stylesheet" href="{{ asset('css/style_crud.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/logo-copia.png') }}">
-  <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body>
     <nav class="sidebar">
         <!-- Perfil -->
-        <div class="nav-item profile">
+        <div class="nav-item profile" onclick="setActive(this)">
             <img src="{{ asset('img/logo-copia.png') }}" alt="Avatar" class="avatar">
-            <div class="tooltip">Logo</div>
+            <div class="tooltip">Perfil</div>
         </div>
 
         <!-- Dashboard -->
         <div onclick="window.location.href='{{ route('home.index') }}'" class="nav-item">
             <img src="{{ asset('img/RECTANGLE.PNG') }}" alt="Dashboard" class="icon">
-            <div class="tooltip">Dashboard</div>
+            <div class="tooltip">Perfil</div>
         </div>
 
         <!-- Players -->
-        <div  onclick="window.location.href='{{ route('peneiras.index') }}'" class="nav-item">
-            <svg viewBox="0 0 24 24">
-                <path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21Z" stroke="#851114" stroke-width="1.5" />
-            </svg>
-            <div class="tooltip">Peneiras</div>
-        </div>
-
-        <!-- Estatísticas -->
-        <div class="nav-item" onclick="window.location.href='{{ route('jogadores.index') }}'">
+        <div onclick="window.location.href='{{ route('jogadores.index') }}'" class="nav-item">
             <img src="{{ asset('img/jogadores.PNG') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Jogadores</div>
         </div>
+
+
 
         <!-- Configurações -->
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
