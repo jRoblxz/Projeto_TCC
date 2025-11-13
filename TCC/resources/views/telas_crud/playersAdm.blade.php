@@ -1,4 +1,4 @@
-@extends(auth()->user()->role === 'adm' ? 'navbar' : 'navbarCandidato')
+@extends('navbarCandidato')
 @section('content')
     <div class="container">
         <div class="header">

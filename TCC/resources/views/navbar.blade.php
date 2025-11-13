@@ -7,7 +7,7 @@
     <title>Grêmio Prudente - Scouting</title>
     <link rel="stylesheet" href="{{ asset('css/style_crud.css') }}">
     <link rel="icon" type="image/png" href="{{ asset('img/logo-copia.png') }}">
-  <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">-->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
@@ -21,20 +21,20 @@
 
         <!-- Dashboard -->
         <div onclick="window.location.href='{{ route('home.index') }}'" class="nav-item">
-            <img src="{{ asset('img/RECTANGLE.PNG') }}" alt="Dashboard" class="icon">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=home" class="icon" />
             <div class="tooltip">Dashboard</div>
         </div>
 
-        <!-- Players -->
-        <div  onclick="window.location.href='{{ route('peneiras.index') }}'" class="nav-item">
+        <!-- Peneiras -->
+        <div onclick="window.location.href='{{ route('peneiras.index') }}'" class="nav-item">
             <svg viewBox="0 0 24 24">
-                <path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21Z" stroke="#851114" stroke-width="1.5" />
+                <path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21Z" stroke="#fff" stroke-width="1.5" />
             </svg>
             <div class="tooltip">Peneiras</div>
         </div>
 
-        <!-- Estatísticas -->
-        <div class="nav-item" onclick="window.location.href='{{ route('jogadores.index') }}'">
+        <!-- Players -->
+        <div onclick="window.location.href='{{ route('jogadores.index') }}'" class="nav-item">
             <img src="{{ asset('img/jogadores.PNG') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Jogadores</div>
         </div>
