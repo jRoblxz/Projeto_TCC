@@ -84,18 +84,20 @@ class AdmController
         ]);
 
         // Buscar o jogador com pessoa
+        $diskName = 'gcs';
         $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
+
 
         // Upload da imagem se enviada
         $fotoPath = $jogador->pessoa->foto_perfil_url; // Manter a atual
         if ($request->hasFile('image')) {
             // Deletar imagem antiga se existir
-            if ($fotoPath && Storage::exists('public/' . $fotoPath)) {
-                Storage::delete('public/' . $fotoPath);
+            if ($fotoPath && Storage::disk($diskName)->exists($fotoPath)) {
+                Storage::disk($diskName)->delete($fotoPath);
             }
 
             // Salvar nova imagem
-            $fotoPath = $request->file('image')->store('user', 'public');
+            $fotoPath = $request->file('image')->store('user', $diskName);
         }
 
         // Atualizar dados da pessoa
@@ -133,12 +135,16 @@ class AdmController
     public function destroy(Jogadores $jogadores)
     {
         try {
+            $diskName = 'gcs';
+
             // O jogador já é injetado pela rota
             $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
 
             // Deletar foto se existir
-            if ($jogador->pessoa->foto_perfil_url && Storage::exists('public/' . $jogador->pessoa->foto_perfil_url)) {
-                Storage::delete('public/' . $jogador->pessoa->foto_perfil_url);
+            // Deletar foto se existir NO GCS
+            $fotoPath = $jogador->pessoa->foto_perfil_url;
+            if ($fotoPath && Storage::disk($diskName)->exists($fotoPath)) {
+                Storage::disk($diskName)->delete($fotoPath);
             }
 
             // Deletar avaliações relacionadas primeiro
@@ -153,7 +159,7 @@ class AdmController
             // Deletar a pessoa
             $jogador->pessoa->delete();
 
-            return redirect()->route('jogadores.index')
+            return redirect()->back()
                 ->with('success', 'Jogador deletado com sucesso!');
         } catch (\Exception $e) {
             return redirect()->back()
