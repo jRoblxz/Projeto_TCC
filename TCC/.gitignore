@@ -23,3 +23,8 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 notas.txt
+
+# Credenciais de Serviço do Google Cloud
+/TCC/storage/projetotcc-478522-255e1b6a806d.json
+# OU (melhor): Ignore todas as chaves .json dentro de pastas de storage/keys se for o padrão
+# *.json
