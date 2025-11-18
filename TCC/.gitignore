@@ -18,7 +18,6 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/storage/app/.projetotcc-478522-255e1b6a806d.json
 /vendor
 Homestead.json
 Homestead.yaml
