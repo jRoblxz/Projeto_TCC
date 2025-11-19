@@ -40,6 +40,9 @@ Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instr
 // ROTA PARA LÓGICA DE MONTAR EQUIPE
 Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
 
+Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
+
+
 
 
 // [CORREÇÃO] Rota movida para cá

@@ -211,7 +211,7 @@ h1 {
     padding: 15px;
     margin: -20px -20px 20px -20px;
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     font-family: "fonte_player", sans-serif;
 }
@@ -242,7 +242,7 @@ h1 {
 .info-value {
     color: #333;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .evaluation-title {
@@ -275,6 +275,335 @@ h1 {
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }*/
+
+/* ========== SEÇÃO DE FILTROS ========== */
+.filter-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: "fonte_player", sans-serif;
+    transition: all 0.3s ease;
+    position: relative; /* Necessário para z-index funcionar */
+    z-index: 9999 !important; /* Força o elemento a ir para a frente */
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #851114;
+    box-shadow: 0 0 0 3px rgba(133, 17, 20, 0.1);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 25px;
+    font-family: "fonte_player", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333;
+    position: relative; /* Necessário para z-index funcionar */
+    z-index: 9999 !important; /* Força o elemento a ir para a frente */
+}
+
+.filter-btn:hover {
+    border-color: #851114;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: #851114;
+    border-color: #851114;
+    color: white;
+    font-weight: bold;
+}
+
+/* ========== BOTÕES DE AÇÃO NO CARD ========== */
+.card-actions-top {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover .card-actions-top {
+    opacity: 1;
+}
+
+.action-btn-card {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.edit-rating-btn {
+    background: rgba(52, 152, 219, 0.9);
+    color: white;
+}
+
+.edit-rating-btn:hover {
+    background: #3498db;
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.delete-btn-card {
+    background: rgba(231, 76, 60, 0.9);
+    color: white;
+}
+
+.delete-btn-card:hover {
+    background: #e74c3c;
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+/* ========== MODAL DE RATING ========== */
+.modal-rating {
+    display: none !important;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-rating.show {
+    opacity: 1;
+}
+
+.modal-rating-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-rating.show .modal-rating-content {
+    transform: scale(1);
+}
+
+.modal-rating-content h2 {
+    color: #851114;
+    margin-bottom: 10px;
+    font-family: "fonte_player", sans-serif;
+    font-size: 1.8rem;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.form-group-modal {
+    margin: 25px 0;
+}
+
+.form-group-modal label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+    font-family: "fonte_player", sans-serif;
+}
+
+.rating-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 18px;
+    font-family: "fonte_player", sans-serif;
+    transition: border-color 0.3s;
+}
+
+.rating-input:focus {
+    outline: none;
+    border-color: #851114;
+    box-shadow: 0 0 0 3px rgba(133, 17, 20, 0.1);
+}
+
+.rating-preview {
+    text-align: center;
+    margin-top: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.rating-preview span {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #851114;
+    font-family: "fonte_player", sans-serif;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+.btn-cancel-modal,
+.btn-save-modal {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: "fonte_player", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-modal {
+    background: #e2e8f0;
+    color: #333;
+}
+
+.btn-cancel-modal:hover {
+    background: #cbd5e0;
+}
+
+.btn-save-modal {
+    background: #851114;
+    color: white;
+}
+
+.btn-save-modal:hover {
+    background: #a01519;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(133, 17, 20, 0.3);
+}
+
+/* ========== MENSAGEM SEM RESULTADOS ========== */
+.no-results-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-family: "fonte_player", sans-serif;
+}
+
+.no-results-message .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.no-results-message p {
+    font-size: 1.2rem;
+}
+
+/* ========== NOTIFICAÇÕES TOAST ========== */
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: white;
+    font-family: "fonte_player", sans-serif;
+    font-weight: bold;
+    z-index: 4000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.notification-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification-toast.success {
+    background: #48bb78;
+}
+
+.notification-toast.error {
+    background: #f56565;
+}
+
+/* ========== ANIMAÇÃO DOS CARDS ========== */
+.card {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 768px) {
+    .filter-buttons {
+        flex-direction: column;
+    }
+
+    .filter-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-rating-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .card-actions-top {
+        opacity: 1; /* Sempre visível no mobile */
+    }
+}
 
 .btn-teste {
     align-self: center;
@@ -1497,7 +1826,7 @@ h1 {
 .candidate-info {
     flex: 1;
     margin-bottom: 20px;
-    color: #333
+    color: #333;
 }
 
 .candidate-name {
