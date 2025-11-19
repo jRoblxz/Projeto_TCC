@@ -11,7 +11,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body>
+<body class="padrao-global @yield('body-class')">
     <nav class="sidebar">
         <!-- Perfil -->
         <div class="nav-item profile">
