@@ -290,6 +290,53 @@ h1 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }
+
+.button-card-delete {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgb(20, 20, 20);
+    border: none;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+    cursor: pointer;
+    transition-duration: 0.3s;
+    overflow: hidden;
+    position: relative;
+    gap: 2px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.svgIcon {
+    width: 12px;
+    transition-duration: 0.3s;
+}
+
+.svgIcon path {
+    fill: white;
+}
+
+.button-card-delete:hover {
+    transition-duration: 0.3s;
+    background-color: rgb(255, 69, 69);
+    align-items: center;
+    gap: 0;
+}
+
+.bin-top {
+    transform-origin: bottom right;
+}
+.button-card-delete:hover .bin-top {
+    transition-duration: 0.5s;
+    transform: rotate(160deg);
+}
+
 .card-actions {
     position: absolute;
     top: 10px;
@@ -1201,6 +1248,7 @@ h1 {
 .club-details p {
     opacity: 0.8;
     font-size: 1.1rem;
+    color: #333;
 }
 
 .quick-stats {
@@ -1256,6 +1304,7 @@ h1 {
 .stat-label {
     font-size: 0.9rem;
     opacity: 0.8;
+    color: #333;
 }
 
 .dashboard-grid {
@@ -1274,6 +1323,7 @@ h1 {
     position: relative;
     overflow: hidden;
     font-family: "fonte_player", sans-serif;
+    color: #333;
 }
 
 .card-home::before {
@@ -1334,7 +1384,7 @@ h1 {
 
 .peneira-item.encerrada {
     border-left-color: #666;
-    opacity: 0.7;
+    background: rgba(255, 17, 17, 0.1);
 }
 
 .peneira-header {
@@ -1360,13 +1410,24 @@ h1 {
     font-weight: bold;
 }
 
-.peneira-status.ativa {
-    background-color: #0c5218;
-    color: white;
+.peneira-status.EM_ANDAMENTO {
+    background: #c6f6d5;
+    color: #22543d;
 }
 
-.peneira-status.encerrada {
-    background: linear-gradient(45deg, #666, #555);
+.peneira-status.FINALIZADA {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+.peneira-status.CANCELADA {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+.peneira-status.AGENDADA {
+    background: #bee3f8;
+    color: #2c5282;
 }
 
 .peneira-info {
@@ -1374,12 +1435,18 @@ h1 {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 15px;
     font-size: 0.9rem;
+    color: #333;
 }
 
 .peneira-detail {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    color: #333;
+}
+
+.peneira-detail span {
+    color: #555; /* ✅ ADICIONAR ESTA LINHA */
 }
 
 .peneira-detail strong {
@@ -1430,17 +1497,19 @@ h1 {
 .candidate-info {
     flex: 1;
     margin-bottom: 20px;
+    color: #333
 }
 
 .candidate-name {
     font-weight: bold;
     margin-bottom: 5px;
     font-size: 1.5rem;
+    color: #2d3748;
 }
 
 .candidate-details {
     font-size: 0.85rem;
-    opacity: 0.8;
+    color: #555;
     display: flex;
     gap: 15px;
 }
@@ -1689,7 +1758,6 @@ h1 {
     border-radius: 8px;
     font-size: 14px;
 }
-
 
 @media (max-width: 768px) {
     .dashboard-container {
@@ -1951,7 +2019,7 @@ h1 {
     text-transform: uppercase;
 }
 
-.status-EM_ANDAMENTO{
+.status-EM_ANDAMENTO {
     background: #c6f6d5;
     color: #22543d;
 }
@@ -2003,7 +2071,6 @@ h1 {
     padding-top: 15px;
     border-top: 1px solid #e2e8f0;
 }
-
 
 .btn-voltar-peneira-id {
     background: white;
@@ -2160,8 +2227,6 @@ h1 {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
 }
-
-
 
 .content-section {
     background: white;

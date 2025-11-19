@@ -16,7 +16,7 @@
                         </path>
                     </svg>
                 </button>
-                <div class="player-avatar-info"><img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}"
+                <div class="player-avatar-info"><img src="{{ $jogador->pessoa->foto_perfil_url_complete }}"
                         alt="sem foto"></div>
                 <div class="player-name">{{ $jogador->pessoa->nome_completo }}</div>
 

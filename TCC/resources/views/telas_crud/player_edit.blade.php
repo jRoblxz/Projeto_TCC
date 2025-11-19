@@ -13,7 +13,7 @@
             <div class="content">
                 <div class="player-infos">
                     <div class="player-avatar">
-                        <img src="{{ asset('storage/' . $jogador->pessoa->foto_perfil_url) }}" alt="sem foto"
+                        <img src="{{ $jogador->pessoa->foto_perfil_url_complete }}" alt="sem foto"
                             id="playerImage">
                         <input type="file" name="image" id="imageUploade" accept="image/*">
                     </div>

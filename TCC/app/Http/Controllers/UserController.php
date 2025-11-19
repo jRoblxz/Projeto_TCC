@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;   // [2. NOVO] Importe o DB
 use Illuminate\Support\Facades\Hash; // [3. NOVO] Importe o Hash
 use Illuminate\Support\Facades\Log;  // [4. NOVO] Importe o Log
+use Illuminate\Support\Facades\Storage;
+use Google\Cloud\Storage\StorageClient;
 
 class UserController
 {
@@ -45,8 +47,8 @@ class UserController
         // [CORREÇÃO] Use 'AGENDADA' (maiúsculo)
         // Usei 'whereIn' para pegar também as que estão 'EM_ANDAMENTO'
         $peneiras = Peneiras::whereIn('status', ['AGENDADA', 'EM_ANDAMENTO'])
-                            ->orderByDesc('data_evento') // Para mostrar as mais novas primeiro
-                            ->get();
+            ->orderByDesc('data_evento') // Para mostrar as mais novas primeiro
+            ->get();
 
         return view('telas_forms.forms1', compact('peneiras'));
     }
@@ -62,12 +64,38 @@ class UserController
         DB::beginTransaction();
 
         try {
-            // 3. Salvar a foto
+            // 3. Salvar a foto usando o SDK do Google Cloud DIRETAMENTE
             if ($request->hasFile('foto_perfil_url')) {
-                $path = $request->file('foto_perfil_url')->store('user', 'public');
+
+                $arquivo = $request->file('foto_perfil_url');
+
+                // Gera nome único para o arquivo
+                $nomeDoArquivo = 'user/' . time() . '_' . uniqid() . '.' . $arquivo->getClientOriginalExtension();
+
+                // 🎯 SOLUÇÃO DEFINITIVA: Usa o SDK do Google Cloud diretamente
+                // Isso ignora completamente o Flysystem e suas tentativas de aplicar ACL
+                $client = new \Google\Cloud\Storage\StorageClient([
+                    'projectId' => env('GOOGLE_CLOUD_PROJECT_ID'),
+                    'keyFilePath' => env('GOOGLE_CLOUD_KEY_FILE'),
+                ]);
+
+                $bucket = $client->bucket(env('GOOGLE_CLOUD_STORAGE_BUCKET'));
+
+                // Upload do arquivo SEM nenhum parâmetro de ACL
+                $object = $bucket->upload(
+                    file_get_contents($arquivo->getRealPath()),
+                    [
+                        'name' => $nomeDoArquivo,
+                        // NÃO incluir 'predefinedAcl' ou qualquer configuração de ACL
+                        // Com Uniform Bucket Access, as permissões são gerenciadas no nível do bucket
+                    ]
+                );
+
+                $path = $nomeDoArquivo;
+                Log::info('Arquivo enviado com sucesso via SDK direto: ' . $path);
             }
 
-            // 4. Cadastrar o Pessoa
+            // 4. Cadastrar a Pessoa
             $pessoa = Pessoas::create([
                 'nome_completo' => $validatedData['nome_completo'],
                 'data_nascimento' => $validatedData['data_nascimento'],
@@ -98,35 +126,30 @@ class UserController
                 'data_inscricao' => Carbon::now(),
             ]);
 
-            // 7. [NOVO] Criar o Usuário para login
+            // 7. Criar o Usuário
             $user = User::create([
                 'name' => $pessoa->nome_completo,
                 'email' => $pessoa->email,
-                'password' => Hash::make($pessoa->cpf), // Usa o CPF como senha (CRIPTOGRAFADO)
-                'role' => 'candidato',                  // Define o 'role'
+                'password' => Hash::make($pessoa->cpf),
+                'role' => 'candidato',
             ]);
 
-            // 8. Se tudo deu certo, comita a transação
+            // 8. Comitar a transação
             DB::commit();
 
-            // 9. [CORREÇÃO] Salva o ID da inscrição na sessão
+            // 9. Salvar o ID na sessão e redirecionar
             $request->session()->flash('inscricao_id', $inscricao->id);
-
-            // 10. Redirecionar para a tela de confirmação
             return redirect()->route('tela.confirmacao');
-
         } catch (\Exception $e) {
-            // 10. Se algo deu errado, desfaz tudo (Rollback)
+            // Desfaz a transação em caso de erro
             DB::rollBack();
 
-            // Loga o erro para você poder investigar
             Log::error('Erro ao salvar inscrição: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
 
-            // Retorna para o formulário com a mensagem de erro
             return redirect()->back()
-                             ->withErrors(['submit' => 'Houve um erro ao processar sua inscrição. Tente novamente.'])
-                             ->withInput(); // Mantém os dados no formulário
+                ->withErrors(['submit' => 'Erro ao processar formulário. Tente novamente.'])
+                ->withInput();
         }
     }
-    
 }

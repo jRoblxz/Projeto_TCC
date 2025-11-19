@@ -19,7 +19,7 @@ class AdmController
     {
 
         $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
-        
+
 
         return view('telas_crud.players', ['jogadores' => $jogadores]);
     }
@@ -35,21 +35,47 @@ class AdmController
     //tela/rota  da view Home
     public function homepage(Request $request)
     {
-        $query = Jogadores::with('pessoa')->orderByDesc('id');
+        // Query para jogadores
+        $queryJogadores = Jogadores::with('pessoa')->orderByDesc('id');
 
-        // Filtro por subdivisão
+        // Query para peneiras
+        $queryPeneiras = \App\Models\Peneiras::query();
+
+        // Filtro por subdivisão (aplica em ambas as queries)
         if ($request->filled('subdivisao')) {
-            $query->whereHas('pessoa', function ($q) use ($request) {
+            // Filtro nos jogadores
+            $queryJogadores->whereHas('pessoa', function ($q) use ($request) {
                 $q->where('sub_divisao', $request->subdivisao);
             });
+
+            // Filtro nas peneiras
+            $queryPeneiras->where('sub_divisao', $request->subdivisao);
         }
 
-        $jogadores = $query->get();
-        $totalJogadores = $query->count(); // conta já filtrado
+        // Executa as queries
+        $jogadores = $queryJogadores->get();
+        $totalJogadores = $queryJogadores->count();
+
+        // Busca as peneiras e separa por status
+        $peneiras = $queryPeneiras->orderByDesc('data_evento')->get();
+        $peneirasAtivas = $peneiras->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA']);
+        $peneirasFinalizadas = $peneiras->where('status', 'FINALIZADA');
+
+        // Estatísticas
+        $stats = [
+            'total_candidatos' => $totalJogadores,
+            'peneiras_ativas' => $peneirasAtivas->count(),
+            'aprovados' => 0, // Você pode calcular baseado em avaliações
+            'em_avaliacao' => 0,
+            'avaliadores' => \App\Models\User::where('role', 'avaliador')->count(),
+        ];
 
         return view('home', [
             'jogadores' => $jogadores,
-            'totalJogadores' => $totalJogadores
+            'totalJogadores' => $totalJogadores,
+            'peneiras' => $peneiras,
+            'peneirasAtivas' => $peneirasAtivas,
+            'stats' => $stats,
         ]);
     }
 
@@ -84,18 +110,20 @@ class AdmController
         ]);
 
         // Buscar o jogador com pessoa
+        $diskName = 'gcs';
         $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
+
 
         // Upload da imagem se enviada
         $fotoPath = $jogador->pessoa->foto_perfil_url; // Manter a atual
         if ($request->hasFile('image')) {
             // Deletar imagem antiga se existir
-            if ($fotoPath && Storage::exists('public/' . $fotoPath)) {
-                Storage::delete('public/' . $fotoPath);
+            if ($fotoPath && Storage::disk($diskName)->exists($fotoPath)) {
+                Storage::disk($diskName)->delete($fotoPath);
             }
 
             // Salvar nova imagem
-            $fotoPath = $request->file('image')->store('user', 'public');
+            $fotoPath = $request->file('image')->store('user', $diskName);
         }
 
         // Atualizar dados da pessoa
@@ -133,12 +161,16 @@ class AdmController
     public function destroy(Jogadores $jogadores)
     {
         try {
+            $diskName = 'gcs';
+
             // O jogador já é injetado pela rota
             $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
 
             // Deletar foto se existir
-            if ($jogador->pessoa->foto_perfil_url && Storage::exists('public/' . $jogador->pessoa->foto_perfil_url)) {
-                Storage::delete('public/' . $jogador->pessoa->foto_perfil_url);
+            // Deletar foto se existir NO GCS
+            $fotoPath = $jogador->pessoa->foto_perfil_url;
+            if ($fotoPath && Storage::disk($diskName)->exists($fotoPath)) {
+                Storage::disk($diskName)->delete($fotoPath);
             }
 
             // Deletar avaliações relacionadas primeiro
@@ -148,12 +180,12 @@ class AdmController
             $pessoa = $jogador->pessoa;
 
             // Deletar o jogador primeiro
-           // $jogador->delete();
+            // $jogador->delete();
 
             // Deletar a pessoa
             $jogador->pessoa->delete();
 
-            return redirect()->route('jogadores.index')
+            return redirect()->back()
                 ->with('success', 'Jogador deletado com sucesso!');
         } catch (\Exception $e) {
             return redirect()->back()
