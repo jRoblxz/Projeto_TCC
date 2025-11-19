@@ -17,4 +17,9 @@ class Peneiras extends Model
         'status',
         'sub_divisao',
     ];
+
+    public function inscricoes()
+    {
+        return $this->hasMany(\App\Models\Inscricoes::class, 'peneira_id');
+    }
 }

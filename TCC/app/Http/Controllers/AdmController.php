@@ -19,7 +19,7 @@ class AdmController
     {
 
         $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
-        
+
 
         return view('telas_crud.players', ['jogadores' => $jogadores]);
     }
@@ -35,21 +35,47 @@ class AdmController
     //tela/rota  da view Home
     public function homepage(Request $request)
     {
-        $query = Jogadores::with('pessoa')->orderByDesc('id');
+        // Query para jogadores
+        $queryJogadores = Jogadores::with('pessoa')->orderByDesc('id');
 
-        // Filtro por subdivisão
+        // Query para peneiras
+        $queryPeneiras = \App\Models\Peneiras::query();
+
+        // Filtro por subdivisão (aplica em ambas as queries)
         if ($request->filled('subdivisao')) {
-            $query->whereHas('pessoa', function ($q) use ($request) {
+            // Filtro nos jogadores
+            $queryJogadores->whereHas('pessoa', function ($q) use ($request) {
                 $q->where('sub_divisao', $request->subdivisao);
             });
+
+            // Filtro nas peneiras
+            $queryPeneiras->where('sub_divisao', $request->subdivisao);
         }
 
-        $jogadores = $query->get();
-        $totalJogadores = $query->count(); // conta já filtrado
+        // Executa as queries
+        $jogadores = $queryJogadores->get();
+        $totalJogadores = $queryJogadores->count();
+
+        // Busca as peneiras e separa por status
+        $peneiras = $queryPeneiras->orderByDesc('data_evento')->get();
+        $peneirasAtivas = $peneiras->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA']);
+        $peneirasFinalizadas = $peneiras->where('status', 'FINALIZADA');
+
+        // Estatísticas
+        $stats = [
+            'total_candidatos' => $totalJogadores,
+            'peneiras_ativas' => $peneirasAtivas->count(),
+            'aprovados' => 0, // Você pode calcular baseado em avaliações
+            'em_avaliacao' => 0,
+            'avaliadores' => \App\Models\User::where('role', 'avaliador')->count(),
+        ];
 
         return view('home', [
             'jogadores' => $jogadores,
-            'totalJogadores' => $totalJogadores
+            'totalJogadores' => $totalJogadores,
+            'peneiras' => $peneiras,
+            'peneirasAtivas' => $peneirasAtivas,
+            'stats' => $stats,
         ]);
     }
 
@@ -154,7 +180,7 @@ class AdmController
             $pessoa = $jogador->pessoa;
 
             // Deletar o jogador primeiro
-           // $jogador->delete();
+            // $jogador->delete();
 
             // Deletar a pessoa
             $jogador->pessoa->delete();
