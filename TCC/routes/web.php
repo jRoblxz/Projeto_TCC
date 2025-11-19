@@ -13,7 +13,7 @@ use App\Http\Controllers\EquipeController;
 |--------------------------------------------------------------------------
 | ROTAS PÚBLICAS
 |--------------------------------------------------------------------------
-|
+
 | Rotas que qualquer um pode acessar, mesmo sem estar logado.
 |
 */
@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
     |
     */
     Route::middleware(['role:adm'])->group(function () {
-        
+
         // ROTAS DE ADMINISTRAÇÃO (do AdmController)        
         Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index');
         Route::get('/peneira_id', [AdmController::class, 'index'])->name('peneira.index');
@@ -88,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
     |
     */
     Route::middleware(['role:candidato'])->group(function () {
-        
+
         // [CORREÇÃO] Rota movida para cá
         // Tela onde o candidato vê os jogadores (conforme seu pedido)
         Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index');
@@ -96,5 +96,4 @@ Route::middleware(['auth'])->group(function () {
         // Ex: Rota para o candidato ver seu próprio perfil
         Route::get('/meu-perfil', [UserController::class, 'showMyProfile'])->name('candidato.profile');
     });
-
 });
