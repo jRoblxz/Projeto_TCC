@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserRequest;
 use App\Models\Jogadores;
 use App\Models\Pessoas;
@@ -137,10 +138,31 @@ class AdmController
             'foto_perfil_url' => $fotoPath,
         ]);
 
-        $jogador->avaliacoes()->update([
-            'nota' => $request->nota,
-            'observacoes' => $request->observacoes,
-        ]);
+        if ($request->has('rating_medio') && is_numeric($request->rating_medio)) {
+            // 1. Encontra a última avaliação existente para este jogador
+            $ultimaAvaliacao = \App\Models\Avaliacao::where('jogador_id', $jogador->id)
+                ->orderByDesc('data_avaliacao') // Assume que você tem uma coluna data_avaliacao na tabela Avaliacoes
+                ->first();
+
+            // 2. Se existe uma avaliação, atualiza ela. Se não, cria uma nova.
+            if ($ultimaAvaliacao) {
+                $ultimaAvaliacao->update([
+                    'nota' => $request->rating_medio,
+                    'data_avaliacao' => now(), // Atualiza a data para trazê-la para o topo
+                ]);
+            } else {
+                // Cria uma nova avaliação se não existir nenhuma (usando um ID de treinador genérico ou o ID do ADM logado)
+                \App\Models\Avaliacao::create([
+                    'jogador_id' => $jogador->id,
+                    'treinador_id' => Auth::id() ?? 1, // Use o ID do ADM ou um valor padrão (1)
+                    'nota' => $request->rating_medio,
+                    'observacoes' => 'Rating editado pelo ADM.',
+                    'data_avaliacao' => now(),
+                ]);
+            }
+
+            // 3. O rating médio do jogador será recalculado automaticamente pela Accessor
+        }
 
         // Atualizar dados do jogador
         $jogador->update([
@@ -152,6 +174,19 @@ class AdmController
             'peso_kg' => $request->peso_kg,
             //  'video_apresentacao_url' => $request->video_apresentacao_url,
         ]);
+
+        // Se for uma requisição AJAX (do modal de rating)
+        if ($request->ajax()) {
+            // Recalcula o novo rating médio
+            $novoRating = $jogador->fresh()->getRatingMedioAttribute(); // Recarrega o modelo e recalcula o rating
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rating atualizado com sucesso!',
+                'jogador_id' => $jogador->id,
+                'novo_rating' => $novoRating,
+            ]);
+        }
 
         return redirect()->route('jogadores.info', ['jogadores' => $jogador->id])
             ->with('success', 'Jogador atualizado com sucesso!');;

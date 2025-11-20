@@ -39,6 +39,21 @@ Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instr
 
 // ROTA PARA LÓGICA DE MONTAR EQUIPE
 Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
+
+Route::get('/times', function () {
+    return view('peneira-detalhes');
+});
+
+
+
+
+// [CORREÇÃO] Rota movida para cá
+// Tela onde o candidato vê os jogadores (conforme seu pedido)
+Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index');
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | ROTAS PROTEGIDAS
@@ -61,8 +76,6 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::middleware(['role:adm'])->group(function () {
 
-        // ROTAS DE ADMINISTRAÇÃO (do AdmController)        
-        Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index');
         Route::get('/peneira_id', [AdmController::class, 'index'])->name('peneira.index');
         Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info');
         Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit');
@@ -88,10 +101,6 @@ Route::middleware(['auth'])->group(function () {
     |
     */
     Route::middleware(['role:candidato'])->group(function () {
-
-        // [CORREÇÃO] Rota movida para cá
-        // Tela onde o candidato vê os jogadores (conforme seu pedido)
-        Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index');
 
         // Ex: Rota para o candidato ver seu próprio perfil
         Route::get('/meu-perfil', [UserController::class, 'showMyProfile'])->name('candidato.profile');

@@ -12,7 +12,7 @@
     font-style: normal;
 }
 
-body {
+body.padrao-global {
     background-color: #f0f0f0;
     min-height: 100vh;
     padding: 20px;
@@ -84,6 +84,8 @@ h1 {
     overflow: hidden;
     background: #fff;
     box-shadow: 8px 8px 0px 1px #14244d;
+    
+    backface-visibility: hidden;
 }
 
 .card-front::before {
@@ -112,6 +114,7 @@ h1 {
     font-weight: bold;
     padding: 5px 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    z-index: 2; /* Menor que os botões */
 }
 
 .position-badge {
@@ -132,7 +135,7 @@ h1 {
 .card-photo {
     flex: 1;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .player-photo {
@@ -153,6 +156,7 @@ h1 {
     justify-content: center;
     font-size: 4rem;
     color: #999;
+    z-index: 1; 
 }
 
 /* Verso da carta */
@@ -211,7 +215,7 @@ h1 {
     padding: 15px;
     margin: -20px -20px 20px -20px;
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     font-family: "fonte_player", sans-serif;
 }
@@ -242,7 +246,7 @@ h1 {
 .info-value {
     color: #333;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 .evaluation-title {
@@ -276,6 +280,359 @@ h1 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }*/
 
+/* ========== SEÇÃO DE FILTROS ========== */
+.filter-section {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: "fonte_player", sans-serif;
+    transition: all 0.3s ease;
+    position: relative; /* Necessário para z-index funcionar */
+    z-index: 9999 !important; /* Força o elemento a ir para a frente */
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #851114;
+    box-shadow: 0 0 0 3px rgba(133, 17, 20, 0.1);
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 25px;
+    font-family: "fonte_player", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333;
+    position: relative; /* Necessário para z-index funcionar */
+    z-index: 9999 !important; /* Força o elemento a ir para a frente */
+}
+
+.filter-btn:hover {
+    border-color: #851114;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: #851114;
+    border-color: #851114;
+    color: white;
+    font-weight: bold;
+}
+
+/* ========== BOTÕES DE AÇÃO NO CARD ========== */
+.card-actions-top {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+    z-index: 999 !important; 
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: auto !important; /* Garante que pode receber cliques */
+}
+
+.card:hover .card-actions-top {
+    opacity: 1;
+}
+@media (max-width: 768px) {
+    .card-actions-top {
+        opacity: 1 !important;
+    }
+}
+
+.action-btn-card {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 1000 !important;
+    pointer-events: auto !important; /* CRÍTICO */
+}
+
+.action-btn-card,
+.button-card-delete {
+    pointer-events: auto !important; /* Força os botões a receberem cliques */
+    cursor: pointer !important;
+    z-index: 1000 !important;
+}
+
+/* Garante que o form também recebe cliques */
+.card-actions-top form {
+    display: inline-flex;
+    margin: 0;
+    padding: 0;
+    pointer-events: auto !important;
+    z-index: 1000 !important;
+}
+
+.edit-rating-btn {
+    background: rgba(52, 152, 219, 0.9);
+    color: white;
+}
+
+.edit-rating-btn:hover {
+    background: #3498db;
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.delete-btn-card {
+    background: rgba(231, 76, 60, 0.9);
+    color: white;
+}
+
+.delete-btn-card:hover {
+    background: #e74c3c;
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+/* ========== MODAL DE RATING ========== */
+.modal-rating {
+    display: none ;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-rating.show {
+    opacity: 1;
+}
+
+.modal-rating-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-rating.show .modal-rating-content {
+    transform: scale(1);
+}
+
+.modal-rating-content h2 {
+    color: #851114;
+    margin-bottom: 10px;
+    font-family: "fonte_player", sans-serif;
+    font-size: 1.8rem;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.form-group-modal {
+    margin: 25px 0;
+}
+
+.form-group-modal label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+    font-family: "fonte_player", sans-serif;
+}
+
+.rating-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 18px;
+    font-family: "fonte_player", sans-serif;
+    transition: border-color 0.3s;
+}
+
+.rating-input:focus {
+    outline: none;
+    border-color: #851114;
+    box-shadow: 0 0 0 3px rgba(133, 17, 20, 0.1);
+}
+
+.rating-preview {
+    text-align: center;
+    margin-top: 15px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.rating-preview span {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #851114;
+    font-family: "fonte_player", sans-serif;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+.btn-cancel-modal,
+.btn-save-modal {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-family: "fonte_player", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-modal {
+    background: #e2e8f0;
+    color: #333;
+}
+
+.btn-cancel-modal:hover {
+    background: #cbd5e0;
+}
+
+.btn-save-modal {
+    background: #851114;
+    color: white;
+}
+
+.btn-save-modal:hover {
+    background: #a01519;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(133, 17, 20, 0.3);
+}
+
+/* ========== MENSAGEM SEM RESULTADOS ========== */
+.no-results-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-family: "fonte_player", sans-serif;
+}
+
+.no-results-message .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.no-results-message p {
+    font-size: 1.2rem;
+}
+
+/* ========== NOTIFICAÇÕES TOAST ========== */
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    color: white;
+    font-family: "fonte_player", sans-serif;
+    font-weight: bold;
+    z-index: 4000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.notification-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.notification-toast.success {
+    background: #48bb78;
+}
+
+.notification-toast.error {
+    background: #f56565;
+}
+
+/* ========== ANIMAÇÃO DOS CARDS ========== */
+.card {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ========== RESPONSIVIDADE ========== */
+@media (max-width: 768px) {
+    .filter-buttons {
+        flex-direction: column;
+    }
+
+    .filter-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .modal-rating-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .card-actions-top {
+        opacity: 1; /* Sempre visível no mobile */
+    }
+}
+
 .btn-teste {
     align-self: center;
     color: white;
@@ -292,10 +649,10 @@ h1 {
 }
 
 .button-card-delete {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background-color: rgb(20, 20, 20);
+    background: rgba(231, 76, 60, 0.9);
     border: none;
     font-weight: 600;
     display: flex;
@@ -308,9 +665,13 @@ h1 {
     overflow: hidden;
     position: relative;
     gap: 2px;
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    z-index: 1000 !important;
+    pointer-events: auto !important; /* CRÍTICO */
+}
+
+/* Adicione no final do CSS */
+.svgIcon, .svgIcon path {
+    pointer-events: none !important;  /* O clique ignora o ícone e vai direto pro botão */
 }
 
 .svgIcon {
@@ -327,6 +688,7 @@ h1 {
     background-color: rgb(255, 69, 69);
     align-items: center;
     gap: 0;
+    transform: scale(1.1);
 }
 
 .bin-top {
@@ -582,6 +944,7 @@ h1 {
     color: white;
     font-family: "fonte_player", sans-serif;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .header h1 {
@@ -1497,7 +1860,7 @@ h1 {
 .candidate-info {
     flex: 1;
     margin-bottom: 20px;
-    color: #333
+    color: #333;
 }
 
 .candidate-name {
@@ -2299,4 +2662,226 @@ h1 {
 .filter-select:focus {
     outline: none;
     border-color: #667eea;
+}
+
+.teams-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.team-section {
+    background: rgba(13, 32, 95, 0.273);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.team-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.formation-select {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: #1e3c72;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.field-container {
+    background: linear-gradient(
+        to bottom,
+        #2d5016 0%,
+        #3d6b1f 50%,
+        #2d5016 100%
+    );
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    min-height: 500px;
+    border: 3px solid #fff;
+}
+
+.field-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+}
+
+.player-position {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: move;
+    transition: all 0.3s ease;
+}
+
+.player-card {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    padding: 8px;
+    min-width: 80px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.player-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.player-card.dragging {
+    opacity: 0.5;
+}
+
+.player-rating {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 3px;
+}
+
+.player-name-time {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-pos {
+    font-size: 10px;
+    color: #90caf9;
+}
+
+.players-list {
+    margin-top: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.list-player {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 8px;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.list-player:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.list-player.dragging {
+    opacity: 0.5;
+}
+
+.player-info-time {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.player-info-time span {
+    font-size: 14px;
+}
+
+.rating-badge {
+    background: #ffd700;
+    color: #1a237e;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-time {
+    background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s;
+    margin: 0 10px;
+}
+
+.btn-time:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn-time-secondary {
+    background: linear-gradient(135deg, #ff6f00 0%, #ff8f00 100%);
+}
+
+.drop-zone {
+    border: 3px dashed rgba(255, 215, 0, 0.5);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+@media (max-width: 1024px) {
+    .teams-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+body.fundo-especial {
+    min-height: 100vh;
+    padding: 20px;
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.9), rgba(156, 156, 156, 0.9)),
+        url(/img/prudentao.png) no-repeat;
+    background-size: cover;
+    /* cobre toda a tela */
+    background-position: center;
+    /* centraliza 
+            background-repeat: no-repeat;*/
 }
