@@ -9,12 +9,12 @@ class Equipe extends Model
 {
     use HasFactory;
 
-    protected $table = 'Equipes'; 
+    protected $table = 'Equipes';
 
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
-        'nome',
+        'nome_equipe',
         'peneira_id',
 
     ];
@@ -22,17 +22,6 @@ class Equipe extends Model
 
     public function peneira()
     {
-
         return $this->belongsTo(Peneiras::class, 'peneira_id');
-    }
-
-    public function jogadores()
-    {
-        return $this->belongsToMany(
-            Jogadores::class,     
-            'JogadoresPorEquipe', 
-            'equipe_id',          
-            'jogador_id'          
-        );
     }
 }
