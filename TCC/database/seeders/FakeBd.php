@@ -16,10 +16,10 @@ class FakeBd extends Seeder
     public function run()
     {
         // 0.1. Usuários Especiais (Com login fácil)
-        User::factory()->admin()->create([
-            'name' => 'Admin Teste',
-            'email' => 'admin@teste.com',
-        ]);
+        // User::factory()->admin()->create([
+        //     'name' => 'Admin Teste',
+        //     'email' => 'admin@teste.com',
+        // ]);
 
         // 0.2. População Geral de Usuários
         // Cria 5 usuários com o papel 'treinador'

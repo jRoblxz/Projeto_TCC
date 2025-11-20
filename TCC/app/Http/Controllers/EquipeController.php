@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Peneiras; 
-use App\Services\GeradorEquipeService; 
+use App\Models\Peneiras;
+use App\Services\GeradorEquipeService;
 
-class EquipeController extends Controller
+class EquipeController
 {
     protected $geradorEquipeService;
 
@@ -29,7 +29,6 @@ class EquipeController extends Controller
 
             // 3. Se deu certo, redireciona de volta com msg de sucesso
             return redirect()->back()->with('success', 'Equipes geradas com sucesso!');
-
         } catch (\Exception $e) {
             // 4. Se deu erro (ex: falta de jogadores), volta com msg de erro
             return redirect()->back()->with('error', $e->getMessage());

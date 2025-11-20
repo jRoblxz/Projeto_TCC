@@ -36,12 +36,8 @@ Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.c
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
 
 // ROTA PARA LÓGICA DE MONTAR EQUIPE
-Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
-
-Route::get('/times', function () {
-    return view('peneira-detalhes');
-});
-
+Route::get('/peneiras/{id}/montar', [PeneiraController::class, 'montarindex'])->name('peneiras.montar');
+//Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
 
 
 

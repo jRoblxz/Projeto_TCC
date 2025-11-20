@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 // [FIX 1] Importe a classe base do Controller
-use Illuminate\Routing\Controller as BaseController; 
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Peneiras;
 use App\Http\Requests\UserRequest;
@@ -20,24 +20,24 @@ class PeneiraController extends BaseController
 {
     public function index()
     {
-        $peneiras = Peneiras::orderByDesc('data_evento')->get(); 
-        
+        $peneiras = Peneiras::orderByDesc('data_evento')->get();
+
         // Esta linha está correta, aponta para seu peneira.blade.php
-        return view('telas_crud.peneira', compact('peneiras')); 
+        return view('telas_crud.peneira', compact('peneiras'));
     }
-    
+
     public function store(Request $request)
     {
         // Seu 'store' está correto
         Peneiras::create($request->all());
-        return redirect()->route('peneiras.index')->with('success','Peneira criada com sucesso!');
+        return redirect()->route('peneiras.index')->with('success', 'Peneira criada com sucesso!');
     }
-    
+
     public function show($id)
     {
         // 1. Busca a peneira específica (você já tinha)
         $peneiras = Peneiras::findOrFail($id);
-        
+
         // 2. [NOVO] Busca os jogadores (a mesma lógica que usamos antes)
         $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
 
@@ -47,7 +47,7 @@ class PeneiraController extends BaseController
             'jogadores' => $jogadores
         ]);
     }
-    
+
     public function edit($id)
     {
         // Como você disse, seu fluxo de 'Editar' é por modal 
@@ -58,7 +58,7 @@ class PeneiraController extends BaseController
         // alguém tente acessar a URL /peneiras/{id}/edit manualmente.
         return redirect()->route('peneiras.index');
     }
-    
+
     public function update(Request $request, $id)
     {
         // Seu 'update' está correto e é o que o modal usa
@@ -74,15 +74,21 @@ class PeneiraController extends BaseController
         $peneira = Peneiras::findOrFail($id);
         $peneira->update($request->all());
 
-        return redirect()->route('peneiras.index')->with('success','Peneira atualizada com sucesso!');
+        return redirect()->route('peneiras.index')->with('success', 'Peneira atualizada com sucesso!');
     }
-    
+
     public function destroy($id)
     {
         // Seu 'destroy' está correto
         $peneira = Peneiras::findOrFail($id);
         $peneira->delete();
 
-        return redirect()->route('peneiras.index')->with('success','Peneira Excluída com sucesso!');
+        return redirect()->route('peneiras.index')->with('success', 'Peneira Excluída com sucesso!');
+    }
+
+    public function montarindex($id)
+    {
+        $peneira = Peneiras::findOrFail($id);
+        return view('peneira-detalhes', $peneira);
     }
 }
