@@ -36,8 +36,23 @@ Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.c
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
 
 // ROTA PARA LÓGICA DE MONTAR EQUIPE
-Route::get('/peneiras/{id}/montar', [PeneiraController::class, 'montarindex'])->name('peneiras.montar');
+//Route::get('/peneiras/{id}/montar', [PeneiraController::class, 'montarindex'])->name('peneiras.montar');
 //Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
+// routes/web.php
+
+
+// Gera automaticamente e vai para o editor
+Route::post('/peneira/{id}/equipes/gerar', [EquipeController::class, 'gerarERedirecionarParaEditor'])
+    ->name('equipes.gerar-e-editar');
+
+// Apenas abre o editor (se já tiver equipes ou para criar manualmente)
+Route::get('/peneira/{id}/equipes/montar', [EquipeController::class, 'editarEquipes'])
+    ->name('equipes.tela-montagem');
+
+// Salva as alterações feitas no editor
+Route::post('/peneira/{id}/equipes/salvar', [EquipeController::class, 'salvarEquipes'])
+    ->name('peneira.salvar-equipes');
+
 
 
 
