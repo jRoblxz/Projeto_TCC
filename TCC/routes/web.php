@@ -35,6 +35,9 @@ Route::post('/forms1', [UserController::class, 'store'])->name('users.store');
 Route::get('/confirmacao', [UserController::class, 'confirmacao'])->name('tela.confirmacao');
 Route::get('/instrucao', [UserController::class, 'instrucao'])->name('tela.instrucao');
 
+// ROTA PARA LÓGICA DE MONTAR EQUIPE
+Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
+
 Route::get('/times', function () {
     return view('peneira-detalhes');
 });

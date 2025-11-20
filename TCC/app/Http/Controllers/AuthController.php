@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User; // Use o seu modelo de usuário
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Routing\Controller as BaseController;
 
 class AuthController extends Controller
 {
