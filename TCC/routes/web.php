@@ -3,10 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdmController;
-use App\Http\Controllers\TesteController;
 use App\Http\Controllers\PeneiraController;
 use App\Http\Controllers\LoginController; // Importa o controller de login
-
 use App\Http\Controllers\EquipeController;
 
 /*

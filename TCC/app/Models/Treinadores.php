@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Treinadores extends Model
+{
+    public $timestamps = false;
+
+    protected $table = 'Treinadores';
+    protected $fillable = [
+        'pessoa_id',
+        'clube_organizacao',
+        'cargo',
+        'cref',
+        'biografia_resumo',
+        'anos_experiencia',
+    ];
+
+    public function pessoa()
+    {
+        return $this->belongsTo(Pessoas::class, 'pessoa_id');
+    }
+}
