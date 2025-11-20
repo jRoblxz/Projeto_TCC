@@ -3,12 +3,14 @@
 namespace App\Models;
 
 // ... outros 'use'
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject; // Importe isso
 
 class User extends Authenticatable implements JWTSubject // Implemente isso
 {
     // ... seu 'use HasApiTokens, HasFactory, Notifiable' etc.
+    use HasFactory;
 
     // [IMPORTANTE] Adicione 'role' ao $fillable
     protected $fillable = [

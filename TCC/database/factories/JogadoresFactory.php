@@ -13,6 +13,7 @@ class JogadoresFactory extends Factory
     public function definition()
     {
         $posicoes = ['Goleiro', 'Zagueiro Direito', 'Lateral Esquerdo', 'Volante', 'Meia', 'Atacante'];
+        $lesao = ['sim', 'não'];
 
         return [
             // FK: Cria uma nova pessoa (do tipo Jogador) e pega o ID dela
@@ -23,7 +24,7 @@ class JogadoresFactory extends Factory
             'posicao_secundaria' => $this->faker->randomElement($posicoes),
             'altura_cm' => $this->faker->numberBetween(160, 200),
             'peso_kg' => $this->faker->randomFloat(2, 55, 95),
-            'historico_lesoes_cirurgias' => $this->faker->optional(0.2)->sentence, // 20% de chance de ter histórico
+            'historico_lesoes_cirurgias' => $this->faker->randomElement($lesao),
             'video_apresentacao_url' => $this->faker->url,
         ];
     }
