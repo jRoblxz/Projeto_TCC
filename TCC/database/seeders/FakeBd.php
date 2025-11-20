@@ -21,16 +21,6 @@ class FakeBd extends Seeder
             'email' => 'admin@teste.com',
         ]);
 
-        User::factory()->treinador()->create([
-            'name' => 'Treinador Zé',
-            'email' => 'treinador@teste.com',
-        ]);
-
-        User::factory()->candidato()->create([
-            'name' => 'Candidato João',
-            'email' => 'candidato@teste.com',
-        ]);
-
         // 0.2. População Geral de Usuários
         // Cria 5 usuários com o papel 'treinador'
         User::factory(5)->treinador()->create();

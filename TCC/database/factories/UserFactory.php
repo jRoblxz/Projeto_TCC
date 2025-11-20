@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             // Criptografa a senha para 'password'
-            'password' => Hash::make('password'),
+            'password' => Hash::make(123456),
             'remember_token' => Str::random(10),
             // O papel padrão será 'candidato'
             'role' => 'candidato',
