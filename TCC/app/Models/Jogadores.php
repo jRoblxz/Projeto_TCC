@@ -9,7 +9,7 @@ use PhpParser\Node\Expr\Cast\Void_;
 class Jogadores extends Model
 {
 
-
+    use HasFactory;
     public $timestamps = false;
 
     protected $table = 'Jogadores';
@@ -70,10 +70,10 @@ class Jogadores extends Model
     public function equipes()
     {
         return $this->belongsToMany(
-            Equipe::class,          
-            'JogadoresPorEquipe', 
-            'jogador_id',         
-            'equipe_id'           
+            Equipe::class,
+            'JogadoresPorEquipe',
+            'jogador_id',
+            'equipe_id'
         );
     }
 }

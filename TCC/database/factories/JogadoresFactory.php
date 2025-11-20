@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Jogadores;
 use App\Models\Pessoas; // Importar o Model Pessoas
 use Illuminate\Database\Eloquent\Factories\Factory;

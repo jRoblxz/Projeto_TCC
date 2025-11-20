@@ -1,6 +1,7 @@
 <?php
 
 // database/factories/PessoasFactory.php
+namespace Database\Factories;
 
 use App\Models\Pessoas;
 use Illuminate\Database\Eloquent\Factories\Factory;

@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Factories;
+
 use App\Models\Peneiras;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

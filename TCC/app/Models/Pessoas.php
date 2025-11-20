@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Pessoas extends Model
 {
+    use HasFactory;
     public $timestamps = false;
 
     protected $table = 'Pessoas';
@@ -29,9 +31,9 @@ class Pessoas extends Model
     ];
 
     public function pessoa()
-{
-    return $this->belongsTo(Pessoas::class, 'pessoa_id'); // Adapte as chaves se necessário
-}
+    {
+        return $this->belongsTo(Pessoas::class, 'pessoa_id'); // Adapte as chaves se necessário
+    }
 
     public function getSubDivisaoAttribute(): string
     {

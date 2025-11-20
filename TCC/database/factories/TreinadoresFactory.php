@@ -1,5 +1,8 @@
 <?php
 
+namespace Database\Factories;
+
+
 use App\Models\Treinadores;
 use App\Models\Pessoas;
 use Illuminate\Database\Eloquent\Factories\Factory;
