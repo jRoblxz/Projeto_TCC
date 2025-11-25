@@ -21,25 +21,23 @@
 
         <!-- Dashboard -->
         <div onclick="window.location.href='{{ route('home.index') }}'" class="nav-item">
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=home" class="icon" />
+            <img src="{{ asset('img/home.png') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Dashboard</div>
         </div>
 
         <!-- Peneiras -->
         <div onclick="window.location.href='{{ route('peneiras.index') }}'" class="nav-item">
-            <svg viewBox="0 0 24 24">
-                <path d="M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V17H22V21Z" stroke="#fff" stroke-width="1.5" />
-            </svg>
+            <img src="{{ asset('img/list.PNG') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Peneiras</div>
         </div>
 
         <!-- Players -->
         <div onclick="window.location.href='{{ route('jogadores.index') }}'" class="nav-item">
-            <img src="{{ asset('img/jogadores.PNG') }}" alt="Jogadores" class="icon">
+            <img src="{{ asset('img/group.PNG') }}" alt="Jogadores" class="icon">
             <div class="tooltip">Jogadores</div>
         </div>
 
-        <!-- Configurações -->
+        <!-- Sair -->
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>

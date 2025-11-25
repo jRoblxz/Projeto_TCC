@@ -36,29 +36,35 @@ class AdmController
     //tela/rota  da view Home
     public function homepage(Request $request)
     {
-        // Query para jogadores
-        $queryJogadores = Jogadores::with('pessoa')->orderByDesc('id');
+        // 1. Query Básica de Jogadores (Traz todos primeiro)
+        $queryJogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
 
-        // Query para peneiras
+        // 2. Query de Peneiras (Esta continua via SQL pois a coluna existe na tabela peneiras)
         $queryPeneiras = \App\Models\Peneiras::query();
 
-        // Filtro por subdivisão (aplica em ambas as queries)
+        // --- LÓGICA DE FILTRO CORRIGIDA ---
         if ($request->filled('subdivisao')) {
-            // Filtro nos jogadores
-            $queryJogadores->whereHas('pessoa', function ($q) use ($request) {
-                $q->where('sub_divisao', $request->subdivisao);
-            });
+            $filtroSub = $request->subdivisao; // Ex: "Sub-13"
 
-            // Filtro nas peneiras
-            $queryPeneiras->where('sub_divisao', $request->subdivisao);
+            // Filtrar Peneiras (SQL direto)
+            $queryPeneiras->where('sub_divisao', $filtroSub);
+
+            // Filtrar Jogadores (Via Coleção PHP)
+            // Isso permite filtrar mesmo que 'sub_divisao' seja calculado pela data de nascimento
+            $queryJogadores = $queryJogadores->filter(function ($jogador) use ($filtroSub) {
+                // Verifica se a pessoa existe e se a subdivisão bate com o filtro
+                return $jogador->pessoa && ($jogador->pessoa->sub_divisao == $filtroSub);
+            });
         }
 
-        // Executa as queries
-        $jogadores = $queryJogadores->get();
-        $totalJogadores = $queryJogadores->count();
+        // Atualiza a variável final de jogadores e a contagem baseada no filtro
+        $jogadores = $queryJogadores; 
+        $totalJogadores = $jogadores->count();
 
-        // Busca as peneiras e separa por status
+        // Busca as peneiras (já filtradas acima se necessário)
         $peneiras = $queryPeneiras->orderByDesc('data_evento')->get();
+        
+        // Separa peneiras por status
         $peneirasAtivas = $peneiras->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA']);
         $peneirasFinalizadas = $peneiras->where('status', 'FINALIZADA');
 
@@ -66,13 +72,13 @@ class AdmController
         $stats = [
             'total_candidatos' => $totalJogadores,
             'peneiras_ativas' => $peneirasAtivas->count(),
-            'aprovados' => 0, // Você pode calcular baseado em avaliações
+            'aprovados' => 0, 
             'em_avaliacao' => 0,
             'avaliadores' => \App\Models\User::where('role', 'avaliador')->count(),
         ];
 
         return view('home', [
-            'jogadores' => $jogadores,
+            'jogadores' => $jogadores, // Passa a coleção filtrada
             'totalJogadores' => $totalJogadores,
             'peneiras' => $peneiras,
             'peneirasAtivas' => $peneirasAtivas,

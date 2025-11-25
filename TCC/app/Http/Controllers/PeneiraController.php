@@ -39,7 +39,12 @@ class PeneiraController extends BaseController
         $peneiras = Peneiras::findOrFail($id);
 
         // 2. [NOVO] Busca os jogadores (a mesma lógica que usamos antes)
-        $jogadores = Jogadores::with('pessoa')->orderByDesc('id')->get();
+        $jogadores = Jogadores::with('pessoa')
+            ->join('inscricoes', 'jogadores.id', '=', 'inscricoes.jogador_id')
+            ->where('inscricoes.peneira_id', $id)
+            ->select('jogadores.*') // Importante: seleciona apenas dados do jogador para não dar conflito de ID
+            ->orderByDesc('jogadores.id')
+            ->get();
 
         // 3. [CORRIGIDO] Envia AMBAS as variáveis para a view
         return view('telas_crud.peneira_id', [
