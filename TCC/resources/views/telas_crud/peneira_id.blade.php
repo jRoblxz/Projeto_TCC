@@ -653,8 +653,8 @@
                     @csrf
                     <p>Clique no botão abaixo para montar automaticamente as equipes com os jogadores inscritos e disponíveis.</p>
 
-                     <button type="submit" class="btn-peneira btn-primary" style="background-color: #007bff; color: white;">
-                        ⚽ Gerar Equipes Agora
+                     <button type="submit" class="button-save">
+                        Gerar Equipes
                     </button>
                 </form>
 

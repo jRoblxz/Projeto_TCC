@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use PDO;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class AdmController
 {
@@ -58,12 +59,12 @@ class AdmController
         }
 
         // Atualiza a variável final de jogadores e a contagem baseada no filtro
-        $jogadores = $queryJogadores; 
+        $jogadores = $queryJogadores;
         $totalJogadores = $jogadores->count();
 
         // Busca as peneiras (já filtradas acima se necessário)
         $peneiras = $queryPeneiras->orderByDesc('data_evento')->get();
-        
+
         // Separa peneiras por status
         $peneirasAtivas = $peneiras->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA']);
         $peneirasFinalizadas = $peneiras->where('status', 'FINALIZADA');
@@ -72,7 +73,7 @@ class AdmController
         $stats = [
             'total_candidatos' => $totalJogadores,
             'peneiras_ativas' => $peneirasAtivas->count(),
-            'aprovados' => 0, 
+            'aprovados' => 0,
             'em_avaliacao' => 0,
             'avaliadores' => \App\Models\User::where('role', 'avaliador')->count(),
         ];
@@ -199,38 +200,56 @@ class AdmController
     }
 
     //Delete da crud
-    public function destroy(Jogadores $jogadores)
+
+
+    // Em App\Http\Controllers\AdmController.php
+
+    public function destroy($id)
     {
         try {
-            $diskName = 'gcs';
+            // 1. Busca manual para garantir que o ID existe
+            $jogador = Jogadores::with('pessoa')->find($id);
 
-            // O jogador já é injetado pela rota
-            $jogador = Jogadores::with('pessoa')->findOrFail($jogadores->id);
-
-            // Deletar foto se existir
-            // Deletar foto se existir NO GCS
-            $fotoPath = $jogador->pessoa->foto_perfil_url;
-            if ($fotoPath && Storage::disk($diskName)->exists($fotoPath)) {
-                Storage::disk($diskName)->delete($fotoPath);
+            if (!$jogador) {
+                return redirect()->route('home.index')->with('error', 'Jogador não encontrado.');
             }
 
-            // Deletar avaliações relacionadas primeiro
-            Avaliacao::where('jogador_id', $jogador->id)->delete();
-
-            // Salvar pessoa para deletar depois
             $pessoa = $jogador->pessoa;
 
-            // Deletar o jogador primeiro
-            // $jogador->delete();
+            // 2. Tenta deletar foto (BLINDADO)
+            // Se o arquivo JSON do Google não existir, ele vai cair no catch e CONTINUAR deletando o jogador
+            try {
+                $diskName = 'gcs';
+                if ($pessoa && $pessoa->foto_perfil_url) {
+                    // Verifica se o driver consegue conectar antes de tentar deletar
+                    if (Storage::disk($diskName)->exists($pessoa->foto_perfil_url)) {
+                        Storage::disk($diskName)->delete($pessoa->foto_perfil_url);
+                    }
+                }
+            } catch (\Exception $e) {
+                // Erro silencioso: Não faz nada, apenas segue para deletar do banco
+                Log::warning("Não foi possível deletar a imagem do GCS: " . $e->getMessage());
+            }
 
-            // Deletar a pessoa
-            $jogador->pessoa->delete();
+            // 3. Deletar avaliações (limpa tabela filha)
+            Avaliacao::where('jogador_id', $jogador->id)->delete();
 
-            return redirect()->back()
+            // 4. DELETAR JOGADOR (Tabela Pai)
+            $jogador->delete();
+
+            // 5. DELETAR PESSOA (Tabela Avo)
+            if ($pessoa) {
+                $pessoa->delete();
+            }
+
+            // 6. Sucesso - Redireciona para HOME
+            return redirect()->route('home.index')
                 ->with('success', 'Jogador deletado com sucesso!');
+
         } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Erro ao deletar jogador: ' . $e->getMessage());
+            // Se der erro de SQL (chave estrangeira), mostra na tela
+            return redirect()->route('home.index')
+                ->with('error', 'Erro ao deletar do banco: ' . $e->getMessage());
         }
     }
 }

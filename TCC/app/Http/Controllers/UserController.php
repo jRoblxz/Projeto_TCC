@@ -76,7 +76,7 @@ class UserController
                 // Isso ignora completamente o Flysystem e suas tentativas de aplicar ACL
                 $client = new \Google\Cloud\Storage\StorageClient([
                     'projectId' => env('GOOGLE_CLOUD_PROJECT_ID'),
-                    'keyFilePath' => env('GOOGLE_CLOUD_KEY_FILE'),
+                    'keyFilePath' => storage_path('app/projetotcc-478522-255e1b6a806d.json'),
                 ]);
 
                 $bucket = $client->bucket(env('GOOGLE_CLOUD_STORAGE_BUCKET'));

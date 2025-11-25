@@ -8,6 +8,7 @@ use App\Models\Equipe;
 use App\Models\Jogadores;
 use App\Services\GeradorEquipeService;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class EquipeController
 {
@@ -68,47 +69,44 @@ class EquipeController
     {
         $peneira = Peneiras::findOrFail($id);
 
-        // Busca as equipes criadas para esta peneira
         $equipes = Equipe::with(['jogadores.pessoa'])
             ->where('peneira_id', $peneira->id)
             ->get();
 
-        // Formata os dados para o formato esperado pela view
         $teamsData = [];
 
         foreach ($equipes as $index => $equipe) {
-            $teamLetter = chr(65 + $index); // A, B, C, D...
+            $teamLetter = chr(65 + $index);
             $teamsData[$teamLetter] = [];
 
             foreach ($equipe->jogadores as $jogador) {
+                // [CORREÇÃO 1] Verificação de segurança para o nome
+                $nomeJogador = 'Sem Nome';
+                if ($jogador->pessoa) {
+                    $nomeJogador = $jogador->pessoa->nome_completo ?? $jogador->pessoa->nome ?? 'Sem Nome';
+                }
+
                 $teamsData[$teamLetter][] = [
                     'id' => $jogador->id,
-                    'name' => $jogador->pessoa->nome ?? 'Sem Nome',
+                    'name' => $nomeJogador, // [CORREÇÃO 1] Usando a variável segura
                     'pos' => $this->normalizarPosicao($jogador->posicao_principal),
                     'secondaryPos' => $jogador->posicao_secundaria
                         ? $this->normalizarPosicao($jogador->posicao_secundaria)
                         : '-',
-                    'rating' => $this->calcularRating($jogador),
+                    // [CORREÇÃO 3] Usa o rating do banco, se não tiver, calcula
+                    'rating' => $jogador->rating_medio ? $jogador->rating_medio : $this->calcularRating($jogador),
                     'inField' => true
                 ];
             }
         }
 
-        // Se só tem 1 equipe, cria uma segunda vazia para comparação
-        if (count($teamsData) === 1) {
-            $teamsData['B'] = [];
-        }
+        // Garante estrutura mínima A e B
+        if (!isset($teamsData['A'])) $teamsData['A'] = [];
+        if (!isset($teamsData['B'])) $teamsData['B'] = [];
 
-        // Se não tem nenhuma equipe, cria duas vazias
-        if (count($teamsData) === 0) {
-            $teamsData['A'] = [];
-            $teamsData['B'] = [];
-        }
+        // Garante que só mandamos A e B para a view (para não quebrar o layout)
+        $teamsData = array_intersect_key($teamsData, array_flip(['A', 'B']));
 
-        // Limita a 2 equipes na visualização (A e B)
-        $teamsData = array_slice($teamsData, 0, 2, true);
-
-        // Converte para JSON para usar no JavaScript
         $teamsJson = json_encode($teamsData);
 
         return view('peneira-detalhes', compact('peneira', 'teamsData', 'teamsJson'));
@@ -199,28 +197,31 @@ class EquipeController
      */
     private function calcularRating($jogador)
     {
-        // Você pode implementar uma lógica mais complexa aqui
-        // Por enquanto, retorna um valor entre 7.0 e 9.5
         $base = 7.0;
 
-        // Adiciona pontos por altura (para zagueiros/goleiros)
         if (in_array($jogador->posicao_principal, ['Goleiro', 'Zagueiro'])) {
             if ($jogador->altura_cm >= 180) {
                 $base += 0.5;
             }
         }
 
-        // Adiciona pontos por juventude (jogadores mais novos)
+        // [CORREÇÃO 2] Segurança para Data de Nascimento
         if ($jogador->pessoa && $jogador->pessoa->data_nascimento) {
-            $idade = $jogador->pessoa->data_nascimento->age;
-            if ($idade < 20) {
-                $base += 0.3;
+            try {
+                // Tenta parsear a data caso ela seja string
+                $dataNasc = Carbon::parse($jogador->pessoa->data_nascimento);
+                $idade = $dataNasc->age;
+                
+                if ($idade < 20) {
+                    $base += 0.3;
+                }
+            } catch (\Exception $e) {
+                // Se der erro na data, ignora o bonus de idade
             }
         }
 
-        // Adiciona variação aleatória
         $base += (mt_rand(0, 15) / 10);
 
-        return min(9.9, $base);
+        return min(9.9, $base); // Garante que não passe de 9.9
     }
 }
