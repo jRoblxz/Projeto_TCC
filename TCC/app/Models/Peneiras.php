@@ -25,4 +25,15 @@ class Peneiras extends Model
     {
         return $this->hasMany(\App\Models\Inscricoes::class, 'peneira_id');
     }
+
+    public function avaliacoes() {
+        return $this->hasMany(Avaliacao::class, 'peneira_id');
+    }
+
+    // --- ADICIONE ISTO ---
+    public function equipes() {
+        // Supondo que seu Model se chame 'Equipes' ou 'Team'
+        // Se o nome do arquivo for Team.php, mude para \App\Models\Team::class
+        return $this->hasMany(\App\Models\Equipe::class, 'peneira_id');
+    }
 }

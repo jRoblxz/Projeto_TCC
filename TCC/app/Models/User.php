@@ -2,46 +2,35 @@
 
 namespace App\Models;
 
-// ... outros 'use'
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject; // Importe isso
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens; // <--- 1. VOCÊ PRECISA DESSA LINHA AQUI EM CIMA
 
-class User extends Authenticatable implements JWTSubject // Implemente isso
+class User extends Authenticatable
 {
-    // ... seu 'use HasApiTokens, HasFactory, Notifiable' etc.
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    
+    // 2. E PRECISA DESSA LINHA AQUI DENTRO (Repare no HasApiTokens no começo)
+    use HasApiTokens, HasFactory, Notifiable; 
 
-    // [IMPORTANTE] Adicione 'role' ao $fillable
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', // Adicione isso
+        'role',
     ];
 
-    // ...
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-    // [NOVO] Adicione estes dois métodos obrigatórios do JWT
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
+    protected function casts(): array
     {
-        return $this->getKey();
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        // Aqui adicionamos o 'role' ao token
         return [
-            'role' => $this->role,
-            'name' => $this->name, // Pode adicionar o que mais quiser
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
     }
 }

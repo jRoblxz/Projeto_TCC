@@ -1,0 +1,138 @@
+.custom-style.rap-container {
+    background-color: #e4e4e4;
+    color: #566574;
+    border-radius: 20px;
+}
+
+.custom-style.rap-container .rap-slider .rap-progress {
+    background-color: #959595;
+}
+
+.custom-style.rap-container .rap-slider .rap-progress .rap-pin {
+    background-color: #566574;
+    height: 18px;
+    width: 18px;
+    border-radius: 10px;
+}
+
+.custom-style.rap-container .rap-controls .rap-slider .rap-progress .rap-pin {
+    top: -5px;
+}
+
+.custom-style.rap-container .rap-controls .rap-slider {
+    height: 8px;
+    border-radius: 4px;
+}
+
+.custom-style.rap-container .rap-volume .rap-volume-btn.rap-volume-open path {
+    fill: #000;
+}
+
+.custom-style.rap-container .rap-volume .rap-volume-controls {
+    background-color: #e4e4e4;
+}
+
+.custom-style.rap-container .rap-volume .rap-volume-controls .rap-slider,
+.custom-style.rap-container
+.rap-volume
+.rap-volume-controls
+.rap-slider
+.rap-progress {
+    width: 8px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+
+
+
+/* * ========================================
+ * CORREÇÃO CABEÇALHO BRANCO (MODO ESCURO)
+ * ========================================
+ */
+
+/* A LINHA do cabeçalho */
+.dark .rdt_TableHead {
+  background-color: rgba(255, 255, 255, 0.05) !important; 
+  color: #f9fafb !important; /* text-gray-50 */
+  border-bottom-color: #4b5563 !important; /* border-gray-600 */
+}
+
+/* AS CÉLULAS (COLUNAS) dentro do cabeçalho */
+.dark .rdt_TableHead .rdt_TableCol {
+  background-color: transparent !important; /* Remove o fundo branco da célula */
+  color: #f9fafb !important; /* Cor do texto (ex: ID, DESCRIÇÃO) */
+}
+
+/* Células de cabeçalho que são ordenáveis (Sortable) */
+.dark .rdt_TableHead .rdt_TableCol_Sortable {
+   color: #f9fafb !important;
+}
+
+.dark .rdt_TableHead .rdt_TableCol_Sortable:hover {
+   color: #ffffff !important;
+}
+
+/* Ícone de ordenação (seta) */
+.dark .rdt_TableHead .rdt_TableCol_Sortable span[aria-label] {
+   color: #f9fafb !important;
+}
+
+/* * ========================================
+ * RESTANTE DOS ESTILOS (COMO ANTES)
+ * ========================================
+ */
+
+/* Fundo principal da tabela e cor do texto */
+.dark .rdt_Table {
+  background-color: transparent; 
+  color: #e5e7eb; /* text-gray-200 */
+}
+
+/* Linhas da Tabela */
+.dark .rdt_TableRow {
+  background-color: transparent;
+  color: #e5e7eb; /* text-gray-200 */
+  border-bottom-color: #374151; /* border-gray-700 */
+}
+
+
+/* Efeito hover na linha */
+.dark .rdt_TableRow:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Mensagem de "Nenhum registro" */
+.dark .rdt_TableBody .rdt_EmptyData {
+  color: #9ca3af; /* text-gray-400 */
+}
+
+/* Paginação */
+.dark .rdt_Pagination {
+  background-color: rgba(255, 0, 0, 0.05);
+  color: #d1d5db; /* text-gray-300 */
+  border-top-color: #374151; /* border-gray-700 */
+}
+
+.dark .rdt_Pagination select,
+.dark .rdt_Pagination button {
+  color: #f9fafb; /* text-gray-50 */
+
+}

@@ -35,6 +35,15 @@ class Jogadores extends Model
         return $this->hasOne(Avaliacao::class, 'jogador_id');
     }
 
+    public function ultima_avaliacao()
+    {
+        // Pega a avaliação mais recente baseada no ID ou data
+        // Requer Laravel 8.42+ para usar latestOfMany()
+        return $this->hasOne(Avaliacao::class, 'jogador_id')->latestOfMany();
+        
+        // SE DER ERRO COM latestOfMany, USE ESTA VERSÃO ANTIGA:
+        // return $this->hasOne(Avaliacao::class, 'jogador_id')->latest();
+    }
     public function getUltimaAvaliacaoAttribute()
     {
         return $this->avaliacoes()->latest('data_avaliacao')->first();
