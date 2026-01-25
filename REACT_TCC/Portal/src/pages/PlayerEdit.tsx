@@ -94,13 +94,13 @@ const PlayerEdit: React.FC = () => {
   const secCoords = getFieldCoordinates(formData.posicao_secundaria);
 
   // Estilo base para inputs editáveis (replicação do .editable-field)
-  const inputClass = "w-full bg-[rgba(133,17,20,0.05)] border-2 border-dashed border-[rgba(133,17,20,0.3)] rounded text-center py-1 px-2 text-[#333]  focus:outline-none focus:bg-[rgba(133,17,20,0.05)] focus:border-[#851114] hover:bg-[rgba(190,18,23,0.1)] transition-colors";
-  const selectClass = "w-full bg-[rgba(133,17,20,0.05)] border-2 border-dashed border-[rgba(133,17,20,0.3)] rounded text-center py-1 px-2 text-[#333]  focus:outline-none focus:border-[#851114] cursor-pointer hover:bg-[rgba(190,18,23,0.1)] appearance-none";
+  const inputClass = "w-full bg-[rgba(133,17,20,0.05)] border-2 border-dashed border-[rgba(133,17,20,0.3)] rounded text-center py-1 px-2 text-[#333] dark:text-white/60 focus:outline-none focus:bg-[rgba(133,17,20,0.05)] focus:border-[#851114] hover:bg-[rgba(190,18,23,0.1)] transition-colors";
+  const selectClass = "w-full bg-[rgba(133,17,20,0.05)] border-2 border-dashed border-[rgba(133,17,20,0.3)] rounded text-center py-1 px-2 text-[#333] dark:text-white/60 focus:outline-none focus:border-[#851114] cursor-pointer hover:bg-[rgba(190,18,23,0.1)] appearance-none";
 
   return (
     <Layout>
       <div className="max-w-[1400px] mx-auto p-5">
-        <div className="bg-[#14244D] p-8 text-white  text-center mb-5 rounded-lg shadow-md">
+        <div className="bg-[#14244D] dark:bg-gray-900 p-8 text-white  text-center mb-5 rounded-lg shadow-md">
             <h1 className="text-4xl mb-2 drop-shadow-md">Editar Jogador</h1>
             <p className="opacity-90 text-lg">Sistema de Avaliação de Atletas</p>
         </div>
@@ -109,7 +109,7 @@ const PlayerEdit: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 p-4">
                 
                 {/* COLUNA ESQUERDA (INPUTS PRINCIPAIS) */}
-                <div className="bg-[#f8f9fa] rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)]">
+                <div className="bg-[#f8f9fa] dark:bg-gray-900 rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)]">
                     
                     {/* Upload de Imagem */}
                     <div className="group relative w-[150px] h-[150px] rounded-full mx-auto mb-5 overflow-hidden bg-black/70 border-4 border-dashed border-[#851114]/50 hover:border-[#851114] transition-all cursor-pointer">
@@ -143,18 +143,18 @@ const PlayerEdit: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 mb-5">
-                        <div className="bg-white p-3 rounded-lg shadow-sm text-center">
-                            <label className="text-xs text-gray-500  block mb-1">Altura (cm)</label>
+                        <div className="bg-white dark:bg-gray-800 dark:border-gray-700  p-3 rounded-lg shadow-sm text-center">
+                            <label className="text-xs text-gray-500 dark:text-gray-200  block mb-1">Altura (cm)</label>
                             <input type="number" name="altura_cm" value={formData.altura_cm} onChange={handleChange} className={inputClass} />
                         </div>
                         
-                        <div className="bg-white p-3 rounded-lg shadow-sm text-center">
-                            <label className="text-xs text-gray-500  block mb-1">Peso (kg)</label>
+                        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-3 rounded-lg shadow-sm text-center">
+                            <label className="text-xs text-gray-500 dark:text-gray-300  block mb-1">Peso (kg)</label>
                             <input type="number" name="peso_kg" value={formData.peso_kg} onChange={handleChange} className={inputClass} />
                         </div>
 
-                        <div className="bg-white p-3 rounded-lg shadow-sm text-center">
-                            <label className="text-xs text-gray-500  block mb-1">Pé</label>
+                        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-3 rounded-lg shadow-sm text-center">
+                            <label className="text-xs text-gray-500 dark:text-gray-300  block mb-1">Pé</label>
                             <select name="pe_preferido" value={formData.pe_preferido} onChange={handleChange} className={selectClass}>
                                 <option value="Direito">Direito</option>
                                 <option value="Esquerdo">Esquerdo</option>
@@ -162,8 +162,8 @@ const PlayerEdit: React.FC = () => {
                             </select>
                         </div>
 
-                        <div className="bg-white p-3 rounded-lg shadow-sm text-center">
-                            <label className="text-xs text-gray-500  block mb-1">Pos. Principal</label>
+                        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-3 rounded-lg shadow-sm text-center">
+                            <label className="text-xs text-gray-500 dark:text-gray-300  block mb-1">Pos. Principal</label>
                             <select name="posicao_principal" value={formData.posicao_principal} onChange={handleChange} className={`${selectClass} text-[#ff4757] font-bold`}>
                                 <option value="Goleiro">Goleiro</option>
                                 <option value="Zagueiro Direito">Zagueiro Direito</option>
@@ -178,8 +178,8 @@ const PlayerEdit: React.FC = () => {
                             </select>
                         </div>
 
-                        <div className="bg-white p-3 rounded-lg shadow-sm text-center col-span-2">
-                            <label className="text-xs text-gray-500  block mb-1">Pos. Secundária</label>
+                        <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-3 rounded-lg shadow-sm text-center col-span-2">
+                            <label className="text-xs text-gray-500 dark:text-gray-300  block mb-1">Pos. Secundária</label>
                             <select name="posicao_secundaria" value={formData.posicao_secundaria} onChange={handleChange} className={`${selectClass} text-[#4787ff] font-bold`}>
                                 <option value="">Nenhuma</option>
                                 <option value="Goleiro">Goleiro</option>
@@ -212,18 +212,18 @@ const PlayerEdit: React.FC = () => {
                 </div>
 
                 {/* COLUNA DIREITA (NOTAS E AVISOS) */}
-                <div className="bg-[#f8f9fa] rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)] h-fit">
-                    <div className="bg-white p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm mb-6">
-                        <h4 className="text-[#333] text-lg font-bold mb-4 ">Atenção</h4>
-                        <p className="text-[#666] leading-relaxed text-sm">
+                <div className="bg-[#f8f9fa] dark:bg-gray-900 rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)] h-fit">
+                    <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm mb-6">
+                        <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4 ">Atenção</h4>
+                        <p className="text-[#666] dark:text-gray-300 leading-relaxed text-sm">
                             Certifique-se de salvar as alterações após modificar os dados. As notas de avaliação (Overall) são calculadas automaticamente com base nas avaliações realizadas pelos treinadores e não podem ser editadas manualmente aqui.
                         </p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                        {['Técnica', 'Condicionamento', 'Finalização', 'Velocidade'].map((item) => (
-                           <div key={item} className="bg-white p-4 rounded-[10px] text-center shadow-sm border-2 border-dashed border-[#e9ecef] opacity-70">
-                               <h5 className="text-[#333] mb-2 font-bold ">{item}</h5>
+                           <div key={item} className="bg-white dark:bg-gray-800 dark:border-gray-700 p-4 rounded-[10px] text-center shadow-sm border-2 border-dashed border-[#e9ecef] opacity-70">
+                               <h5 className="text-[#333] dark:text-white mb-2 font-bold ">{item}</h5>
                                <div className="text-xl text-gray-400 ">Auto</div>
                            </div>
                        ))}

@@ -31,7 +31,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
         <div className="absolute w-full h-full backface-hidden bg-white overflow-hidden border-[10px] border-[#8B0000] flex flex-col">
           
           {/* Badge de Rating */}
-          <div className="absolute top-0 left-0 bg-[#8B0000] text-white font-bold text-3xl w-20 h-16 flex items-center justify-center rounded-br-2xl z-10 shadow-md">
+          <div className="absolute top-0 left-0 bg-[#8B0000] text-white font-bold text-5xl w-20 h-14 flex items-center justify-center rounded-br-2xl z-10 shadow-md">
             {Number(player.rating_medio || 0).toFixed(1)}
           </div>
 

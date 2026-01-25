@@ -119,25 +119,25 @@ const Players: React.FC = () => {
       <div className="p-6 min-h-screen pb-20">
         
         {/* === HEADER === */}
-        <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#14244D] mb-2 ">
+        <div className="text-center mb-8 bg-[#14244D] dark:bg-gray-900 rounded-xl p-6 shadow-md text-white">
+            <h1 className="text-3xl font-bold mb-2 ">
                 Jogadores Inscritos
             </h1>
             <p className="text-gray-500">Sistema de Avaliação de Atletas</p>
         </div>
 
         {/* === BARRA DE FILTROS E BUSCA === */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center sticky top-4 z-40">
+        <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border dark:border-gray-700 border-gray-100 mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center sticky top-4 z-40">
             
             {/* Busca */}
-            <div className="relative w-full lg:w-1/3">
+            <div className="relative w-full lg:w-1/3 ">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input 
                     type="text" 
-                    placeholder="🔍 Buscar por nome ou posição..."
+                    placeholder="uscar por nome ou posição..."
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-full focus:ring-2 focus:ring-[#8B0000] outline-none transition"
+                    className="w-full pl-10 pr-4 py-3 border dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-full focus:ring-2 focus:ring-[#8B0000] outline-none transition"
                 />
             </div>
 
@@ -151,7 +151,7 @@ const Players: React.FC = () => {
                             px-4 py-2 rounded-full whitespace-nowrap text-sm font-bold transition border
                             ${activeFilter === f.value 
                                 ? "bg-[#8B0000] text-white border-[#8B0000] shadow-md transform scale-105" 
-                                : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"}
+                                : "bg-white text-gray-600 dark:text-white hover:bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700"}
                         `}
                     >
                         {f.label}

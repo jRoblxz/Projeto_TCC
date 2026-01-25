@@ -86,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-50 h-screen w-64 max-w-[16rem] bg-white dark:bg-gray-900 
+          fixed top-0 left-0 z-50 h-screen w-64 max-w-[16rem] bg-[#14244D] dark:bg-gray-900 
           shadow-xl transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0 lg:sticky lg:top-0 lg:z-auto
@@ -96,10 +96,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           {/* Header */}
           <div className="flex-none flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 rounded-lg flex items-center bg-white  justify-center">
                 <img src={Icon} alt="Logo" className="w-10 h-10 flex items-center justify-center" />
               </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white">
+              <span className="text-xl font-bold text-gray-100">
                 João Pedro
               </span>
             </div>
@@ -116,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
               return (
                 <div key={item.title}>
                   {item.Group && (
-                    <h2 className="text-xs text-gray-500 dark:text-gray-400 font-semibold uppercase tracking-wider mb-2 mt-4 first:mt-0">
+                    <h2 className="text-xs text-gray-400 dark:text-gray-400 font-semibold uppercase tracking-wider mb-2 mt-4 first:mt-0">
                       {item.Group}
                     </h2>
                   )}
@@ -127,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                       className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
                         isOpenSubmenu
                           ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                          : "text-gray-200 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
                       }`}
                     >
                       <div className="flex items-center space-x-3">
@@ -146,8 +146,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                       onClick={onClose}
                       className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
                         isActive
-                          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                          ? "bg-red-100 dark:bg-blue-900/20 text-red-600 dark:text-blue-400"
+                          : "text-gray-200 dark:text-gray-300 hover:bg-red-50 hover:text-red-400 dark:hover:bg-gray-800"
                       }`}
                     >
                       <div className="flex items-center space-x-3">
@@ -200,8 +200,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </nav>
 
           {/* Rodapé */}
-          <footer className="flex-none bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 p-4">
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+          <footer className="flex-none bg-[#14244D] dark:bg-gray-900 border-t border-gray-600 dark:border-gray-700 p-4">
+            <p className="text-xs text-gray-400 text-center">
               © 2026 SparkLab
             </p>
           </footer>

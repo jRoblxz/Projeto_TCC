@@ -49,14 +49,14 @@ const Header: FC<HeaderProps> = ({ onMenuClick }) => {
 
           {/* Menu do usuário */}
           <div className="flex items-center space-x-3">
-            <div className="hidden sm:block text-right">
+            {/* <div className="hidden sm:block text-right">
               <p className="text-sm font-medium text-gray-900 dark:text-white">
                 Usuário Admin
               </p>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 admin@sistema.com
               </p>
-            </div>
+            </div> */}
 
             <div className="flex items-center space-x-2">
               <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">

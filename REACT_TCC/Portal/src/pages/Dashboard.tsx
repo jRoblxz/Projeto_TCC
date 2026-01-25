@@ -114,7 +114,7 @@ const Dashboard: React.FC = () => {
         )}
 
         {/* ================= HEADER ================= */}
-        <div className="bg-white dark:bg-gray-900  rounded-xl p-6 text-gray-900 dark:text-white shadow-lg  gap-6">
+        <div className="bg-white dark:bg-gray-900 rounded-xl p-6 text-gray-900 dark:text-white shadow-lg gap-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               {/* Logo - Certifique-se que a imagem existe em public/img */}

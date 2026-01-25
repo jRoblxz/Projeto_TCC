@@ -16,7 +16,6 @@ class Equipe extends Model
     protected $fillable = [
         'nome',
         'peneira_id',
-
     ];
 
 
@@ -29,10 +28,10 @@ class Equipe extends Model
     public function jogadores()
     {
         return $this->belongsToMany(
-            Jogadores::class,     
-            'JogadoresPorEquipe', 
-            'equipe_id',          
-            'jogador_id'          
-        );
+            Jogadores::class,
+            'JogadoresPorEquipe', // Nome da tabela pivot
+            'equipe_id',          // Chave estrangeira da Equipe
+            'jogador_id'          // Chave estrangeira do Jogador
+        )->withPivot(['posicao_campo_x', 'posicao_campo_y', 'titular']); // [CRUCIAL]
     }
 }

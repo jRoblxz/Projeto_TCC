@@ -79,10 +79,10 @@ class Jogadores extends Model
     public function equipes()
     {
         return $this->belongsToMany(
-            Equipe::class,
-            'JogadoresPorEquipe',
-            'jogador_id',
+            Equipe::class, 
+            'JogadoresPorEquipe', 
+            'jogador_id', 
             'equipe_id'
-        );
+        )->withPivot(['posicao_campo_x', 'posicao_campo_y', 'titular']);
     }
 }

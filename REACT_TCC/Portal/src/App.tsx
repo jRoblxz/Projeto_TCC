@@ -9,7 +9,7 @@ import { Toaster } from "react-hot-toast";
 
 // Páginas
 import Login from "./pages/Login";
-import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/Dashboard";
 import Peneira from "./pages/Peneiras";
 import Players from "./pages/Players";
 
@@ -19,6 +19,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 import PlayerInfo from "./pages/PlayerInfo";
 import PlayerEdit from "./pages/PlayerEdit";
+import PeneiraDetalhes from "./pages/PeneiraDetalhes";
+import EditorTimes from "./pages/EditorTimes";
 
 const App: FC = () => {
   return (
@@ -54,6 +56,24 @@ const App: FC = () => {
             element={
               <ProtectedRoute>
                 <Peneira />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/peneiras/:id"
+            element={
+              <ProtectedRoute>
+                <PeneiraDetalhes />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/peneiras/:id/editor-times"
+            element={
+              <ProtectedRoute>
+                <EditorTimes />
               </ProtectedRoute>
             }
           />
