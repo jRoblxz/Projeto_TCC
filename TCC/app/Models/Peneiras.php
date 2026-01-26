@@ -11,7 +11,7 @@ class Peneiras extends Model
 
     public $timestamps = false;
 
-    protected $table = 'Peneiras';
+    protected $table = 'peneiras';
     protected $fillable = [
         'nome_evento',
         'data_evento',

@@ -10,7 +10,7 @@ class Equipe extends Model
     use HasFactory;
     public $timestamps = false; // Se sua tabela não tiver created_at/updated_at
 
-    protected $table = 'Equipes'; // Confirme o nome da tabela
+    protected $table = 'equipes'; // Confirme o nome da tabela
     protected $fillable = ['nome', 'peneira_id'];
 
     public function jogadores()

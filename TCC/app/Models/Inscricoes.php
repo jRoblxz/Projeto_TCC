@@ -10,7 +10,7 @@ class Inscricoes extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $table = 'Inscricoes';
+    protected $table = 'inscricoes';
     protected $fillable = [
         'jogador_id',
         'peneira_id',

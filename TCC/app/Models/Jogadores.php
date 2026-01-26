@@ -10,7 +10,7 @@ class Jogadores extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $table = 'Jogadores';
+    protected $table = 'jogadores';
     
     // [CORREÇÃO 1] Adiciona o rating aos dados retornados no JSON
     protected $appends = ['rating_medio', 'posicao_abreviada'];
