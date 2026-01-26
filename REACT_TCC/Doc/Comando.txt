@@ -1,0 +1,35 @@
+
+
+npm install
+npm run dev
+
+npm install -D @vitejs/plugin-react
+npm install react-router-dom
+npm install react-hot-toast
+
+import react em App.tsx
+npm install --save-dev @types/react @types/react-dom
+
+layouts - header.tsx
+npm install lucide-react
+
+layouts - sidebar.tsx
+npm install framer-motion
+
+Instalar o Tailwind
+npm install -D tailwindcss postcss autoprefixer
+
+Caso não tenha o tailwind.config.js
+npx tailwindcss init -p
+ 
+Instalar na raiz do projeto para funcionar o postcss novo com tailwind
+npm install -D @tailwindcss/postcss
+
+
+npm install tailwind-merge
+npm install clsx
+npm install @radix-ui/react-separator
+npm install @radix-ui/react-label
+npm install class-variance-authority
+npm install @radix-ui/react-select
+

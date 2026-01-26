@@ -1,0 +1,687 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@font-face {
+    font-family: 'FONTE_TESTE';
+    src: url(../fonts/fonnts.com-SQR721B.ttf) format('truetype');
+    font-display: swap;
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    background:
+        linear-gradient(rgba(255, 255, 255, 0.9), rgba(156, 156, 156, 0.9)),
+        url(/img/prudentao.png) no-repeat;
+    background-size: cover;
+    /* cobre toda a tela */
+    background-position: center;
+    /* centraliza 
+            background-repeat: no-repeat;*/
+    color: #333;
+    line-height: 1.6;
+}
+
+.container-header {
+    max-width: 1200px;
+    position: relative;
+    margin: auto;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    position: relative;
+    top: -80px;
+    margin: auto;
+    padding: 20px;
+}
+
+
+header {
+    background-color: transparent;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1.club-name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #941B1B;
+    font-family: "FONTE_TESTE", sans-serif;
+}
+
+h2 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #d9d9d9ff;
+}
+
+.h2-1 {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    color: #d9d9d9ff;
+    background-color: #14244D;
+    padding: 5px 15px;
+    display: inline-block;
+}
+
+
+.section-title {
+    text-align: center;
+    margin: 40px 0 30px;
+    font-size: 2rem;
+    color: #941B1B;
+    position: relative;
+}
+
+.section-title:after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #941B1B;
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
+.how-it-works {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.step {
+    flex: 1;
+    min-width: 200px;
+    background: #941B1B;
+    border-radius: 0px 75px 0px 75px;
+    padding: 25px 0px 0px 20px;
+    box-shadow: -5px 5px 20px 5px rgba(0, 0, 0, 0.5);
+}
+
+.step-2 {
+    flex: 1;
+    min-width: 300px;
+    border-radius: 0px 50px 0px 50px;
+    background: #14244D;
+    padding: 25px;
+    text-align: center;
+    box-shadow: -5px 0 10px -5px rgba(0, 0, 0, 0.5);
+}
+
+.step-number {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #d0d0d0ff;
+    margin-bottom: 15px;
+    margin-left: -25px;
+    margin-top: -25px;
+    width: 100px;
+    padding: 0 0px 0px 20px;
+    background-color: #941B1B;
+}
+
+
+.step-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #941B1B;
+    display: inline-block;
+    padding: 5px 15px;
+}
+
+.step-content {
+    color: #efefefff;
+}
+
+.step-content ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.step-content li {
+    margin-bottom: 8px;
+    position: relative;
+    text-align: justify;
+}
+
+.step-content li:before {
+    content: "•";
+    color: #941B1B;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.website-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #14244D;
+    color: white;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.club-name {
+    font-family: "FONTE_TESTE", sans-serif;
+}
+
+.website-url {
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #fff;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.website-url:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.club-name {
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    color: #666;
+    font-size: 0.9rem;
+
+
+}
+
+@media (max-width: 768px) {
+    .how-it-works {
+        flex-direction: column;
+    }
+
+    .step {
+        min-width: 100%;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .club-name {
+        font-size: 2rem;
+    }
+
+    .website-url {
+        font-size: 1.5rem;
+    }
+}
+
+img.logo {
+    height: 30vh;
+    margin-bottom: 5px;
+}
+
+img.icon {
+    width: 60px;
+    height: 60px;
+    margin-top: -10px;
+
+}
+
+img.icon-2 {
+    width: 70px;
+    height: 70px;
+    margin-top: -10px;
+
+}
+
+.header-step {
+    display: flex;
+    justify-content: flex-start;
+    gap: 200px;
+}
+
+h3.step-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #941B1B;
+    text-align: center;
+}
+
+strong {
+    color: transparent;
+}
+
+p.inst {
+    text-align: justify;
+
+}
+
+
+.step-title:after {
+    content: '';
+    display: block;
+    width: 200px;
+    height: 1px;
+    background: #f1f1f1;
+    margin: 10px auto;
+    border-radius: 2px;
+}
+
+.container-form {
+    margin: auto;
+    position: relative;
+    top: -30px;
+    width: 900px;
+    border-radius: 24px;
+    padding: 50px;
+    background-color: #F3F3F3;
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.checkbox-wrapper-1 *,
+.checkbox-wrapper-1 ::after,
+.checkbox-wrapper-1 ::before {
+    box-sizing: border-box;
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted {
+    margin: 0;
+    width: 0;
+    height: 0;
+    display: inline;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted+label:before {
+    content: "";
+    display: inline-block;
+    vertical-align: top;
+    height: 1.15em;
+    width: 1.15em;
+    margin-right: 0.6em;
+    color: rgba(0, 0, 0, 0.275);
+    border: solid 0.06em;
+    box-shadow: 0 0 0.04em, 0 0.06em 0.16em -0.03em inset, 0 0 0 0.07em transparent inset;
+    border-radius: 0.2em;
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xml:space="preserve" fill="white" viewBox="0 0 9 9"><rect x="0" y="4.3" transform="matrix(-0.707 -0.7072 0.7072 -0.707 0.5891 10.4702)" width="4.3" height="1.6" /><rect x="2.2" y="2.9" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 12.1877 2.9833)" width="6.1" height="1.7" /></svg>') no-repeat center, white;
+    background-size: 0;
+    will-change: color, border, background, background-size, box-shadow;
+    transform: translate3d(0, 0, 0);
+    transition: color 0.1s, border 0.1s, background 0.15s, box-shadow 0.1s;
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted:enabled:active+label:before,
+.checkbox-wrapper-1 [type=checkbox].substituted:enabled+label:active:before {
+    box-shadow: 0 0 0.04em, 0 0.06em 0.16em -0.03em transparent inset, 0 0 0 0.07em rgba(0, 0, 0, 0.1) inset;
+    background-color: #f0f0f0;
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted:checked+label:before {
+    background-color: #3B99FC;
+    background-size: 0.75em;
+    color: rgba(0, 0, 0, 0.075);
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted:checked:enabled:active+label:before,
+.checkbox-wrapper-1 [type=checkbox].substituted:checked:enabled+label:active:before {
+    background-color: #0a7ffb;
+    color: rgba(0, 0, 0, 0.275);
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted:focus+label:before {
+    box-shadow: 0 0 0.04em, 0 0.06em 0.16em -0.03em transparent inset, 0 0 0 0.07em rgba(0, 0, 0, 0.1) inset, 0 0 0 3.3px rgba(65, 159, 255, 0.55), 0 0 0 5px rgba(65, 159, 255, 0.3);
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted:focus:active+label:before,
+.checkbox-wrapper-1 [type=checkbox].substituted:focus+label:active:before {
+    box-shadow: 0 0 0.04em, 0 0.06em 0.16em -0.03em transparent inset, 0 0 0 0.07em rgba(0, 0, 0, 0.1) inset, 0 0 0 3.3px rgba(65, 159, 255, 0.55), 0 0 0 5px rgba(65, 159, 255, 0.3);
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted:disabled+label:before {
+    opacity: 0.5;
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted.dark+label:before {
+    color: rgba(255, 255, 255, 0.275);
+    background-color: #222;
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xml:space="preserve" fill="rgba(34, 34, 34, 0.999)" viewBox="0 0 9 9"><rect x="0" y="4.3" transform="matrix(-0.707 -0.7072 0.7072 -0.707 0.5891 10.4702)" width="4.3" height="1.6" /><rect x="2.2" y="2.9" transform="matrix(-0.7071 0.7071 -0.7071 -0.7071 12.1877 2.9833)" width="6.1" height="1.7" /></svg>');
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted.dark:enabled:active+label:before,
+.checkbox-wrapper-1 [type=checkbox].substituted.dark:enabled+label:active:before {
+    background-color: #444;
+    box-shadow: 0 0 0.04em, 0 0.06em 0.16em -0.03em transparent inset, 0 0 0 0.07em rgba(255, 255, 255, 0.1) inset;
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted.dark:checked+label:before {
+    background-color: #a97035;
+    color: rgba(255, 255, 255, 0.075);
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted.dark:checked:enabled:active+label:before,
+.checkbox-wrapper-1 [type=checkbox].substituted.dark:checked:enabled+label:active:before {
+    background-color: #c68035;
+    color: rgba(0, 0, 0, 0.275);
+}
+
+.checkbox-wrapper-1 [type=checkbox].substituted+label {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.steps div {
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+}
+
+.steps .active {
+    color: #1B294E;
+    font-size: large;
+    font-weight: bold;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #851114;
+}
+
+/* Animated background elements */
+.bg-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.ball {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: float 20s infinite ease-in-out;
+}
+
+.ball:nth-child(1) {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 15s;
+}
+
+.ball:nth-child(2) {
+    top: 60%;
+    right: 20%;
+    animation-delay: 2s;
+    animation-duration: 18s;
+}
+
+.ball:nth-child(3) {
+    bottom: 20%;
+    left: 30%;
+    animation-delay: 4s;
+    animation-duration: 20s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(100px, -100px) rotate(90deg);
+    }
+
+    50% {
+        transform: translate(-50px, 100px) rotate(180deg);
+    }
+
+    75% {
+        transform: translate(-100px, -50px) rotate(270deg);
+    }
+}
+
+.container-confirm {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 1;
+    margin: auto;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.5s ease-out 0.3s both;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.checkmark {
+    width: 35px;
+    height: 35px;
+    stroke-width: 3;
+    stroke: white;
+    fill: none;
+    animation: drawCheck 0.6s ease-out 0.8s both;
+}
+
+@keyframes drawCheck {
+    from {
+        stroke-dasharray: 50;
+        stroke-dashoffset: 50;
+    }
+
+    to {
+        stroke-dasharray: 50;
+        stroke-dashoffset: 0;
+    }
+}
+
+.container-confirm h1 {
+    color: #851114;
+    font-size: bold;
+    margin-bottom: 15px;
+    animation: fadeIn 0.6s ease-out 0.4s both;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+    animation: fadeIn 0.6s ease-out 0.5s both;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.info-box {
+    background-color: rgba(0, 0, 0, 0.075);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+    animation: fadeIn 0.6s ease-out 0.6s both;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    text-align: left;
+}
+
+.info-icon {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.info-text {
+    flex: 1;
+}
+
+.info-text strong {
+    display: block;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.info-text span {
+    color: #666;
+    font-size: 13px;
+}
+
+.registration-number {
+    background: #14244D;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    animation: fadeIn 0.6s ease-out 0.7s both;
+}
+
+.registration-number label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.registration-number .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+    animation: fadeIn 0.6s ease-out 0.8s both;
+}
+
+.divider {
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    margin: 20px auto;
+    border-radius: 2px;
+    animation: fadeIn 0.6s ease-out 0.65s both;
+}

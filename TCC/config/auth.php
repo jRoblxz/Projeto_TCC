@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'sanctum', // Ou 'jwt' se você instalou o pacote jwt-auth
+            'provider' => 'users',
+        ],
     ],
 
     /*

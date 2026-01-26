@@ -1,0 +1,107 @@
+{
+  "name": "Enviar Email - Inscrição Peneira",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5d5b0a7b-fecb-4fa3-ad07-1a7177785ee7",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n    nome_completo,\n    email,\n    data_criacao\nFROM\n    Pessoas\nWHERE\n    data_criacao > '2025-11-01 00:00:00'\nORDER BY\n    data_criacao ASC;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        208,
+        0
+      ],
+      "id": "14968ee4-86d4-49d2-bd62-54bed498e208",
+      "name": "Execute a SQL query",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "mySql": {
+          "id": "gVfy5vtQyOtPw33J",
+          "name": "MySQL account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "Inscrição confirmada Jogador !!!",
+        "emailType": "text",
+        "message": "=Olá {{ $json.nome_completo }},\n\nSua inscrição foi recebida com sucesso! Agradecemos o interesse em fazer parte do melhor time do oeste paulista.\n\nEm breve enviaremos mais detalhes.\n\nAtenciosamente,\nEquipe de Scout Grêmio Prudente.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c40dd83e-98d2-4d39-8b88-890aba9c9cba",
+      "name": "Send a message",
+      "webhookId": "2b0000fb-2792-41e5-9ab0-1e8f69d1a9ec",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "AuY4WVYWptzurbXl",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fccded45-8b1d-4930-93ee-e2656f6a45c7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e896335f36c4b40d7fa86df2cf074a290f7d251cf3ebe54e8cb1cef8fa50bfef"
+  },
+  "id": "UqLbcELsl0x874Vz",
+  "tags": []
+}
