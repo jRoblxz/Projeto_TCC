@@ -5,11 +5,7 @@ export const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 
 // 2. Crie uma instância do Axios
 export const api = axios.create({
-    baseURL: API_BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json', // Importante para o Laravel não retornar HTML em erro
-    },
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1"
 });
 
 // 3. Interceptor Mágico (O Segredo do Profissional)
@@ -27,3 +23,4 @@ api.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error);
 });
+
