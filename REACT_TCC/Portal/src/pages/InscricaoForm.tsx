@@ -130,14 +130,14 @@ const InscricaoForm: React.FC = () => {
     try {
       const data = new FormData();
 
-      // 2. Adicionar campos de texto OBRIGATÓRIOS
-      // Como inicializamos o state com "", eles irão como string vazia se não preenchidos
+      // 2. Construção Manual do FormData
       data.append("peneira_id", formData.peneira_id);
       data.append("nome_completo", formData.nome_completo);
       data.append("data_nascimento", formData.data_nascimento);
       data.append("cidade", formData.cidade);
       data.append("cpf", formData.cpf);
-      data.append("rg", formData.rg);
+      // Envia RG apenas se tiver valor
+      if (formData.rg) data.append("rg", formData.rg);
       data.append("email", formData.email);
       data.append("telefone", formData.telefone);
       data.append("pe_preferido", formData.pe_preferido);
@@ -147,21 +147,22 @@ const InscricaoForm: React.FC = () => {
       data.append("peso_kg", formData.peso_kg);
       data.append("historico_lesoes_cirurgias", formData.historico_lesoes_cirurgias);
       
-      // Campos opcionais de texto (verificar se tem valor)
       if (formData.video_apresentacao_url) {
           data.append("video_apresentacao_url", formData.video_apresentacao_url);
       }
 
-      // 3. [IMPORTANTE] Adicionar Foto SOMENTE se for um Arquivo Válido
-      // O 'instanceof File' garante que não é null, nem string, nem undefined
+      // 3. [CRUCIAL] Tratamento da Foto
+      // Só adiciona ao FormData se for um arquivo real
       if (formData.foto_perfil_url instanceof File) {
           data.append("foto_perfil_url", formData.foto_perfil_url);
-      } else {
-          console.log("Foto não selecionada ou inválida, enviando sem foto.");
       }
 
-      // 4. Envia para o Backend
-      await api.post("/register/candidate", data);
+      // 4. [CORREÇÃO FINAL] Forçar o cabeçalho Multipart
+      await api.post("/register/candidate", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       
       navigate("/confirmacao");
 
@@ -169,10 +170,6 @@ const InscricaoForm: React.FC = () => {
       console.error(error);
       if (error.response?.data?.message) {
           toast.error(error.response.data.message);
-          // Mostra os erros específicos de cada campo se houver
-          if (error.response.data.errors) {
-             console.log("Erros de validação:", error.response.data.errors);
-          }
       } else {
           toast.error("Erro ao realizar inscrição.");
       }

@@ -18,18 +18,53 @@ class PlayerController extends Controller
         $query = Jogadores::with(['pessoa', 'ultima_avaliacao'])
             ->withAvg('avaliacoes as rating_medio', 'nota');
 
-        if ($request->has('sub_divisao') && $request->sub_divisao !== 'Todos') {
+        // --- 1. FILTRO DE BUSCA (Search) ---
+        if ($request->filled('search')) {
+            $termo = $request->search;
+            $query->where(function($q) use ($termo) {
+                // Busca por nome na tabela Pessoas
+                $q->whereHas('pessoa', function($q2) use ($termo) {
+                    $q2->where('nome_completo', 'like', "%{$termo}%");
+                })
+                // Ou busca por posição na tabela Jogadores
+                ->orWhere('posicao_principal', 'like', "%{$termo}%");
+            });
+        }
+
+        // --- 2. FILTRO DE CATEGORIA (Sub Divisão) ---
+        if ($request->filled('sub_divisao') && $request->sub_divisao !== 'Todos') {
             $sub = $request->sub_divisao;
+
             if ($sub === 'high-rating') {
                 $query->having('rating_medio', '>=', 8.0);
             } else {
-                $query->whereHas('pessoa', function ($q) use ($sub) {
-                    $q->where('sub_divisao', $sub);
-                });
+                // Mapeia a categoria para idades
+                $idades = match ($sub) {
+                    'Sub-7'  => [6, 7],
+                    'Sub-9'  => [8, 9],
+                    'Sub-11' => [10, 11],
+                    'Sub-13' => [12, 13],
+                    'Sub-15' => [14, 15],
+                    'Sub-17' => [16, 17],
+                    'Sub-20' => [18, 20], // 18, 19, 20
+                    default  => null
+                };
+
+                if ($idades) {
+                    // Calcula o intervalo de datas de nascimento para essas idades
+                    $dataInicio = now()->subYears($idades[1] + 1)->format('Y-m-d'); // Mais velho
+                    $dataFim    = now()->subYears($idades[0])->format('Y-m-d');     // Mais novo
+
+                    $query->whereHas('pessoa', function ($q) use ($dataInicio, $dataFim) {
+                        $q->whereBetween('data_nascimento', [$dataInicio, $dataFim]);
+                    });
+                }
             }
         }
 
+        // Ordenação e Paginação
         $query->orderBy('rating_medio', 'desc');
+        
         return $query->paginate($request->input('per_page', 12));
     }
 
