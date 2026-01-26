@@ -128,7 +128,7 @@ class PlayerController extends Controller
                 $projectId = env('GOOGLE_CLOUD_PROJECT_ID');
                 $bucketName = env('GOOGLE_CLOUD_STORAGE_BUCKET');
                 // IMPORTANTE: Confirme se o nome do arquivo JSON está correto aqui
-                $keyFilePath = storage_path('app/projetotcc-478522-255e1b6a806d.json');
+                $keyFilePath = env('GOOGLE_CLOUD_KEY_FILE');
 
                 $storage = new StorageClient([
                     'projectId' => $projectId,

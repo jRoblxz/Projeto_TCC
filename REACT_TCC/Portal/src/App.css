@@ -250,3 +250,61 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Animações customizadas do Scouting */
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(100px, -100px) rotate(90deg); }
+  50% { transform: translate(-50px, 100px) rotate(180deg); }
+  75% { transform: translate(-100px, -50px) rotate(270deg); }
+}
+
+.animate-float {
+  animation: float 20s infinite ease-in-out;
+}
+
+@keyframes drawCheck {
+  from { stroke-dasharray: 50; stroke-dashoffset: 50; }
+  to { stroke-dasharray: 50; stroke-dashoffset: 0; }
+}
+
+.animate-drawCheck {
+  animation: drawCheck 0.6s ease-out 0.8s both;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.5s ease-out 0.3s both;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out 0.4s both;
+}
+
+/* Checkbox estilizado (do seu CSS original) */
+.checkbox-wrapper-1 [type=checkbox].substituted {
+  margin: 0; width: 0; height: 0; display: inline;
+  -webkit-appearance: none; appearance: none;
+}
+.checkbox-wrapper-1 [type=checkbox].substituted + label:before {
+  content: ""; display: inline-block; vertical-align: top;
+  height: 1.15em; width: 1.15em; margin-right: 0.6em;
+  color: rgba(0, 0, 0, 0.275); border: solid 0.06em;
+  box-shadow: 0 0 0.04em, 0 0.06em 0.16em -0.03em inset, 0 0 0 0.07em transparent inset;
+  border-radius: 0.2em;
+  background: white;
+  transition: all 0.15s;
+}
+.checkbox-wrapper-1 [type=checkbox].substituted:checked + label:before {
+  background-color: #3B99FC;
+}

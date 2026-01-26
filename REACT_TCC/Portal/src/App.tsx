@@ -21,6 +21,9 @@ import PlayerInfo from "./pages/PlayerInfo";
 import PlayerEdit from "./pages/PlayerEdit";
 import PeneiraDetalhes from "./pages/PeneiraDetalhes";
 import EditorTimes from "./pages/EditorTimes";
+import InscricaoForm from "./pages/InscricaoForm";
+import Confirmacao from "./pages/Confirmacao";
+import Instrucao from "./pages/Instrucao";
 
 const App: FC = () => {
   return (
@@ -42,6 +45,31 @@ const App: FC = () => {
           <Route path="/login" element={<Login />} />
 
           {/* Rota Protegida */}
+          <Route
+            path="/instrucoes"
+            element={
+              <ProtectedRoute>
+                <Instrucao />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inscricao"
+            element={
+              <ProtectedRoute>
+                <InscricaoForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/confirmacao"
+            element={
+              <ProtectedRoute>
+                <Confirmacao />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/dashboard"
             element={

@@ -5,16 +5,22 @@ import clsx from "clsx";
 
 interface CustomInputProps {
   label?: string;
-  value: string | number;
-  onChange: (value: string) => void;
+  // "any" permite string (texto), number ou File (upload)
+  value?: string | number | readonly string[] | undefined; 
+  // Ajustamos o onChange para ser mais flexível
+  onChange: (value: any) => void; 
   placeholder?: string;
   maxLength?: number;
-  type?: string;
+  // Estendemos os tipos para incluir 'select'
+  type?: "text" | "number" | "email" | "password" | "date" | "file" | "select";
   mask?: "cpf" | "cnpj" | "telefone" | "cep" | "data" | "numero" | "moeda";
   error?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   className?: string;
+  // Props extras para select e file
+  children?: React.ReactNode; 
+  accept?: string;
 }
 
 const applyMask = (value: string, mask?: string) => {
@@ -22,52 +28,45 @@ const applyMask = (value: string, mask?: string) => {
 
   switch (mask) {
     case "cpf":
-    return v
-        .replace(/\D/g, "")                             // Remove tudo que não é número
-        .replace(/^(\d{3})(\d)/, "$1.$2")               // 123.4
-        .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")   // 123.456.7
-        .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4") // 123.456.789-1
-        .slice(0, 14); 
-
+      return v
+        .replace(/\D/g, "")
+        .replace(/^(\d{3})(\d)/, "$1.$2")
+        .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4")
+        .slice(0, 14);
     case "cnpj":
-    return v
-        .replace(/\D/g, "")                         // só número
-        .replace(/^(\d{2})(\d)/, "$1.$2")           // 44.2
-        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3") // 44.282.5
-        .replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3/$4") // 44.282.541/0
-        .replace(/^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/, "$1.$2.$3/$4-$5") // final
-        .slice(0, 18);                              // tamanho máximo
-
+      return v
+        .replace(/\D/g, "")
+        .replace(/^(\d{2})(\d)/, "$1.$2")
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
+        .replace(/^(\d{2})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3/$4")
+        .replace(/^(\d{2})\.(\d{3})\.(\d{3})\/(\d{4})(\d)/, "$1.$2.$3/$4-$5")
+        .slice(0, 18);
     case "telefone":
-    return v
-        .replace(/\D/g, "") // remove tudo que não é número
-        .replace(/^(\d{2})(\d)/, "($1) $2") // (11) 9...
-        .replace(/(\d{5})(\d)/, "$1-$2") // celular: 5 dígitos antes do hífen
-        .replace(/(\d{4})(\d{4})$/, "$1-$2") // fixo: 4 dígitos antes do hífen
+      return v
+        .replace(/\D/g, "")
+        .replace(/^(\d{2})(\d)/, "($1) $2")
+        .replace(/(\d{5})(\d)/, "$1-$2")
+        .replace(/(\d{4})(\d{4})$/, "$1-$2")
         .slice(0, 15);
-
     case "cep":
-    return v
-        .replace(/\D/g, "")                // remove tudo que não for número
-        .replace(/(\d{5})(\d)/, "$1-$2")   // adiciona o hífen após 5 dígitos
-        .slice(0, 9);  
-
+      return v
+        .replace(/\D/g, "")
+        .replace(/(\d{5})(\d)/, "$1-$2")
+        .slice(0, 9);
     case "data":
-    return v
-        .replace(/\D/g, "")                 // remove tudo que não é número
-        .replace(/(\d{2})(\d)/, "$1/$2")    // coloca a primeira barra
-        .replace(/(\d{2})(\d)/, "$1/$2")    // coloca a segunda barra
-        .slice(0, 10);  
-
+      return v
+        .replace(/\D/g, "")
+        .replace(/(\d{2})(\d)/, "$1/$2")
+        .replace(/(\d{2})(\d)/, "$1/$2")
+        .slice(0, 10);
     case "numero":
       return v;
-
     case "moeda":
-    return v
-        .replace(/\D/g, "")                 // remove tudo que não é número
-        .replace(/(\d)(\d{2})$/, "$1,$2")   // coloca a vírgula antes dos 2 últimos dígitos
-        .replace(/(?=(\d{3})+(?!\d))/g, "."); // adiciona os pontos dos milhares
-
+      return v
+        .replace(/\D/g, "")
+        .replace(/(\d)(\d{2})$/, "$1,$2")
+        .replace(/(?=(\d{3})+(?!\d))/g, ".");
     default:
       return value;
   }
@@ -85,40 +84,75 @@ const CustomInput: React.FC<CustomInputProps> = ({
   disabled,
   readOnly,
   className,
+  children,
+  accept
 }) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    const masked = applyMask(raw, mask);
-    onChange(masked);
+  
+  // Estilos base compartilhados para garantir identidade visual
+  const baseStyles = clsx(
+    "flex w-full rounded-md border px-3 py-2 text-sm bg-white file:border-0 file:bg-transparent file:text-sm file:font-medium",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-600 focus-visible:ring-offset-2",
+    "disabled:cursor-not-allowed disabled:opacity-50",
+    error ? "border-red-500" : "border-gray-400",
+    className
+  );
+
+  // Handler genérico para Inputs e Selects
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    let raw = e.target.value;
+    if (mask) raw = applyMask(raw, mask);
+    onChange(raw);
+  };
+
+  // Handler específico para File
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    onChange(file);
   };
 
   return (
-    <>
-      {label && <FieldLabel className="text-sm font-medium">{label}</FieldLabel>}
+    <div className="flex flex-col w-full gap-1.5">
+      {/* Label estilizada */}
+      {label && <FieldLabel className="text-sm font-bold text-[#851114]">{label}</FieldLabel>}
 
-      <div className="flex flex-col w-full">
+      {type === "select" ? (
+        <select
+          value={value as string | number | readonly string[] | undefined}
+          onChange={handleChange}
+          disabled={disabled}
+          className={clsx(baseStyles, "appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5z%22%20fill%3D%22%23666%22%2F%3E%3C%2Fsvg%3E')] bg-no-repeat bg-right pr-8")}
+        >
+          {children}
+        </select>
+      ) : type === "file" ? (
+        <input
+          type="file"
+          disabled={disabled}
+          accept={accept}
+          onChange={handleFileChange}
+          className={clsx(
+            baseStyles,
+            "text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#14244D] file:text-white hover:file:bg-[#1e3a8a]"
+          )}
+        />
+      ) : (
         <Input
           type={type}
           disabled={disabled}
           readOnly={readOnly}
           placeholder={placeholder}
-          value={value}
+          value={value as string | number | readonly string[] | undefined}
           onChange={handleChange}
-          className={clsx(
-            "flex flex-col w-full border border-gray-400",
-            error ? "border-red-500" : "border-gray-600",
-            disabled && "opacity-80 cursor-not-allowed",
-            className
-          )}
+          className={baseStyles}
         />
+      )}
 
-        {maxLength && (
-          <small className="text-right text-gray-500 ">
-            {String(value).length} / {maxLength}
-          </small>
-        )}
-      </div>
-    </>
+      {maxLength && type !== 'select' && type !== 'file' && (
+        <small className="text-right text-gray-500 text-xs">
+          {String(value || "").length} / {maxLength}
+        </small>
+      )}
+    </div>
   );
 };
 
