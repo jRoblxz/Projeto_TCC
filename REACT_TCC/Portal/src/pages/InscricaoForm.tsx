@@ -225,22 +225,28 @@ const InscricaoForm: React.FC = () => {
                 <CustomInput type="select" label="Posição principal:" value={formData.posicao_principal} onChange={(v) => handleInputChange("posicao_principal", v)}>
                     <option value="" disabled>Selecione</option>
                     <option value="Goleiro">Goleiro</option>
-                    <option value="Atacante">Atacante</option>
-                    <option value="Zagueiro">Zagueiro</option>
-                    <option value="Volante">Volante</option>
-                    <option value="Meia">Meia</option>
+                    <option value="Zagueiro">Zagueiro Direito</option>
+                    <option value="Zagueiro">Zagueiro Esquerdo</option>
                     <option value="Lateral Direito">Lateral Direito</option>
                     <option value="Lateral Esquerdo">Lateral Esquerdo</option>
+                    <option value="Volante">Volante</option>
+                    <option value="Meia">Meia</option>
+                    <option value="Atacante">Ponta Direita</option>
+                    <option value="Atacante">Ponta Esquerda</option>
+                    <option value="Atacante">Atacante</option>
                 </CustomInput>
                 <CustomInput type="select" label="Posição secundária:" value={formData.posicao_secundaria} onChange={(v) => handleInputChange("posicao_secundaria", v)}>
                     <option value="" disabled>Selecione</option>
                     <option value="Goleiro">Goleiro</option>
-                    <option value="Atacante">Atacante</option>
-                    <option value="Zagueiro">Zagueiro</option>
-                    <option value="Volante">Volante</option>
-                    <option value="Meia">Meia</option>
+                    <option value="Zagueiro">Zagueiro Direito</option>
+                    <option value="Zagueiro">Zagueiro Esquerdo</option>
                     <option value="Lateral Direito">Lateral Direito</option>
                     <option value="Lateral Esquerdo">Lateral Esquerdo</option>
+                    <option value="Volante">Volante</option>
+                    <option value="Meia">Meia</option>
+                    <option value="Atacante">Ponta Direita</option>
+                    <option value="Atacante">Ponta Esquerda</option>
+                    <option value="Atacante">Atacante</option>
                 </CustomInput>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
