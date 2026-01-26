@@ -192,7 +192,7 @@ const Players: React.FC = () => {
                 {/* Botão Adicionar (Card Fixo) */}
                 {isAdmin && (
                     <div 
-                        onClick={() => navigate('/users/create')} // Ajuste sua rota de criação
+                        onClick={() => navigate('/instrucoes')} // Ajuste sua rota de criação
                         className="w-[280px] h-[380px] border-4 border-dashed border-[#8B0000]/30 bg-[#8B0000]/5 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-[#8B0000]/10 hover:border-[#8B0000] transition-all group"
                     >
                         <div className="w-20 h-20 bg-[#8B0000]/10 rounded-full flex items-center justify-center group-hover:scale-110 transition">
