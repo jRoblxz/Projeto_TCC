@@ -63,13 +63,24 @@ const EditorTimes: React.FC = () => {
   const fetchTeams = async () => {
     try {
       const response = await api.get(`/peneiras/${id}/teams`);
-      const data = response.data;
-      
-      // Auto-distribuição se estiverem no centro
+      let data = response.data;
+
+      // [CORREÇÃO CRÍTICA] Adaptador: Transforma Array [0,1] em Objeto {A,B}
+      if (Array.isArray(data)) {
+          // Tenta achar pelo nome ou pega pelo índice
+          const teamA = data.find((t: any) => t.name.includes('A')) || data[0];
+          const teamB = data.find((t: any) => t.name.includes('B')) || data[1];
+          
+          // Recria o objeto que o componente espera
+          data = {};
+          if (teamA) data['A'] = teamA;
+          if (teamB) data['B'] = teamB;
+      }
+
+      // Auto-distribuição se estiverem no centro (Mantida sua lógica)
       ['A', 'B'].forEach(key => {
           if (data[key]) {
               const team = data[key];
-              // Conta quantos estão no "limbo" (50,50) vindo do backend
               const playersInCenter = team.players.filter((p: any) => p.x === 50 && p.y === 50 && p.inField).length;
               
               if (playersInCenter > 5) {
@@ -81,6 +92,7 @@ const EditorTimes: React.FC = () => {
 
       setTeams(data);
     } catch (error) {
+      console.error(error);
       toast.error("Erro ao carregar times.");
     } finally {
       setLoading(false);

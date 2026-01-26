@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Peneiras;
-
+use Illuminate\Support\Facades\DB;
 class PeneiraService
 {
     public function getAll($perPage = 9, $filters = [])
@@ -49,14 +49,24 @@ class PeneiraService
 
     public function delete($id)
     {
-        $peneira = Peneiras::findOrFail($id);
-        
-        // Regra de negócio: Não pode deletar peneira com inscritos?
-        if ($peneira->inscricoes()->exists()) {
-           throw new \Exception("Não é possível deletar uma peneira que já possui inscrições.");
-        }
+        return DB::transaction(function () use ($id) {
+            $peneira = Peneiras::findOrFail($id);
 
-        $peneira->delete();
-        return true;
+            // 1. Limpeza de Equipes e Vínculos
+            $equipeIds = DB::table('Equipes')->where('peneira_id', $id)->pluck('id');
+            if ($equipeIds->count() > 0) {
+                DB::table('JogadoresPorEquipe')->whereIn('equipe_id', $equipeIds)->delete();
+                DB::table('Equipes')->where('peneira_id', $id)->delete();
+            }
+
+            // 2. Apagar Avaliações e Inscrições
+            DB::table('Avaliacoes')->where('peneira_id', $id)->delete();
+            DB::table('Inscricoes')->where('peneira_id', $id)->delete();
+
+            // 3. Apagar Peneira
+            $peneira->delete();
+            
+            return true;
+        });
     }
 }

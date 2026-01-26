@@ -76,20 +76,27 @@ const PeneiraDetalhes: React.FC = () => {
         setPeneira(data.peneira || data);
         setJogadores(data.jogadores || []);
 
-        // [NOVO] Verifica se existem equipes (assumindo que o backend retorna 'equipes' ou fazemos outra chamada)
-        // Se o seu endpoint /peneiras/{id} não retorna as equipes, precisaremos ajustar o backend ou fazer:
-        // const teamsResponse = await api.get(`/peneiras/${id}/times`);
-        // if (teamsResponse.data.A || teamsResponse.data.B) setHasTeams(true);
-        
-        // Assumindo que ajustamos o show() do PeneiraController para incluir 'equipes':
+        // [CORREÇÃO] Verifica se tem equipes (Compatível com Array e Objeto)
+        // Se vier no objeto principal:
         if (data.peneira && data.peneira.equipes && data.peneira.equipes.length > 0) {
             setHasTeams(true);
         } else {
-            // Fallback: Tenta buscar os times para ter certeza
+            // Fallback: Busca na API de times
             try {
                 const tr = await api.get(`/peneiras/${id}/teams`);
-                if (tr.data && (tr.data.A || tr.data.B)) setHasTeams(true);
-            } catch(e) {}
+                const teamsData = tr.data;
+                
+                // Verifica se é Array (Novo formato) E tem itens
+                if (Array.isArray(teamsData) && teamsData.length > 0) {
+                    setHasTeams(true);
+                } 
+                // Verifica formato antigo (Objeto com chaves)
+                else if (teamsData && (teamsData.A || teamsData.B)) {
+                    setHasTeams(true);
+                }
+            } catch(e) {
+                console.error("Erro ao verificar times", e);
+            }
         }
       } catch (error) {
         toast.error("Erro ao carregar detalhes da peneira.");

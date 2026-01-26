@@ -6,70 +6,40 @@ use App\Http\Controllers\Controller;
 use App\Models\Jogadores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-// [IMPORTANTE] Adicione o cliente do Google Cloud
 use Google\Cloud\Storage\StorageClient;
+use App\Services\PlayerService; // [1] Import the Service
 
 class PlayerController extends Controller
 {
-    // ... métodos index, store, show, update, destroy (Mantenha como estão) ...
+    protected $playerService;
+
+    // [2] Add the Constructor for Injection
+    public function __construct(PlayerService $playerService)
+    {
+        $this->playerService = $playerService;
+    }
 
     public function index(Request $request)
     {
-        $query = Jogadores::with(['pessoa', 'ultima_avaliacao'])
-            ->withAvg('avaliacoes as rating_medio', 'nota');
+        $filters = [
+            'search' => $request->search,
+            'sub_divisao' => $request->sub_divisao
+        ];
 
-        // --- 1. FILTRO DE BUSCA (Search) ---
-        if ($request->filled('search')) {
-            $termo = $request->search;
-            $query->where(function($q) use ($termo) {
-                // Busca por nome na tabela Pessoas
-                $q->whereHas('pessoa', function($q2) use ($termo) {
-                    $q2->where('nome_completo', 'like', "%{$termo}%");
-                })
-                // Ou busca por posição na tabela Jogadores
-                ->orWhere('posicao_principal', 'like', "%{$termo}%");
-            });
-        }
+        // Now this will work because $this->playerService is no longer null
+        $players = $this->playerService->getAllWithFilters(
+            $request->input('per_page', 12), 
+            $filters
+        );
 
-        // --- 2. FILTRO DE CATEGORIA (Sub Divisão) ---
-        if ($request->filled('sub_divisao') && $request->sub_divisao !== 'Todos') {
-            $sub = $request->sub_divisao;
-
-            if ($sub === 'high-rating') {
-                $query->having('rating_medio', '>=', 8.0);
-            } else {
-                // Mapeia a categoria para idades
-                $idades = match ($sub) {
-                    'Sub-7'  => [6, 7],
-                    'Sub-9'  => [8, 9],
-                    'Sub-11' => [10, 11],
-                    'Sub-13' => [12, 13],
-                    'Sub-15' => [14, 15],
-                    'Sub-17' => [16, 17],
-                    'Sub-20' => [18, 20], // 18, 19, 20
-                    default  => null
-                };
-
-                if ($idades) {
-                    // Calcula o intervalo de datas de nascimento para essas idades
-                    $dataInicio = now()->subYears($idades[1] + 1)->format('Y-m-d'); // Mais velho
-                    $dataFim    = now()->subYears($idades[0])->format('Y-m-d');     // Mais novo
-
-                    $query->whereHas('pessoa', function ($q) use ($dataInicio, $dataFim) {
-                        $q->whereBetween('data_nascimento', [$dataInicio, $dataFim]);
-                    });
-                }
-            }
-        }
-
-        // Ordenação e Paginação
-        $query->orderBy('rating_medio', 'desc');
-        
-        return $query->paginate($request->input('per_page', 12));
+        return response()->json($players);
     }
 
+    // ... keep the other methods (show, update, destroy, uploadPhoto) ...
+    
     public function show($id)
     {
+        // ... existing code ...
         $jogador = \App\Models\Jogadores::with(['pessoa', 'ultima_avaliacao'])
             ->withAvg('avaliacoes as rating_calculado', 'nota')
             ->findOrFail($id);
@@ -83,8 +53,18 @@ class PlayerController extends Controller
 
     public function update(Request $request, $id)
     {
-        $jogador = \App\Models\Jogadores::with('pessoa')->findOrFail($id);
+        // For update, ideally you should also use the service, 
+        // but if you haven't refactored this part yet, keep the existing logic 
+        // OR use the service method you created:
+        
+        /* $jogador = $this->playerService->updatePlayer($id, $request->all());
+           return response()->json(['message' => 'Atualizado', 'data' => $jogador]);
+        */
 
+        // Keeping your previous logic for safety if you didn't fully switch yet:
+        $jogador = \App\Models\Jogadores::with('pessoa')->findOrFail($id);
+        
+        // ... rest of your update logic ...
         $dadosJogador = $request->only([
             'altura_cm', 'peso_kg', 'pe_preferido', 
             'posicao_principal', 'posicao_secundaria', 'rating_medio'
@@ -110,47 +90,31 @@ class PlayerController extends Controller
 
     public function destroy($id)
     {
+        // ... existing destroy logic ...
         try {
             $jogador = Jogadores::with('pessoa')->findOrFail($id);
-
-            // 1. Excluir Avaliações (Tabela Filha)
             \App\Models\Avaliacao::where('jogador_id', $id)->delete();
-
-            // 2. Excluir Inscrições (Se houver, Tabela Filha)
-            // \App\Models\Inscricoes::where('jogador_id', $id)->delete(); 
-
-            // 3. Excluir Foto do GCS (Opcional, mas recomendado para não deixar lixo)
+            
             $diskName = 'gcs';
             if ($jogador->pessoa && $jogador->pessoa->foto_perfil_url) {
                 if (\Illuminate\Support\Facades\Storage::disk($diskName)->exists($jogador->pessoa->foto_perfil_url)) {
                     \Illuminate\Support\Facades\Storage::disk($diskName)->delete($jogador->pessoa->foto_perfil_url);
                 }
             }
-
-            // 4. Excluir Jogador (Tabela Pai)
             $jogador->delete();
-
-            // 5. Excluir Pessoa (Tabela Avô - Opcional, depende da sua regra de negócio)
-            /* if ($jogador->pessoa) {
-                $jogador->pessoa->delete();
-            }
-            */
-
             return response()->json(['message' => 'Jogador excluído com sucesso']);
-
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Erro ao excluir jogador',
-                'error' => $e->getMessage()
-            ], 500);
+            return response()->json(['message' => 'Erro', 'error' => $e->getMessage()], 500);
         }
     }
 
-    // [MÉTODO CORRIGIDO] Upload usando SDK Direto para evitar erro de ACL
     public function uploadPhoto(Request $request, $id)
     {
+        // ... existing uploadPhoto logic ...
+        // Ideally, this should also move to the Service later, 
+        // but keep it here if it's working for now.
         $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120', // Máx 5MB
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
 
         try {
@@ -158,11 +122,8 @@ class PlayerController extends Controller
 
             if ($request->hasFile('image')) {
                 $arquivo = $request->file('image');
-
-                // 1. Configurações do Google Cloud (Igual ao UserController)
                 $projectId = env('GOOGLE_CLOUD_PROJECT_ID');
                 $bucketName = env('GOOGLE_CLOUD_STORAGE_BUCKET');
-                // IMPORTANTE: Confirme se o nome do arquivo JSON está correto aqui
                 $keyFilePath = env('GOOGLE_CLOUD_KEY_FILE');
 
                 $storage = new StorageClient([
@@ -172,8 +133,6 @@ class PlayerController extends Controller
 
                 $bucket = $storage->bucket($bucketName);
 
-                // 2. Apagar imagem antiga se existir
-                // Nota: Com SDK direto, verificamos e deletamos manualmente
                 if ($jogador->pessoa->foto_perfil_url) {
                     $objetoAntigo = $bucket->object($jogador->pessoa->foto_perfil_url);
                     if ($objetoAntigo->exists()) {
@@ -181,28 +140,17 @@ class PlayerController extends Controller
                     }
                 }
 
-                // 3. Preparar novo nome e Upload
-                // Gera um nome único: user/timestamp_uniqid.extensao
                 $nomeDoArquivo = 'user/' . time() . '_' . uniqid() . '.' . $arquivo->getClientOriginalExtension();
 
-                // Faz o upload SEM definir ACL (evita o erro 400)
                 $bucket->upload(
                     file_get_contents($arquivo->getRealPath()),
-                    [
-                        'name' => $nomeDoArquivo
-                    ]
+                    ['name' => $nomeDoArquivo]
                 );
 
-                // 4. Atualizar no banco de dados
                 if ($jogador->pessoa) {
-                    $jogador->pessoa->update([
-                        'foto_perfil_url' => $nomeDoArquivo
-                    ]);
+                    $jogador->pessoa->update(['foto_perfil_url' => $nomeDoArquivo]);
                 }
 
-                // 5. Gerar URL pública para retorno (opcional, se o bucket for público)
-                // Se o bucket for privado, você precisaria gerar uma Signed URL, 
-                // mas assumindo que segue o padrão do seu projeto:
                 $url = "https://storage.googleapis.com/{$bucketName}/{$nomeDoArquivo}";
 
                 return response()->json([
@@ -211,9 +159,7 @@ class PlayerController extends Controller
                     'url' => $url
                 ]);
             }
-
             return response()->json(['message' => 'Nenhum arquivo enviado.'], 400);
-
         } catch (\Exception $e) {
             Log::error("Erro no upload GCS (SDK): " . $e->getMessage());
             return response()->json(['message' => 'Erro ao salvar imagem: ' . $e->getMessage()], 500);

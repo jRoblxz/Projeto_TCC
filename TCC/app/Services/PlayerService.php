@@ -66,4 +66,49 @@ class PlayerService
             ]);
         }
     }
+
+    public function getAllWithFilters($perPage, $filters)
+    {
+        $query = Jogadores::with(['pessoa', 'ultima_avaliacao'])
+            ->withAvg('avaliacoes as rating_medio', 'nota');
+
+        // Filtro de Busca
+        if (!empty($filters['search'])) {
+            $termo = $filters['search'];
+            $query->where(function($q) use ($termo) {
+                $q->whereHas('pessoa', function($q2) use ($termo) {
+                    $q2->where('nome_completo', 'like', "%{$termo}%");
+                })->orWhere('posicao_principal', 'like', "%{$termo}%");
+            });
+        }
+
+        // Filtro de Categoria (Sub-XX)
+        if (!empty($filters['sub_divisao']) && $filters['sub_divisao'] !== 'Todos') {
+            $sub = $filters['sub_divisao'];
+            
+            if ($sub === 'high-rating') {
+                $query->having('rating_medio', '>=', 8.0);
+            } else {
+                $idades = match ($sub) {
+                    'Sub-7'  => [6, 7],
+                    'Sub-9'  => [8, 9],
+                    'Sub-11' => [10, 11],
+                    'Sub-13' => [12, 13],
+                    'Sub-15' => [14, 15],
+                    'Sub-17' => [16, 17],
+                    'Sub-20' => [18, 20],
+                    default  => null
+                };
+
+                if ($idades) {
+                    $dataInicio = now()->subYears($idades[1] + 1)->format('Y-m-d');
+                    $dataFim    = now()->subYears($idades[0])->format('Y-m-d');
+                    $query->whereHas('pessoa', fn($q) => $q->whereBetween('data_nascimento', [$dataInicio, $dataFim]));
+                }
+            }
+        }
+
+        $query->orderBy('rating_medio', 'desc');
+        return $query->paginate($perPage);
+    }
 }
