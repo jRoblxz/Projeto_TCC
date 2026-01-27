@@ -18,17 +18,30 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
 
   return (
     <div 
-      className="group relative w-[280px] h-[380px] [perspective:1000px] cursor-pointer mx-auto mb-8 transition-transform duration-300 hover:-translate-y-3"
+      className="group relative w-[280px] h-[380px] cursor-pointer mx-auto mb-8 transition-transform duration-300 hover:-translate-y-3"
+      style={{ perspective: "1000px", WebkitPerspective: "1000px" }} // [1] Perspective Inline
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div 
         className={clsx(
-          "relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] shadow-[8px_8px_0px_1px_#14244D]",
+          "relative w-full h-full transition-transform duration-700 shadow-[8px_8px_0px_1px_#14244D]",
           isFlipped ? "[transform:rotateY(180deg)]" : ""
         )}
+        style={{ 
+            transformStyle: "preserve-3d", 
+            WebkitTransformStyle: "preserve-3d" // [2] TransformStyle Habilitado pro Safari
+        }}
       >
         {/* === FRENTE DO CARD === */}
-        <div className="absolute w-full h-full [backface-visibility:hidden] bg-white overflow-hidden border-[10px] border-[#8B0000] flex flex-col">
+        <div 
+            className="absolute w-full h-full bg-white overflow-hidden border-[10px] border-[#8B0000] flex flex-col"
+            style={{ 
+                backfaceVisibility: "hidden", 
+                WebkitBackfaceVisibility: "hidden", // [3] O SEGREDO DO SAFARI
+                transform: "rotateY(0deg)",         // Força o eixo 0
+                zIndex: 2                           // Garante empilhamento
+            }}
+        >
           
           {/* Badge de Rating */}
           <div className="absolute top-0 left-0 bg-[#8B0000] text-white font-bold text-5xl w-20 h-14 flex items-center justify-center rounded-br-2xl z-10 shadow-md">
@@ -54,23 +67,21 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
           </div>
 
-          {/* Ações de Admin (Flutuando no Topo) - Só aparece no Hover */}
+          {/* Ações de Admin */}
           {isAdmin && (
             <div 
               className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"
-              onClick={(e) => e.stopPropagation()} // Impede o flip ao clicar nos botões
+              onClick={(e) => e.stopPropagation()} 
             >
               <button 
                 onClick={(e) => { e.stopPropagation(); onEditRating(player); }}
                 className="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 hover:scale-110 transition shadow-lg"
-                title="Editar Rating"
               >
                 <Edit size={16} />
               </button>
               <button 
                 onClick={(e) => { e.stopPropagation(); onDelete(player); }}
                 className="w-9 h-9 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 hover:scale-110 transition shadow-lg"
-                title="Excluir"
               >
                 <Trash size={16} />
               </button>
@@ -79,7 +90,15 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
         </div>
 
         {/* === VERSO DO CARD === */}
-        <div className="absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-gray-100 to-gray-200 border-4 border-[#8B0000] p-5 flex flex-col justify-between text-[#14244D]">
+        <div 
+            className="absolute w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 border-4 border-[#8B0000] p-5 flex flex-col justify-between text-[#14244D]"
+            style={{ 
+                backfaceVisibility: "hidden", 
+                WebkitBackfaceVisibility: "hidden", // [3] O SEGREDO DO SAFARI
+                transform: "rotateY(180deg)",       // Já começa virado
+                zIndex: 1
+            }}
+        >
             
           {/* Nome no Topo */}
           <div className="bg-[#8B0000] text-white -mx-5 -mt-5 p-4 text-center font-bold text-xl mb-2 shadow-sm">
