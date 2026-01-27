@@ -132,7 +132,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                 <img
                   src={userPhoto}
                   alt="User"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                   onError={(e) => (e.currentTarget.src = DefaultIcon)} // Fallback se a URL quebrar
                 />
               </a>
