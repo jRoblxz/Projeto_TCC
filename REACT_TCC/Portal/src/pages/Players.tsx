@@ -205,23 +205,23 @@ const Players: React.FC = () => {
 
         {/* === PAGINAÇÃO === */}
         {meta && meta.last_page > 1 && (
-            <div className="flex justify-center items-center gap-4 mt-12">
+            <div className="flex justify-center items-center gap-4 mt-8">
                 <button
                     onClick={() => setPage(p => Math.max(1, p - 1))}
                     disabled={page === 1}
-                    className="p-3 rounded-full bg-white border shadow-sm hover:bg-gray-50 disabled:opacity-50"
+                    className="p-2 rounded-lg border bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
-                    <ChevronLeft className="h-6 w-6 text-[#14244D]" />
+                    <ChevronLeft className="h-5 w-5" />
                 </button>
-                <span className="font-bold text-[#14244D]">
+                <span className="text-sm font-medium text-gray-600">
                     Página {meta.current_page} de {meta.last_page}
                 </span>
                 <button
                     onClick={() => setPage(p => Math.min(meta.last_page, p + 1))}
                     disabled={page === meta.last_page}
-                    className="p-3 rounded-full bg-white border shadow-sm hover:bg-gray-50 disabled:opacity-50"
+                    className="p-2 rounded-lg border bg-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                 >
-                    <ChevronRight className="h-6 w-6 text-[#14244D]" />
+                    <ChevronRight className="h-5 w-5" />
                 </button>
             </div>
         )}
