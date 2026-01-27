@@ -1,12 +1,11 @@
 import React from 'react';
 import Layout from '../components/layouts/LayoutForm';
+import { useNavigate } from "react-router-dom";
 
-// Mock data (viria do state ou rota)
-const inscricao = {
-  numero_inscricao: '2025-0042'
-};
+
 
 const Confirmacao: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <Layout>
       {/* Background Balls Animation */}
@@ -37,9 +36,9 @@ const Confirmacao: React.FC = () => {
         </p>
 
         <div className="bg-[#14244D] p-4 rounded-xl my-6 animate-fadeIn">
-          <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">Número de Inscrição</label>
+          <label className="block text-xs text-gray-400 mb-1 uppercase tracking-wide">ver peneira(s)</label>
           <div className="text-2xl font-bold text-white tracking-[2px]">
-            {inscricao.numero_inscricao}
+            <a onClick={() => navigate('/login')} className='cursor-pointer text-blue-400'>Entrar no site</a>
           </div>
         </div>
 
@@ -54,7 +53,7 @@ const Confirmacao: React.FC = () => {
       </div>
 
       <footer className="text-center p-5 mt-10 text-[#fff] text-sm relative z-10">
-        <p>Grêmio Prudente &copy; 2025. Todos os direitos reservados.</p>
+        <p>Grêmio Prudente x SparkLab &copy; 2025. Todos os direitos reservados.</p>
       </footer>
     </Layout>
   );

@@ -36,10 +36,17 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // 4. Limpar tokens antigos (Opcional: garante apenas 1 sessão por vez)
-        // $user->tokens()->delete();
+        // 4. Carregar dados do Jogador e da Pessoa vinculados (Se existirem)
+        // Isso previne o erro de ID incorreto no frontend
+        $user->load('pessoa.jogador');
 
-        // 5. Criar Novo Token (Sanctum)
+        // 5. Extrair jogador_id
+        $jogadorId = null;
+        if ($user->pessoa && $user->pessoa->jogador) {
+            $jogadorId = $user->pessoa->jogador->id;
+        }
+
+        // 6. Criar Novo Token (Sanctum)
         $token = $user->createToken('api_token')->plainTextToken;
 
         return response()->json([
@@ -50,17 +57,31 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->role, 
+                'role' => $user->role,
+                'jogador_id' => $jogadorId, // ID correto recuperado via Pessoa
+                'pessoa' => $user->pessoa,  // Dados da pessoa
             ]
         ], 200);
     }
+
 
     /**
      * Retorna dados do usuário logado
      */
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        $user = $request->user();
+        $user->load('pessoa.jogador'); // Carrega a cadeia
+
+        $userData = $user->toArray();
+
+        // Injeta o jogador_id manualmente na resposta
+        $userData['jogador_id'] = null;
+        if ($user->pessoa && $user->pessoa->jogador) {
+            $userData['jogador_id'] = $user->pessoa->jogador->id;
+        }
+
+        return response()->json($userData);
     }
 
     /**
@@ -68,23 +89,16 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        // Deleta apenas o token que foi usado na requisição atual
         $request->user()->currentAccessToken()->delete();
-
         return response()->json(['message' => 'Deslogado com sucesso']);
     }
-    
-    /**
-     * Refresh (Sanctum não tem refresh automático igual JWT, 
-     * mas você pode criar um novo token se o atual ainda for válido)
-     */
+
     public function refresh(Request $request)
     {
         $user = $request->user();
-        $user->currentAccessToken()->delete(); // Remove o atual
-        
+        $user->currentAccessToken()->delete();
         $newToken = $user->createToken('api_token_refresh')->plainTextToken;
-        
+
         return response()->json([
             'access_token' => $newToken,
             'token_type' => 'Bearer',

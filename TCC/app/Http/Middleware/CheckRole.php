@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // Importe o Auth
 
 class CheckRole
 {
@@ -13,36 +12,23 @@ class CheckRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $role 
+     * @param  string  $role
      * @return mixed
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        // Verifica se o usuário está logado
-        if (!Auth::check()) {
-            return redirect()->route('login'); 
-        }
-
-        // Pega o usuário da sessão
-        $user = Auth::user();
-
-        // Verifica o 'role'
-        if ($user->role !== $role) {
+        // 1. Verifica se tem usuário logado e se o papel (role) é o correto
+        if (! $request->user() || $request->user()->role !== $role) {
             
-            // --- [CORREÇÃO DO LOOP] ---
-            // Se o role não bate, desloga o usuário e o envia
-            // para a tela de login com uma mensagem de erro.
-            // Isso previne qualquer loop.
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            return redirect()->route('login')
-                             ->with('error', 'Acesso não permitido. Suas permissões não são suficientes.');
-            // --- [FIM DA CORREÇÃO] ---
+            // --- [CORREÇÃO] ---
+            // Em vez de deslogar ou redirecionar, retornamos um erro 403 (Proibido).
+            // Assim, o Frontend sabe que o usuário existe, mas não pode mexer aqui.
+            return response()->json([
+                'message' => 'Acesso negado. Você não tem permissão de ' . $role
+            ], 403);
         }
-        
-        // Se passou, continua
+
+        // 2. Se passou na verificação, deixa a requisição continuar
         return $next($request);
     }
 }

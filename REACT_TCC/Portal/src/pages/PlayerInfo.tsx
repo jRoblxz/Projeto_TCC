@@ -8,12 +8,14 @@ import toast from "react-hot-toast";
 import CustomModalExcluir from "@/components/ui/CustomModalExcluir"; // [1] Importe o Modal
 
 const pulseAnimation = "animate-[pulse_2s_infinite]";
+import { isUserAdmin } from "../utils/auth";
 
 const PlayerInfo: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [player, setPlayer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const isAdmin = isUserAdmin();
 
   // [2] Estados para controlar o Modal
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -96,13 +98,15 @@ const PlayerInfo: React.FC = () => {
           
           {/* COLUNA ESQUERDA */}
           <div className="bg-[#f8f9fa] dark:bg-gray-900 rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)] relative">
-            <button 
-                className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#141414] text-white flex items-center justify-center shadow-lg hover:w-[120px] hover:bg-[#ff4545] transition-all duration-300 group overflow-hidden z-10"
-                onClick={() => navigate(`/jogadores/${id}/edit`)}
-            >
-                <Edit className="w-4 h-4 group-hover:rotate-[360deg] transition-transform duration-300 shrink-0" />
-                <span className="hidden group-hover:block ml-2 text-sm font-bold whitespace-nowrap">Editar</span>
-            </button>
+            {isAdmin && (
+              <button 
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#141414] text-white flex items-center justify-center shadow-lg hover:w-[120px] hover:bg-[#ff4545] transition-all duration-300 group overflow-hidden z-10"
+                  onClick={() => navigate(`/jogadores/${id}/edit`)}
+              >
+                  <Edit className="w-4 h-4 group-hover:rotate-[360deg] transition-transform duration-300 shrink-0" />
+                  <span className="hidden group-hover:block ml-2 text-sm font-bold whitespace-nowrap">Editar</span>
+              </button>
+            )}
 
             <div className="w-[150px] h-[150px] rounded-full mx-auto mb-5 relative overflow-hidden bg-black/70 border-4 border-white shadow-sm">
               <img 
@@ -213,12 +217,14 @@ const PlayerInfo: React.FC = () => {
 
         {/* BOTÃO DELETAR QUE ABRE O MODAL */}
         <div className="flex justify-center pb-10 mt-6">
+          {isAdmin && (
             <button 
                 className="bg-[#ff6363] border-2 border-black text-white text-xl uppercase font-bold py-3 px-6 rounded-lg shadow-[0_2px_4px_rgba(0,0,0,0.4)] hover:bg-red-600 hover:rounded-[3px] hover:-translate-y-1 hover:rotate-1 transition-all duration-300 flex items-center gap-2  "
                 onClick={() => setShowDeleteModal(true)} // [4] Abre o modal
             >
                 <Trash size={20} /> DELETAR JOGADOR
             </button>
+          )}
         </div>
 
         {/* [5] Componente do Modal Renderizado */}

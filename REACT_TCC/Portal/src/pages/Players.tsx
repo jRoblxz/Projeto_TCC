@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import PlayerCard from "../components/ui/PlayerCard"; // Importe o card que criamos
 import { Search, Plus, Loader2, X, ChevronLeft, ChevronRight } from "lucide-react";
 import toast from "react-hot-toast";
+import { isUserAdmin } from "../utils/auth"; // Importe a função
 
 // Interface dos dados (Baseado no seu BD)
 interface Player {
@@ -51,7 +52,7 @@ const Players: React.FC = () => {
   const [newRating, setNewRating] = useState<number | string>("");
 
   // Permissões (Simulado - você pode pegar do Contexto de Auth)
-  const isAdmin = true; // Troque por sua lógica de auth real
+  const isAdmin = isUserAdmin(); // Use a função importada
 
   // --- CARREGAR DADOS ---
   const loadPlayers = async () => {

@@ -19,23 +19,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }}
       />
 
-      <header className="bg-transparent text-white py-5 text-center relative z-10">
+      <header className="bg-transparent text-white py-5 text-center relative z-10 font-Jersey">
         <div className="max-w-[1200px] mx-auto px-5">
           <img 
             src={Logo}
             alt="Logo Prudente" 
             className="h-[20vh] md:h-[30vh] mx-auto mb-1 object-contain"
           />
-          <h1 className="text-[2rem] md:text-[2.5rem] font-bold uppercase tracking-[2px] text-[#941B1B] font-sans">
+          <h1 className="text-[2rem] md:text-[2.5rem] font-bold uppercase tracking-[2px] text-[#941B1B]">
             GRÊMIO PRUDENTE
           </h1>
-          <h2 className="text-[1.1rem] md:text-[1.3rem] font-normal mb-8 text-[#d9d9d9] bg-[#14244D] px-4 py-1 inline-block rounded-sm">
+          <h2 className="text-[1.1rem] md:text-[1.3rem] font-normal mb-8  text-[#d9d9d9] bg-[#14244D] px-4 py-1 inline-block rounded-sm">
             Seleção de jogadores
           </h2>
         </div>
       </header>
 
-      <main className="relative z-10 pb-10">
+      <main className="relative z-10 pb-10 font-Jersey">
         {children}
       </main>
     </div>

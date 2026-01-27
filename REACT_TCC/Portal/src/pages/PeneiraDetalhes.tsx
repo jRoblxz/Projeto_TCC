@@ -15,6 +15,7 @@ import {
   Loader2,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { isUserAdmin } from "../utils/auth";
 
 // Interfaces para tipagem
 interface Peneira {
@@ -61,6 +62,7 @@ const PeneiraDetalhes: React.FC = () => {
   const [positionFilter, setPositionFilter] = useState("Todas Posições");
   const [statusFilter, setStatusFilter] = useState("Todos Status");
   const [hasTeams, setHasTeams] = useState(false); // NOVO ESTADO
+  const isAdmin = isUserAdmin();
 
   // --- CARREGAR DADOS ---
   useEffect(() => {
@@ -78,25 +80,29 @@ const PeneiraDetalhes: React.FC = () => {
 
         // [CORREÇÃO] Verifica se tem equipes (Compatível com Array e Objeto)
         // Se vier no objeto principal:
-        if (data.peneira && data.peneira.equipes && data.peneira.equipes.length > 0) {
-            setHasTeams(true);
+        if (
+          data.peneira &&
+          data.peneira.equipes &&
+          data.peneira.equipes.length > 0
+        ) {
+          setHasTeams(true);
         } else {
-            // Fallback: Busca na API de times
-            try {
-                const tr = await api.get(`/peneiras/${id}/teams`);
-                const teamsData = tr.data;
-                
-                // Verifica se é Array (Novo formato) E tem itens
-                if (Array.isArray(teamsData) && teamsData.length > 0) {
-                    setHasTeams(true);
-                } 
-                // Verifica formato antigo (Objeto com chaves)
-                else if (teamsData && (teamsData.A || teamsData.B)) {
-                    setHasTeams(true);
-                }
-            } catch(e) {
-                console.error("Erro ao verificar times", e);
+          // Fallback: Busca na API de times
+          try {
+            const tr = await api.get(`/peneiras/${id}/teams`);
+            const teamsData = tr.data;
+
+            // Verifica se é Array (Novo formato) E tem itens
+            if (Array.isArray(teamsData) && teamsData.length > 0) {
+              setHasTeams(true);
             }
+            // Verifica formato antigo (Objeto com chaves)
+            else if (teamsData && (teamsData.A || teamsData.B)) {
+              setHasTeams(true);
+            }
+          } catch (e) {
+            console.error("Erro ao verificar times", e);
+          }
         }
       } catch (error) {
         toast.error("Erro ao carregar detalhes da peneira.");
@@ -112,11 +118,15 @@ const PeneiraDetalhes: React.FC = () => {
 
   // Função atualizada para gerar
   const handleGenerateTeams = async (force = false) => {
-    if (force && !confirm("Isso apagará as equipes atuais e gerará novas. Continuar?")) return;
-    
+    if (
+      force &&
+      !confirm("Isso apagará as equipes atuais e gerará novas. Continuar?")
+    )
+      return;
+
     setGeneratingTeams(true);
     const toastId = toast.loading("Gerando equipes...");
-    
+
     try {
       // Chama o endpoint que criamos no TeamController
       await api.post(`/peneiras/${id}/teams/generate`);
@@ -130,39 +140,44 @@ const PeneiraDetalhes: React.FC = () => {
     }
   };
 
-  const filteredPlayers = jogadores.filter(player => {
-    const matchesSearch = player.pessoa.nome_completo.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPosition = positionFilter === "Todas Posições" || player.posicao_principal === positionFilter;
+  const filteredPlayers = jogadores.filter((player) => {
+    const matchesSearch = player.pessoa.nome_completo
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesPosition =
+      positionFilter === "Todas Posições" ||
+      player.posicao_principal === positionFilter;
     return matchesSearch && matchesPosition;
   });
 
-  const handleDeletePlayer = async (player: any) => { /* Lógica de delete igual */ };
+  const handleDeletePlayer = async (player: any) => {
+    /* Lógica de delete igual */
+  };
 
   // Componente Auxiliar InfoBox
-const InfoBox = ({
-  icon,
-  title,
-  value,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  value: string;
-}) => (
-  <div className="flex items-center gap-4 dark:bg-gray-800  dark:border-gray-700  bg-[#f7fafc] p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-    <div className="w-12 h-12 rounded-xl bg-[#14244D] flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-950 shrink-0">
-      {icon}
+  const InfoBox = ({
+    icon,
+    title,
+    value,
+  }: {
+    icon: React.ReactNode;
+    title: string;
+    value: string;
+  }) => (
+    <div className="flex items-center gap-4 dark:bg-gray-800  dark:border-gray-700  bg-[#f7fafc] p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
+      <div className="w-12 h-12 rounded-xl bg-[#14244D] flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-950 shrink-0">
+        {icon}
+      </div>
+      <div>
+        <h4 className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-300 font-bold mb-1">
+          {title}
+        </h4>
+        <p className="text-[#2d3748] dark:text-gray-100 font-bold text-lg leading-tight">
+          {value}
+        </p>
+      </div>
     </div>
-    <div>
-      <h4 className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-300 font-bold mb-1">
-        {title}
-      </h4>
-      <p className="text-[#2d3748] dark:text-gray-100 font-bold text-lg leading-tight">
-        {value}
-      </p>
-    </div>
-  </div>
-);
-
+  );
 
   // Helpers de Estilo
   const getStatusBadgeColor = (status: string) => {
@@ -255,50 +270,83 @@ const InfoBox = ({
                 <Shuffle size={24} className="text-[#8B0000]" />
                 Gerador de Equipes
               </h3>
-              <div className="flex flex-col sm:flex-row items-center gap-4 dark:bg-gray-800 dark:border-gray-700  bg-[#f8fafc] p-4 rounded-xl border border-dashed border-gray-300">
-                {hasTeams ? (
-                            <>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
-                                        <Shuffle size={20} />
-                                    </div>
-                                    <div>
-                                        <p className="font-bold text-gray-700">Equipes formadas!</p>
-                                        <p className="text-sm text-gray-500">Visualize ou edite a escalação atual.</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-3">
-                                    <button 
-                                        onClick={() => handleGenerateTeams(true)}
-                                        className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg border border-transparent hover:border-red-200 text-sm font-bold transition"
-                                    >
-                                        Gerar Novamente
-                                    </button>
-                                    <button 
-                                        onClick={() => navigate(`/peneiras/${id}/editor-times`)}
-                                        className="bg-[#14244D] hover:bg-[#1e3a8a] text-white px-6 py-3 rounded-lg font-bold shadow-md transition flex items-center gap-2"
-                                    >
-                                        <Users size={18} /> Ver / Editar Times
-                                    </button>
-                                </div>
-                            </>
+              {isAdmin ? (
+                <div className="flex flex-col sm:flex-row items-center gap-4 dark:bg-gray-800 dark:border-gray-700  bg-[#f8fafc] p-4 rounded-xl border border-dashed border-gray-300">
+                  {hasTeams ? (
+                    <>
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                          <Shuffle size={20} />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-700">
+                            Equipes formadas!
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            Visualize ou edite a escalação atual.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => handleGenerateTeams(true)}
+                          className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg border border-transparent hover:border-red-200 text-sm font-bold transition"
+                        >
+                          Gerar Novamente
+                        </button>
+                        <button
+                          onClick={() =>
+                            navigate(`/peneiras/${id}/editor-times`)
+                          }
+                          className="bg-[#14244D] hover:bg-[#1e3a8a] text-white px-6 py-3 rounded-lg font-bold shadow-md transition flex items-center gap-2"
+                        >
+                          <Users size={18} /> Ver / Editar Times
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="font-bold text-gray-700">
+                          Nenhuma equipe formada
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Distribua os {jogadores.length} jogadores
+                          automaticamente em 2 times.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleGenerateTeams(false)}
+                        disabled={generatingTeams || jogadores.length === 0}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold shadow-md transition flex items-center gap-2 disabled:opacity-50"
+                      >
+                        {generatingTeams ? (
+                          <Loader2 className="animate-spin" />
                         ) : (
-                            <>
-                                <div>
-                                    <p className="font-bold text-gray-700">Nenhuma equipe formada</p>
-                                    <p className="text-sm text-gray-500">Distribua os {jogadores.length} jogadores automaticamente em 2 times.</p>
-                                </div>
-                                <button 
-                                    onClick={() => handleGenerateTeams(false)}
-                                    disabled={generatingTeams || jogadores.length === 0}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold shadow-md transition flex items-center gap-2 disabled:opacity-50"
-                                >
-                                    {generatingTeams ? <Loader2 className="animate-spin" /> : <Shuffle size={18} />}
-                                    Gerar Equipes Agora
-                                </button>
-                            </>
+                          <Shuffle size={18} />
                         )}
-              </div>
+                        Gerar Equipes Agora
+                      </button>
+                    </>
+                  )}
+                </div>
+              ) : (
+                // SE FOR JOGADOR: MOSTRA SÓ UM AVISO OU O BOTÃO DE VER TIMES (SE EXISTIREM)
+                <div className="text-center p-4">
+                  {hasTeams ? (
+                    <button
+                      onClick={() => navigate(`/peneiras/${id}/editor-times`)}
+                      className="bg-[#14244D] text-white px-6 py-3 rounded-lg font-bold"
+                    >
+                      Ver Escalação dos Times
+                    </button>
+                  ) : (
+                    <p className="text-gray-500">
+                      As equipes ainda não foram definidas pelo treinador.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -371,7 +419,5 @@ const InfoBox = ({
     </Layout>
   );
 };
-
-
 
 export default PeneiraDetalhes;

@@ -2,6 +2,11 @@ import React from 'react';
 import Layout from '../components/layouts/LayoutForm';
 import { useNavigate } from 'react-router-dom'; // Assumindo react-router
 
+//imagens
+import Form from '@/assets/img/google-forms.png'
+import Jogos from '@/assets/img/football.png'
+import Avaliacao from '@/assets/img/defensive-wall.png'
+
 const Instrucao: React.FC = () => {
   const navigate = useNavigate();
 
@@ -16,7 +21,7 @@ const Instrucao: React.FC = () => {
           {/* Card 1 */}
           <StepCard 
             number="01" 
-            img="/img/google-forms.png" 
+            img= {Form}
             title="Inscrição online" 
             desc="Preencha o formulário com seus dados pessoais, posição, características e anexo dos documentos solicitados." 
           />
@@ -24,7 +29,7 @@ const Instrucao: React.FC = () => {
           {/* Card 2 */}
           <StepCard 
             number="02" 
-            img="/img/football.png" 
+            img= {Jogos} 
             title="Jogos" 
             desc="O jogador passará por uma primeira avaliação por meio de um vídeo de apresentação e depois após habilitação para algum dos times da equipe." 
           />
@@ -32,7 +37,7 @@ const Instrucao: React.FC = () => {
           {/* Card 3 */}
           <StepCard 
             number="03" 
-            img="/img/defensive-wall.png" 
+            img={Avaliacao}
             title="Avaliação" 
             desc="Nossa equipe irá avaliar criteriosamente cada etapa do processo e irá selecionar os que chamam atenção." 
           />

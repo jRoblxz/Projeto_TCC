@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage; // <--- IMPORTANTE: Adicionado para imagem
+use Illuminate\Support\Facades\Storage;
 
 class Pessoas extends Model
 {
@@ -31,29 +31,23 @@ class Pessoas extends Model
         'data_nascimento' => 'date',
     ];
 
-    /**
-     * [MUITO IMPORTANTE]
-     * A lista $appends diz ao Laravel: "Sempre que converter este model para JSON (API),
-     * inclua estes campos calculados extra".
-     */
     protected $appends = ['foto_url_completa', 'sub_divisao'];
 
     // --- RELACIONAMENTOS ---
-    public function pessoa()
+
+    // [IMPORTANTE] Este método estava faltando ou incorreto no seu arquivo
+    public function jogador()
     {
-        return $this->belongsTo(Pessoas::class, 'pessoa_id');
+        // Uma Pessoa "Tem Um" Jogador vinculado a ela.
+        // O Laravel vai procurar a coluna 'pessoa_id' na tabela 'Jogadores'.
+        return $this->hasOne(Jogadores::class, 'pessoa_id');
     }
 
-    // --- ACCESSORS (Campos Calculados) ---
+    // --- ACCESSORS (Mantenha os que já existem) ---
 
-    /**
-     * Cria o campo 'sub_divisao' no JSON automaticamente
-     */
     public function getSubDivisaoAttribute(): string
     {
-        // Se a data de nascimento for nula, retorna string vazia para não quebrar
         if (!$this->data_nascimento) return 'N/A';
-
         $idade = $this->data_nascimento->age;
 
         return match ($idade) {
@@ -64,23 +58,16 @@ class Pessoas extends Model
             14, 15 => 'Sub-15',
             16, 17 => 'Sub-17',
             18, 19, 20 => 'Sub-20',
-            default => 'Sem Sub Divisao', // ou 'Profissional' dependendo da regra
+            default => 'Sem Sub Divisao',
         };
     }
 
-    /**
-     * Cria o campo 'foto_url_completa' no JSON automaticamente.
-     * Tenta usar o Storage::url (padrão Laravel) ou monta a URL na mão se falhar.
-     */
     public function getFotoUrlCompletaAttribute()
     {
         if ($this->foto_perfil_url) {
-            // [MODO MANUAL] Monta o link direto do Google
-            // Isso resolve o erro "Driver does not support retrieving URLs"
             $bucket = env('GOOGLE_CLOUD_STORAGE_BUCKET');
             return "https://storage.googleapis.com/{$bucket}/{$this->foto_perfil_url}";
         }
-        
         return null;
     }
 }
