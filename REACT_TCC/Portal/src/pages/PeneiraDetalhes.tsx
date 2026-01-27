@@ -399,7 +399,7 @@ const PeneiraDetalhes: React.FC = () => {
                 <PlayerCard
                   key={jogador.id}
                   player={jogador} // O componente Card espera o objeto jogador completo
-                  isAdmin={true} // Permite ver botões de excluir
+                  isAdmin={isAdmin} // Permite ver botões de excluir
                   onEditRating={() => {}} // Lógica de editar rating (pode implementar depois)
                   onDelete={handleDeletePlayer}
                   onViewMore={(id) => navigate(`/jogadores/${id}`)}

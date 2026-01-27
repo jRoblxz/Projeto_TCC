@@ -18,17 +18,17 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
 
   return (
     <div 
-      className="group relative w-[280px] h-[380px] perspective-1000 cursor-pointer mx-auto mb-8 transition-transform duration-300 hover:-translate-y-3"
+      className="group relative w-[280px] h-[380px] [perspective:1000px] cursor-pointer mx-auto mb-8 transition-transform duration-300 hover:-translate-y-3"
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div 
         className={clsx(
-          "relative w-full h-full transition-transform duration-700 transform-style-3d shadow-[8px_8px_0px_1px_#14244D]",
-          isFlipped ? "rotate-y-180" : ""
+          "relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] shadow-[8px_8px_0px_1px_#14244D]",
+          isFlipped ? "[transform:rotateY(180deg)]" : ""
         )}
       >
         {/* === FRENTE DO CARD === */}
-        <div className="absolute w-full h-full backface-hidden bg-white overflow-hidden border-[10px] border-[#8B0000] flex flex-col">
+        <div className="absolute w-full h-full [backface-visibility:hidden] bg-white overflow-hidden border-[10px] border-[#8B0000] flex flex-col">
           
           {/* Badge de Rating */}
           <div className="absolute top-0 left-0 bg-[#8B0000] text-white font-bold text-5xl w-20 h-14 flex items-center justify-center rounded-br-2xl z-10 shadow-md">
@@ -79,7 +79,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
         </div>
 
         {/* === VERSO DO CARD === */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-gray-100 to-gray-200 border-4 border-[#8B0000] p-5 flex flex-col justify-between text-[#14244D]">
+        <div className="absolute w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-gray-100 to-gray-200 border-4 border-[#8B0000] p-5 flex flex-col justify-between text-[#14244D]">
             
           {/* Nome no Topo */}
           <div className="bg-[#8B0000] text-white -mx-5 -mt-5 p-4 text-center font-bold text-xl mb-2 shadow-sm">
