@@ -6,9 +6,9 @@ import { getFieldCoordinates } from "../utils/soccerFieldLogic";
 import { Edit, Trash, ArrowLeft, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import CustomModalExcluir from "@/components/ui/CustomModalExcluir"; // [1] Importe o Modal
+import { isUserAdmin, getUserData } from "../utils/auth";
 
 const pulseAnimation = "animate-[pulse_2s_infinite]";
-import { isUserAdmin } from "../utils/auth";
 
 const PlayerInfo: React.FC = () => {
   const { id } = useParams();
@@ -16,6 +16,13 @@ const PlayerInfo: React.FC = () => {
   const [player, setPlayer] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const isAdmin = isUserAdmin();
+  const loggedUser = getUserData();
+
+  // O usuário é dono do perfil se o ID do jogador logado for igual ao ID da URL
+  const isOwner = loggedUser?.jogador_id === Number(id);
+  
+  // Pode ver detalhes se for Admin OU Dono do perfil
+  const canViewDetails = isAdmin || isOwner;
 
   // [2] Estados para controlar o Modal
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -103,7 +110,7 @@ const PlayerInfo: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 p-4">
           {/* COLUNA ESQUERDA */}
           <div className="bg-[#f8f9fa] dark:bg-gray-900 rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)] relative">
-            {isAdmin && (
+            {canViewDetails && (
               <button
                 className="absolute top-4 right-4 w-10 h-10 rounded-full bg-[#141414] text-white flex items-center justify-center shadow-lg hover:w-[120px] hover:bg-[#ff4545] transition-all duration-300 group overflow-hidden z-10"
                 onClick={() => navigate(`/jogadores/${id}/edit`)}
@@ -220,7 +227,7 @@ const PlayerInfo: React.FC = () => {
             </div>
 
             <div className="bg-white dark:bg-gray-800 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm">
-              {isAdmin && (
+              {canViewDetails && (
                 <>
                   <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4  ">
                     Informações e Notas
@@ -281,7 +288,7 @@ const PlayerInfo: React.FC = () => {
               </div>
             </div>
 
-            {isAdmin && (
+            {canViewDetails && (
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
