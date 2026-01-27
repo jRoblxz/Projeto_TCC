@@ -1,0 +1,73 @@
+/* * ========================================
+ * CORREÇÃO CABEÇALHO BRANCO (MODO ESCURO)
+ * ========================================
+ */
+
+/* A LINHA do cabeçalho */
+.dark .rdt_TableHead {
+  background-color: rgba(255, 255, 255, 0.05) !important; 
+  color: #f9fafb !important; /* text-gray-50 */
+  border-bottom-color: #4b5563 !important; /* border-gray-600 */
+}
+
+/* AS CÉLULAS (COLUNAS) dentro do cabeçalho */
+.dark .rdt_TableHead .rdt_TableCol {
+  background-color: #1f2937 !important; /* Remove o fundo branco da célula */
+  color: #f9fafb !important; /* Cor do texto (ex: ID, DESCRIÇÃO) */
+}
+
+/* Células de cabeçalho que são ordenáveis (Sortable) */
+.dark .rdt_TableHead .rdt_TableCol_Sortable {
+   color: #f9fafb !important;
+}
+
+.dark .rdt_TableHead .rdt_TableCol_Sortable:hover {
+   color: #ffffff !important;
+}
+
+/* Ícone de ordenação (seta) */
+.dark .rdt_TableHead .rdt_TableCol_Sortable span[aria-label] {
+   color: #f9fafb !important;
+}
+
+/* * ========================================
+ * RESTANTE DOS ESTILOS (COMO ANTES)
+ * ========================================
+ */
+
+/* Fundo principal da tabela e cor do texto */
+.dark .rdt_Table {
+  background-color: #1f2937; 
+  color: #e5e7eb; /* text-gray-200 */
+}
+
+/* Linhas da Tabela */
+.dark .rdt_TableRow {
+  background-color: #1f2937;
+  color: #e5e7eb; /* text-gray-200 */
+  border-bottom-color: #374151; /* border-gray-700 */
+}
+
+
+/* Efeito hover na linha */
+.dark .rdt_TableRow:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Mensagem de "Nenhum registro" */
+.dark .rdt_TableBody .rdt_EmptyData {
+  color: #9ca3af; /* text-gray-400 */
+}
+
+/* Paginação */
+.dark .rdt_Pagination {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #d1d5db; /* text-gray-300 */
+  border-top-color: #374151; /* border-gray-700 */
+}
+
+.dark .rdt_Pagination select,
+.dark .rdt_Pagination button {
+  color: #f9fafb; /* text-gray-50 */
+
+}

@@ -9,6 +9,7 @@
         "php": "^8.2",
         "google/cloud-storage": "^1.48",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "league/flysystem-google-cloud-storage": "^3.30",
         "tymon/jwt-auth": "^2.2"

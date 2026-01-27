@@ -1,60 +1,48 @@
 <?php
 
-use App\Http\Controllers\AdmController;
-use App\Http\Controllers\PeneiraController;
-use App\Http\Controllers\EquipeController;
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\PlayerController;
+use App\Http\Controllers\Api\PeneiraController;
+use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\PublicController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Rotas de API são stateless (usam TOKENS, não sessões).
-| O Laravel adiciona o prefixo '/api' automaticamente.
-|
-*/
-
-// --- Rotas de Autenticação (Abertas) ---
-// O usuário vai chamar POST /api/login
-Route::post('login', [AuthController::class, 'login']);
-
-// --- Rotas Protegidas por JWT (Precisa estar logado) ---
-Route::middleware('auth:api')->group(function () {
+// --- Rotas Públicas (Sem Token) ---
+Route::prefix('v1')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
     
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('me', [AuthController::class, 'me']);
+    // Registro de Candidato (Público)
+    Route::get('peneiras/open', [PublicController::class, 'getOpenPeneiras']);
+    Route::post('register/candidate', [PublicController::class, 'registerCandidate']);
+});
 
-    // --- Rotas de Administrador (só 'adm' pode ver) ---
+// --- Rotas Protegidas (Sanctum) ---
+// [CORREÇÃO] Mudamos de 'auth:api' para 'auth:sanctum'
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+
+    // Gerenciamento de Autenticação
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('refresh', [AuthController::class, 'refresh']); // Nota: refresh é manual no Sanctum
+    Route::get('me', [AuthController::class, 'me']);
+
+    // --- Rotas de Administrador ---
+    // Certifique-se de que você tem o middleware 'role' registrado no bootstrap/app.php
     Route::middleware('role:adm')->group(function () {
         
-        // ROTAS DE PENEIRAS (O resource já cria .index, .show, .store, .update, .destroy)
-        Route::resource('peneiras', PeneiraController::class);
+        // Dashboard Stats
+        Route::get('dashboard', [DashboardController::class, 'index']);
 
-        // ROTA PARA LÓGICA DE MONTAR EQUIPE
-        Route::post('/peneiras/{id}/montar-equipes', [EquipeController::class, 'montarEquipes'])->name('peneiras.montarEquipes');
+        // Players CRUD
+        Route::apiResource('players', PlayerController::class);
+        Route::post('players/{id}/upload-photo', [PlayerController::class, 'uploadPhoto']);
 
-        // ROTAS DE ADMINISTRAÇÃO DE JOGADORES
-        Route::get('/players', [AdmController::class, 'Jogadores'])->name('jogadores.index');
-        Route::get('/player_info/{jogadores}', [AdmController::class, 'show'])->name('jogadores.info');
-        Route::get('/player_edit/{jogadores}', [AdmController::class, 'edit'])->name('jogadores.edit');
-        Route::put('/player_upd/{jogadores}', [AdmController::class, 'update'])->name('jogadores.update');
-        Route::delete('/destroy-user/{jogadores}', [AdmController::class, 'destroy'])->name('jogadores.delete');
+        // Peneiras CRUD
+        Route::apiResource('peneiras', PeneiraController::class);
 
-        // ROTAS DE DASHBOARD / HOMEPAGE
-        Route::get('/home', [AdmController::class, 'homepage'])->name('home.index');
-
-        // [PROBLEMA CORRIGIDO]
-        // Esta rota estava duplicada e conflitava com o Route::resource
-        // Route::get('/peneiras/{id}', [PeneiraController::class, 'show'])->name('peneira.show'); // REMOVIDA
-    });
-
-    // --- Rotas de Candidato (só 'candidato' pode ver) ---
-    Route::middleware('role:candidato')->group(function () {
-        
-        // Ex: Route::get('/minha-inscricao', [CandidatoController::class, 'show']);
-        
+        // Teams (Lógica para o React Drag-and-Drop)
+        Route::get('peneiras/{id}/teams', [TeamController::class, 'index']);     // Buscar times
+        Route::post('peneiras/{id}/teams/generate', [TeamController::class, 'generate']); // Gerar Auto
+        Route::post('peneiras/{id}/teams/save', [TeamController::class, 'store']);    // Salvar Manual
     });
 });

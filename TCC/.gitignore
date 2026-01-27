@@ -28,3 +28,7 @@ notas.txt
 storage/app/projetotcc-478522-255e1b6a806d.json
 # OU (melhor): Ignore todas as chaves .json dentro de pastas de storage/keys se for o padrão
 # *.json
+
+/storage/*.json
+/TCC/storage/*.json
+*.json
