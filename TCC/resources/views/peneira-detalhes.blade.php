@@ -1,8 +1,23 @@
-@extends('navbar') @section('body-class', 'fundo-especial') @section('content')
+@extends('navbar')
+@section('body-class', 'fundo-especial')
+@section('content')
 <div class="container">
     <div class="header">
-        <h1>⚽ Editor de Times - Estilo FIFA</h1>
+        <h1>Editor de Times - {{ $peneira->nome_evento }}</h1>
+        <p class="subtitle">Peneira em {{ $peneira->local }}</p>
     </div>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <div class="teams-container">
         <!-- Time A -->
@@ -45,8 +60,9 @@
     </div>
 
     <div class="controls">
-        <button class="btn-time" onclick="saveTeams()">💾 Salvar Times</button>
-        <button class="btn-time btn-time-secondary" onclick="resetTeams()">🔄 Resetar</button>
+        <button class="btn-time" onclick="saveTeams()">Salvar Times</button>
+        <button class="btn-time btn-time-secondary" onclick="resetTeams()">Resetar</button>
+        <a href="{{ route('peneira.index', $peneira->id) }}" class="btn-time btn-time-secondary">← Voltar</a>
     </div>
 </div>
 
@@ -79,37 +95,12 @@
         ]
     };
 
-    let teams = {
-        A: [
-            { id: 1, name: 'K.Navas', pos: 'GK', secondaryPos: '-', rating: 8.5, inField: true },
-            { id: 2, name: 'T.Silva', pos: 'CB', secondaryPos: 'RB', rating: 8.7, inField: true },
-            { id: 3, name: 'Marquinhos', pos: 'CB', secondaryPos: 'CDM', rating: 9.0, inField: true },
-            { id: 4, name: 'Kehrer', pos: 'CB', secondaryPos: 'RB', rating: 7.5, inField: true },
-            { id: 5, name: 'Juan Bernat', pos: 'LB', secondaryPos: 'LM', rating: 7.8, inField: true },
-            { id: 6, name: 'Verratti', pos: 'CM', secondaryPos: 'CDM', rating: 8.8, inField: true },
-            { id: 7, name: 'Gana', pos: 'CM', secondaryPos: 'CDM', rating: 8.2, inField: true },
-            { id: 8, name: 'Di María', pos: 'RM', secondaryPos: 'RW', rating: 8.9, inField: true },
-            { id: 9, name: 'Neymar Jr', pos: 'LM', secondaryPos: 'LW', rating: 9.5, inField: true },
-            { id: 10, name: 'Mbappé', pos: 'ST', secondaryPos: 'LW', rating: 9.6, inField: true },
-            { id: 11, name: 'Icardi', pos: 'ST', secondaryPos: 'CF', rating: 8.4, inField: true },
-            { id: 12, name: 'Donnarumma', pos: 'GK', secondaryPos: '-', rating: 8.9, inField: false },
-            { id: 13, name: 'Hakimi', pos: 'RB', secondaryPos: 'RM', rating: 8.6, inField: false }
-        ],
-        B: [
-            { id: 14, name: 'Courtois', pos: 'GK', secondaryPos: '-', rating: 9.0, inField: true },
-            { id: 15, name: 'Carvajal', pos: 'RB', secondaryPos: 'RM', rating: 8.3, inField: true },
-            { id: 16, name: 'Sergio Ramos', pos: 'CB', secondaryPos: 'CDM', rating: 9.1, inField: true },
-            { id: 17, name: 'R.Varane', pos: 'CB', secondaryPos: '-', rating: 8.8, inField: true },
-            { id: 18, name: 'Marcelo', pos: 'LB', secondaryPos: 'LM', rating: 8.5, inField: true },
-            { id: 19, name: 'Casemiro', pos: 'CDM', secondaryPos: 'CB', rating: 8.9, inField: true },
-            { id: 20, name: 'Modrić', pos: 'CM', secondaryPos: 'CAM', rating: 9.2, inField: true },
-            { id: 21, name: 'Kroos', pos: 'CM', secondaryPos: 'CDM', rating: 9.0, inField: true },
-            { id: 22, name: 'Benzema', pos: 'ST', secondaryPos: 'CF', rating: 9.3, inField: true },
-            { id: 23, name: 'Bale', pos: 'RW', secondaryPos: 'ST', rating: 8.4, inField: true },
-            { id: 24, name: 'Hazard', pos: 'LW', secondaryPos: 'CAM', rating: 8.6, inField: true },
-            { id: 25, name: 'Militão', pos: 'CB', secondaryPos: 'RB', rating: 8.2, inField: false }
-        ]
-    };
+    // Carrega os dados do backend
+    let teams = {!! $teamsJson !!};
+
+    // Se não tem dados, inicializa vazio
+    if (!teams.A) teams.A = [];
+    if (!teams.B) teams.B = [];
 
     let draggedPlayer = null;
     let draggedFromTeam = null;
@@ -155,12 +146,12 @@
         div.dataset.team = team;
 
         div.innerHTML = `
-                <div class="player-card">
-                    <div class="player-rating">${player.rating.toFixed(1)}</div>
-                    <div class="player-name-time">${player.name}</div>
-                    <div class="player-pos">${player.pos}${player.secondaryPos !== '-' ? '/' + player.secondaryPos : ''}</div>
-                </div>
-            `;
+            <div class="player-card">
+                <div class="player-rating">${Number(player.rating).toFixed(1)}</div>
+                <div class="player-name-time">${player.name}</div>
+                <div class="player-pos">${player.pos}${player.secondaryPos !== '-' ? '/' + player.secondaryPos : ''}</div>
+            </div>
+        `;
 
         div.addEventListener('dragstart', dragStart);
         div.addEventListener('dragend', dragEnd);
@@ -176,12 +167,12 @@
         div.dataset.team = team;
 
         div.innerHTML = `
-                <div class="player-info-time">
-                    <span class="rating-badge">${player.rating.toFixed(1)}</span>
-                    <span><strong>${player.name}</strong></span>
-                    <span>${player.pos}${player.secondaryPos !== '-' ? '/' + player.secondaryPos : ''}</span>
-                </div>
-            `;
+            <div class="player-info-time">
+                <span class="rating-badge">${Number(player.rating).toFixed(1)}</span>
+                <span><strong>${player.name}</strong></span>
+                <span>${player.pos}${player.secondaryPos !== '-' ? '/' + player.secondaryPos : ''}</span>
+            </div>
+        `;
 
         div.addEventListener('dragstart', dragStart);
         div.addEventListener('dragend', dragEnd);
@@ -249,9 +240,34 @@
     }
 
     function saveTeams() {
-        const data = JSON.stringify(teams, null, 2);
-        console.log('Times salvos:', data);
-        alert('Times salvos com sucesso! Verifique o console para ver os dados.');
+        const saveButton = event.target;
+        saveButton.disabled = true;
+        saveButton.textContent = '💾 Salvando...';
+
+        fetch('{{ route("peneira.salvar-equipes", $peneira->id) }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ teams: teams })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('✅ ' + data.message);
+            } else {
+                alert('❌ ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('❌ Erro ao salvar os times. Tente novamente.');
+        })
+        .finally(() => {
+            saveButton.disabled = false;
+            saveButton.textContent = 'Salvar Times';
+        });
     }
 
     function resetTeams() {
@@ -263,6 +279,32 @@
     // Inicializar
     init();
 </script>
-</body>
 
-</html>
+<style>
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-top: -10px;
+        margin-bottom: 20px;
+    }
+
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+</style>
+@endsection

@@ -649,12 +649,12 @@
             <div class="acoes-principais">
                 <h3>Gerador de Equipes</h3>
 
-                <form action="{{ route('peneiras.montarEquipes', ['id' => $peneiras->id]) }}" method="POST">
-                    @csrf <p>Clique no botão abaixo para montar automaticamente as equipes com os jogadores inscritos e
-                        disponíveis.</p>
+                <form action="{{ route('equipes.gerar-e-editar', ['id' => $peneiras->id]) }}" method="POST">
+                    @csrf
+                    <p>Clique no botão abaixo para montar automaticamente as equipes com os jogadores inscritos e disponíveis.</p>
 
-                    <button type="submit" class="btn-peneira btn-primary" style="background-color: #007bff; color: white;">
-                        Gerar Equipes Agora
+                     <button type="submit" class="button-save">
+                        Gerar Equipes
                     </button>
                 </form>
 

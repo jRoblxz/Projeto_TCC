@@ -1,26 +1,29 @@
-import axios from 'axios';
+import axios from "axios";
 
-// 1. Defina a URL base da sua API Laravel
-export const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
+// 1. Defina a URL base dinâmica (AGORA CORRIGIDO)
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1";
+
+//export const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 
 // 2. Crie uma instância do Axios
 export const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1"
+  baseURL: API_BASE_URL, // Usa a constante inteligente definida acima
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
 });
 
-// 3. Interceptor Mágico (O Segredo do Profissional)
-// Toda vez que você fizer uma chamada (api.get, api.post), isso roda antes:
-api.interceptors.request.use((config) => {
-    // Tenta pegar o token salvo no navegador
-    const token = localStorage.getItem('auth_token'); 
-
-    // Se tiver token, adiciona no cabeçalho automaticamente
+// 3. Interceptor Mágico
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("auth_token");
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
-}, (error) => {
+  },
+  (error) => {
     return Promise.reject(error);
-});
-
+  },
+);

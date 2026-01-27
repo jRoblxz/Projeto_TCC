@@ -12,6 +12,15 @@
                     </svg>
                 </div>
 
+                <div class="sort-actions" style="margin-left: 10px; display: flex; gap: 5px;">
+                    <button class="btn-peneira btn-secondary" onclick="ordenarPeneiras('desc')" title="Mais Recentes">
+                        ⬇ Recentes
+                    </button>
+                    <button class="btn-peneira btn-secondary" onclick="ordenarPeneiras('asc')" title="Mais Antigas">
+                        ⬆ Antigas
+                    </button>
+                </div>
+
                 <button class="btn-peneira btn-primary" onclick="abrirFormModal('nova')">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -110,183 +119,237 @@
             @endif
         </div>
 
-    
-    <div class="modal" id="modal-form-peneira">
-        <div class="modal-content">
-            <button class="modal-close" onclick="fecharModal('modal-form-peneira')">&times;</button>
-            <h3 id="modal-form-titulo">Nova Peneira</h3>
 
-            <form id="peneira-form" method="POST" action="" onsubmit="event.preventDefault(); salvarPeneira();">
-                @csrf
-                <input type="hidden" id="peneira_id" name="peneira_id">
+        <div class="modal" id="modal-form-peneira">
+            <div class="modal-content">
+                <button class="modal-close" onclick="fecharModal('modal-form-peneira')">&times;</button>
+                <h3 id="modal-form-titulo">Nova Peneira</h3>
 
-                <div class="form-group">
-                    <label for="titulo">Título</label>
-                    <input type="text" id="titulo" name="nome_evento" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="data">Data e Hora</label>
-                    <input type="datetime-local" id="data" name="data_evento" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="local">Local</label>
-                    <input type="text" id="local" name="local" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="info">Informações (Idade, Vagas)</label>
-                    <input type="text" id="info" name="sub_divisao" class="form-control"
-                        placeholder="Ex: Idade: 15-17 anos | 30 vagas">
-                </div>
-
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <select id="status" name="status" class="form-control">
-                        <option value="AGENDADA">Agendada</option>
-                        <option value="EM_ANDAMENTO">Em Andamento</option>
-                        <option value="FINALIZADA">Finalizada</option>
-                        <option value="CANCELADA">Cancelada</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="descricao">Descrição</label>
-                    <textarea id="descricao" name="descricao" rows="4" class="form-control"></textarea>
-                </div>
-
-                <div style="text-align: right;">
-                    <button type="submit" onclick="salvarPeneira()" class="btn-peneira btn-primary">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal" id="modal-excluir-peneira">
-        <div class="modal-content">
-            <button class="modal-close" onclick="fecharModal('modal-excluir-peneira')">&times;</button>
-            <h3>Confirmar Exclusão</h3>
-            <p>Você tem certeza que deseja excluir a peneira "<strong id="excluir-peneira-titulo"></strong>"?</p>
-            <p>Esta ação não pode ser desfeita.</p>
-
-            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                <form id="form-excluir-peneira" method="POST" action="">
+                <form id="peneira-form" method="POST" action="" onsubmit="event.preventDefault(); salvarPeneira();">
                     @csrf
-                    @method('DELETE')
+                    <input type="hidden" id="peneira_id" name="peneira_id">
 
-                    <input type="hidden" id="excluir-peneira-id">
-                    <button class="btn-peneira btn-primary" type="button"
-                        onclick="fecharModal('modal-excluir-peneira')">Cancelar</button>
-                    <button class="btn-peneira btn-danger" type="button" onclick="confirmarExclusao()">Excluir</button>
+                    <div class="form-group">
+                        <label for="titulo">Título</label>
+                        <input type="text" id="titulo" name="nome_evento" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="data">Data e Hora</label>
+                        <input type="datetime-local" id="data" name="data_evento" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="local">Local</label>
+                        <input type="text" id="local" name="local" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="info">Informações (Idade, Vagas)</label>
+                        <input type="text" id="info" name="sub_divisao" class="form-control"
+                            placeholder="Ex: Idade: 15-17 anos | 30 vagas">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" class="form-control">
+                            <option value="AGENDADA">Agendada</option>
+                            <option value="EM_ANDAMENTO">Em Andamento</option>
+                            <option value="FINALIZADA">Finalizada</option>
+                            <option value="CANCELADA">Cancelada</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <textarea id="descricao" name="descricao" rows="4" class="form-control"></textarea>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button type="submit" onclick="salvarPeneira()" class="btn-peneira btn-primary">Salvar</button>
+                    </div>
                 </form>
             </div>
         </div>
-    </div>
 
-    <script>
-        // Seletores dos elementos principais
-        const formModal = document.getElementById('modal-form-peneira');
-        const deleteModal = document.getElementById('modal-excluir-peneira');
-        const peneiraForm = document.getElementById('peneira-form');
-        const modalTitulo = document.getElementById('modal-form-titulo');
+        <div class="modal" id="modal-excluir-peneira">
+            <div class="modal-content">
+                <button class="modal-close" onclick="fecharModal('modal-excluir-peneira')">&times;</button>
+                <h3>Confirmar Exclusão</h3>
+                <p>Você tem certeza que deseja excluir a peneira "<strong id="excluir-peneira-titulo"></strong>"?</p>
+                <p>Esta ação não pode ser desfeita.</p>
 
-        // Formulário de exclusão
-        const deleteForm = document.getElementById('form-excluir-peneira');
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <form id="form-excluir-peneira" method="POST" action="">
+                        @csrf
+                        @method('DELETE')
 
-        // --- Funções de Controle do Modal ---
+                        <input type="hidden" id="excluir-peneira-id">
+                        <button class="btn-peneira btn-primary" type="button"
+                            onclick="fecharModal('modal-excluir-peneira')">Cancelar</button>
+                        <button class="btn-peneira btn-danger" type="button" onclick="confirmarExclusao()">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-        function fecharModal(modalId) {
-            document.getElementById(modalId).classList.remove('show');
-        }
+        <script>
+            // Seletores dos elementos principais
+            const formModal = document.getElementById('modal-form-peneira');
+            const deleteModal = document.getElementById('modal-excluir-peneira');
+            const peneiraForm = document.getElementById('peneira-form');
+            const modalTitulo = document.getElementById('modal-form-titulo');
 
-        // [CORRIGIDO] Função 'abrirFormModal'
-        function abrirFormModal(modo, botao) {
-            peneiraForm.reset(); // Limpa o formulário
+            // Formulário de exclusão
+            const deleteForm = document.getElementById('form-excluir-peneira');
 
-            // Limpa o método @method('PUT') se ele existir
-            const methodInput = peneiraForm.querySelector('input[name="_method"]');
-            if (methodInput) {
-                methodInput.remove();
+            // --- Funções de Controle do Modal ---
+
+            function fecharModal(modalId) {
+                document.getElementById(modalId).classList.remove('show');
             }
 
-            if (modo === 'nova') {
-                modalTitulo.innerText = 'Nova Peneira';
+            // [CORRIGIDO] Função 'abrirFormModal'
+            function abrirFormModal(modo, botao) {
+                peneiraForm.reset(); // Limpa o formulário
 
-                // Define a ação do formulário para 'store' (Criar)
-                peneiraForm.action = "{{ route('peneiras.store') }}";
+                // Limpa o método @method('PUT') se ele existir
+                const methodInput = peneiraForm.querySelector('input[name="_method"]');
+                if (methodInput) {
+                    methodInput.remove();
+                }
 
+                if (modo === 'nova') {
+                    modalTitulo.innerText = 'Nova Peneira';
+
+                    // Define a ação do formulário para 'store' (Criar)
+                    peneiraForm.action = "{{ route('peneiras.store') }}";
+
+                }
+                else if (modo === 'editar') {
+                    modalTitulo.innerText = 'Editar Peneira';
+
+                    // Encontra o 'card-peneira' pai do botão que foi clicado
+                    const card = botao.closest('.card-peneira');
+                    const peneiraId = card.dataset.id;
+
+                    // Define a ação do formulário para 'update' (Atualizar)
+                    // Precisamos construir a URL dinamicamente
+                    peneiraForm.action = `/peneiras/${peneiraId}`; // Ajuste se sua URL base for diferente
+
+                    // Adiciona o campo de método 'PUT' para o Laravel entender que é um update
+                    const putInput = document.createElement('input');
+                    putInput.type = 'hidden';
+                    putInput.name = '_method';
+                    putInput.value = 'PUT';
+                    peneiraForm.appendChild(putInput);
+
+                    // Preenche o formulário com dados dos atributos data-* do card
+                    // [NOTA] Certifique-se que os 'id' dos inputs batem com 'getElementById'
+                    document.getElementById('titulo').value = card.dataset.titulo;
+                    document.getElementById('data').value = card.dataset.data;
+                    document.getElementById('local').value = card.dataset.local;
+                    document.getElementById('info').value = card.dataset.info; // Assumindo que o ID é 'info'
+                    document.getElementById('status').value = card.dataset.status;
+                    document.getElementById('descricao').value = card.dataset.descricao;
+                }
+
+                formModal.classList.add('show');
             }
-            else if (modo === 'editar') {
-                modalTitulo.innerText = 'Editar Peneira';
 
-                // Encontra o 'card-peneira' pai do botão que foi clicado
+            // [CORRIGIDO] Função 'abrirExcluirModal'
+            function abrirExcluirModal(botao) {
                 const card = botao.closest('.card-peneira');
                 const peneiraId = card.dataset.id;
 
-                // Define a ação do formulário para 'update' (Atualizar)
-                // Precisamos construir a URL dinamicamente
-                peneiraForm.action = `/peneiras/${peneiraId}`; // Ajuste se sua URL base for diferente
+                // Preenche com dados reais do card
+                document.getElementById('excluir-peneira-titulo').innerText = card.dataset.titulo;
 
-                // Adiciona o campo de método 'PUT' para o Laravel entender que é um update
-                const putInput = document.createElement('input');
-                putInput.type = 'hidden';
-                putInput.name = '_method';
-                putInput.value = 'PUT';
-                peneiraForm.appendChild(putInput);
+                // Define a ação do formulário de exclusão
+                deleteForm.action = `/peneiras/${peneiraId}`; // Ajuste se sua URL base for diferente
 
-                // Preenche o formulário com dados dos atributos data-* do card
-                // [NOTA] Certifique-se que os 'id' dos inputs batem com 'getElementById'
-                document.getElementById('titulo').value = card.dataset.titulo;
-                document.getElementById('data').value = card.dataset.data;
-                document.getElementById('local').value = card.dataset.local;
-                document.getElementById('info').value = card.dataset.info; // Assumindo que o ID é 'info'
-                document.getElementById('status').value = card.dataset.status;
-                document.getElementById('descricao').value = card.dataset.descricao;
+                deleteModal.classList.add('show');
             }
 
-            formModal.classList.add('show');
-        }
+            // --- Funções de Ação (REAIS) ---
 
-        // [CORRIGIDO] Função 'abrirExcluirModal'
-        function abrirExcluirModal(botao) {
-            const card = botao.closest('.card-peneira');
-            const peneiraId = card.dataset.id;
-
-            // Preenche com dados reais do card
-            document.getElementById('excluir-peneira-titulo').innerText = card.dataset.titulo;
-
-            // Define a ação do formulário de exclusão
-            deleteForm.action = `/peneiras/${peneiraId}`; // Ajuste se sua URL base for diferente
-
-            deleteModal.classList.add('show');
-        }
-
-        // --- Funções de Ação (REAIS) ---
-
-        // Esta função agora é chamada pelo 'onclick' do botão Salvar no modal
-        function salvarPeneira() {
-            // Apenas submete o formulário. O 'action' e o 'method' já foram definidos
-            // em 'abrirFormModal'
-            peneiraForm.submit();
-        }
-
-        // Esta função agora é chamada pelo 'onclick' do botão Excluir no modal
-        function confirmarExclusao() {
-            // Apenas submete o formulário. O 'action' já foi definido
-            // em 'abrirExcluirModal'
-            deleteForm.submit();
-        }
-
-        // Adiciona listener para fechar modal clicando fora (no overlay)
-        window.addEventListener('click', (event) => {
-            if (event.target === formModal) {
-                fecharModal('modal-form-peneira');
+            // Esta função agora é chamada pelo 'onclick' do botão Salvar no modal
+            function salvarPeneira() {
+                // Apenas submete o formulário. O 'action' e o 'method' já foram definidos
+                // em 'abrirFormModal'
+                peneiraForm.submit();
             }
-            if (event.target === deleteModal) {
-                fecharModal('modal-excluir-peneira');
-            }
-        });
 
-    </script>
+            // Esta função agora é chamada pelo 'onclick' do botão Excluir no modal
+            function confirmarExclusao() {
+                // Apenas submete o formulário. O 'action' já foi definido
+                // em 'abrirExcluirModal'
+                deleteForm.submit();
+            }
+
+            // Adiciona listener para fechar modal clicando fora (no overlay)
+            window.addEventListener('click', (event) => {
+                if (event.target === formModal) {
+                    fecharModal('modal-form-peneira');
+                }
+                if (event.target === deleteModal) {
+                    fecharModal('modal-excluir-peneira');
+                }
+            });
+            // ==========================================
+            // ==========================================
+
+            // 1. LÓGICA DO FILTRO DE BUSCA (Ao digitar)
+            document.addEventListener('DOMContentLoaded', function () {
+                const searchInput = document.getElementById('searchInput');
+                // Seleciona todos os cards
+                const cards = document.querySelectorAll('.card-peneira');
+
+                if (searchInput) {
+                    searchInput.addEventListener('input', function (e) {
+                        const termo = e.target.value.toLowerCase();
+
+                        cards.forEach(card => {
+                            // Pega os dados dos atributos data-*
+                            const titulo = card.dataset.titulo ? card.dataset.titulo.toLowerCase() : '';
+                            const status = card.dataset.status ? card.dataset.status.toLowerCase() : '';
+                            const descricao = card.dataset.descricao ? card.dataset.descricao.toLowerCase() : '';
+                            const local = card.dataset.local ? card.dataset.local.toLowerCase() : '';
+
+                            // Verifica se o termo existe em algum desses campos
+                            if (titulo.includes(termo) || status.includes(termo) || descricao.includes(termo) || local.includes(termo)) {
+                                card.style.display = ''; // Mostra
+                            } else {
+                                card.style.display = 'none'; // Esconde
+                            }
+                        });
+                    });
+                }
+            });
+
+            // 2. FUNÇÃO DE ORDENAÇÃO (Chamada pelos botões)
+            function ordenarPeneiras(ordem) {
+                const gridContainer = document.getElementById('peneirasGrid');
+                // Converte a NodeList de cards em um Array real para poder ordenar
+                const cards = Array.from(document.querySelectorAll('.card-peneira'));
+
+                cards.sort((a, b) => {
+                    // Pega o ID (ou data-data se preferir ordenar por data do evento)
+                    const idA = parseInt(a.dataset.id);
+                    const idB = parseInt(b.dataset.id);
+
+                    if (ordem === 'asc') {
+                        return idA - idB; // Do menor para o maior (Antigas)
+                    } else {
+                        return idB - idA; // Do maior para o menor (Recentes)
+                    }
+                });
+
+                // Reinsere os cards no container na nova ordem
+                cards.forEach(card => gridContainer.appendChild(card));
+            }
+
+
+
+        </script>
 @endsection

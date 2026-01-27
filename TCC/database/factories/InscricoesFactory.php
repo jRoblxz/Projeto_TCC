@@ -13,7 +13,7 @@ class InscricoesFactory extends Factory
 
     public function definition()
     {
-        $status = ['PENDENTE', 'CONFIRMADA', 'RECUSADA', 'LISTA_ESPERA'];
+        $status = ['PENDENTE', 'CONFIRMADA', 'RECUSADA',];
 
         return [
             // FK: Cria um novo Jogador (que por sua vez cria uma Pessoa)

@@ -21,28 +21,42 @@ Route::prefix('v1')->group(function () {
 // [CORREÇÃO] Mudamos de 'auth:api' para 'auth:sanctum'
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
-    // Gerenciamento de Autenticação
+    // === ROTAS COMUNS (ADMIN E JOGADOR PODEM ACESSAR) ===
+    // Aqui ficam apenas os GETs (Visualização)
+    
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('refresh', [AuthController::class, 'refresh']); // Nota: refresh é manual no Sanctum
     Route::get('me', [AuthController::class, 'me']);
 
-    // --- Rotas de Administrador ---
-    // Certifique-se de que você tem o middleware 'role' registrado no bootstrap/app.php
+    // Visualizar Jogadores
+    Route::get('players', [PlayerController::class, 'index']);
+    Route::get('players/{id}', [PlayerController::class, 'show']);
+
+    // Visualizar Peneiras
+    Route::get('peneiras', [PeneiraController::class, 'index']);
+    Route::get('peneiras/{id}', [PeneiraController::class, 'show']);
+    
+    // Visualizar Times
+    Route::get('peneiras/{id}/teams', [TeamController::class, 'index']);
+
+
+    // === ROTAS EXCLUSIVAS DE ADMINISTRADOR (ESCRITA) ===
     Route::middleware('role:adm')->group(function () {
         
-        // Dashboard Stats
         Route::get('dashboard', [DashboardController::class, 'index']);
 
-        // Players CRUD
-        Route::apiResource('players', PlayerController::class);
+        // Modificar Jogadores (Criar, Editar, Excluir)
+        Route::post('players', [PlayerController::class, 'store']);
+        Route::put('players/{id}', [PlayerController::class, 'update']);
+        Route::delete('players/{id}', [PlayerController::class, 'destroy']);
         Route::post('players/{id}/upload-photo', [PlayerController::class, 'uploadPhoto']);
 
-        // Peneiras CRUD
-        Route::apiResource('peneiras', PeneiraController::class);
+        // Modificar Peneiras
+        Route::post('peneiras', [PeneiraController::class, 'store']);
+        Route::put('peneiras/{id}', [PeneiraController::class, 'update']);
+        Route::delete('peneiras/{id}', [PeneiraController::class, 'destroy']);
 
-        // Teams (Lógica para o React Drag-and-Drop)
-        Route::get('peneiras/{id}/teams', [TeamController::class, 'index']);     // Buscar times
-        Route::post('peneiras/{id}/teams/generate', [TeamController::class, 'generate']); // Gerar Auto
-        Route::post('peneiras/{id}/teams/save', [TeamController::class, 'store']);    // Salvar Manual
+        // Gerar/Salvar Times
+        Route::post('peneiras/{id}/teams/generate', [TeamController::class, 'generate']);
+        Route::post('peneiras/{id}/teams/save', [TeamController::class, 'store']);
     });
 });

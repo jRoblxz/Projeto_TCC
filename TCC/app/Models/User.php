@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // <--- 1. VOCÊ PRECISA DESSA LINHA AQUI EM CIMA
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Pessoas; 
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    
-    // 2. E PRECISA DESSA LINHA AQUI DENTRO (Repare no HasApiTokens no começo)
-    use HasApiTokens, HasFactory, Notifiable; 
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -32,5 +30,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * [SOLUÇÃO MÁGICA SEM MEXER NO BANCO]
+     * Relacionamento: O User tem uma Pessoa.
+     * Como não temos IDs de vínculo, usamos o E-MAIL para ligar as duas tabelas.
+     */
+    public function pessoa()
+    {
+        // 1º Param: Model destino (Pessoas)
+        // 2º Param: Chave estrangeira na tabela Pessoas ('email')
+        // 3º Param: Chave local na tabela Users ('email')
+        return $this->hasOne(Pessoas::class, 'email', 'email');
     }
 }

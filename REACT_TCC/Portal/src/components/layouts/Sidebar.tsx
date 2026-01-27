@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Table2,
-  ChevronRight,
-  Database,
-  ChartBar,
-  ChartColumn,
-  ChartNoAxesColumn,
-  ChartArea,
   LayoutDashboard,
   StretchHorizontal,
   Users,
+  ChevronRight,
+  UserCircle, // Ícone para o perfil
+  Group,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
-import Icon from "../../assets/img/logo-copia.png"
-
+import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
 import ThemeToggle from "../ui/ThemeToggle";
+import { getUserData, isUserAdmin } from "../../utils/auth"; // Importe o helper
 
-// Tipagens
+import { useNavigate } from "react-router-dom";
+// ... (Interfaces SubItem e MenuItem mantidas iguais) ...
 interface SubItem {
   name: string;
   path: string;
@@ -41,36 +38,70 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  
+    const navigate = useNavigate();
 
-  const menuItems: MenuItem[] = [
-    { title: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { title: "Peneiras", path: "/peneiras", icon: StretchHorizontal },
-    { title: "Players", path: "/players", icon: Users },
+  // Estados para dados do usuário
+  const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const data = getUserData();
+    setUser(data);
+    setIsAdmin(isUserAdmin());
+  }, []);
+
+  // --- DEFINIÇÃO DOS MENUS ---
+  const menuItems: MenuItem[] = [];
+
+  // 1. Dashboard (Apenas Admin)
+  if (isAdmin) {
+    menuItems.push({
+      title: "Dashboard",
+      path: "/dashboard",
+      icon: LayoutDashboard,
+    });
+  }
+
+  // 3. Perfil (Apenas Jogador ou Todos, conforme sua preferência)
+  // Assumindo que o ID do jogador está salvo em user.jogador_id ou user.id
+  if (user) {
+    // Só mostra o link se REALMENTE tivermos um jogador_id válido
+    if (user.jogador_id) {
+      menuItems.push({
+        Group: "CONTA",
+        title: "Meu Perfil",
+        path: `/jogadores/${user.jogador_id}`, // Usa direto o ID do jogador
+        icon: UserCircle,
+      });
+    }
+  }
+
+  // 2. Itens Comuns (Agrupados)
+  menuItems.push(
     {
-      Group: "GESTÃO",
-      title: "Indicador",
-      icon: ChartNoAxesColumn,
-      subItens: [
-        { name: "Ind. Elementos", path: "/indicadores", icon: ChartArea },
-      ],
+      title: "Peneiras",
+      path: "/peneiras",
+      icon: StretchHorizontal,
+      Group: "Sistema",
     },
     {
-      Group: "BQS",
-      title: "Cadastro",
-      icon: Database,
-      subItens: [
-        { name: "Trilha", path: "/trilha", icon: Table2 },
-        { name: "Situacao", path: "/situacao", icon: Table2 },
-        { name: "Tabela", path: "/tabela", icon: Table2 },
-        { name: "Status", path: "/status", icon: Table2 },
-        { name: "Charts", path: "/charts", icon: ChartBar },
-      ],
+      title: "Players",
+      path: "/players",
+      icon: Users,
+      Group: "Sistema",
     },
-  ];
+  );
 
   const handleToggleSubmenu = (title: string) => {
     setOpenMenu((prev) => (prev === title ? null : title));
   };
+
+  // Lógica da Imagem: Se tiver foto completa, usa ela. Senão, usa o logo padrão.
+  // Ajuste 'pessoa.foto_url_completa' conforme a estrutura exata do seu JSON salvo
+  const userPhoto =
+    user?.pessoa?.foto_url_completa || user?.foto_url || DefaultIcon;
+  const userName = user?.name || user?.pessoa?.nome_completo || "Usuário";
 
   return (
     <>
@@ -93,117 +124,78 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         `}
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex-none flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+          {/* --- HEADER COM FOTO DO USUÁRIO --- */}
+          <div className="flex-none flex items-center justify-between p-6 border-b border-gray-500/30 dark:border-gray-700">
             <div className="flex items-center space-x-3">
-              <div className="w-12 h-12 rounded-lg flex items-center bg-white  justify-center">
-                <img src={Icon} alt="Logo" className="w-10 h-10 flex items-center justify-center" />
+              <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden bg-white border-2 border-white/20">
+              <a onClick={() => navigate(`/jogadores/${user.jogador_id}`)} className='cursor-pointer'>
+                <img
+                  src={userPhoto}
+                  alt="User"
+                  className="w-full h-full object-cover"
+                  onError={(e) => (e.currentTarget.src = DefaultIcon)} // Fallback se a URL quebrar
+                />
+              </a>
+                
               </div>
-              <span className="text-xl font-bold text-gray-100">
-                João Pedro
-              </span>
+              <div className="flex flex-col">
+                <span
+                  className="text-sm font-bold text-gray-100 line-clamp-1"
+                  title={userName}
+                >
+                  {userName.split(" ")[0]}{" "}
+                  {/* Mostra só o primeiro nome pra caber */}
+                </span>
+                <span className="text-[10px] text-gray-400 uppercase">
+                  {isAdmin ? "Administrador" : "Atleta"}
+                </span>
+              </div>
             </div>
             <ThemeToggle />
           </div>
 
           {/* Navegação */}
           <nav className="flex-1 overflow-y-auto p-4 space-y-2">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
+            {menuItems.map((item, index) => {
+              const IconComp = item.icon;
               const isActive = location.pathname === item.path;
               const isOpenSubmenu = openMenu === item.title;
+              const previousItemGroup =
+                index > 0 ? menuItems[index - 1].Group : null;
+              const showGroupTitle =
+                item.Group && item.Group !== previousItemGroup;
 
               return (
                 <div key={item.title}>
-                  {item.Group && (
-                    <h2 className="text-xs text-gray-400 dark:text-gray-400 font-semibold uppercase tracking-wider mb-2 mt-4 first:mt-0">
+                  {showGroupTitle && (
+                    <h2 className="text-xs text-gray-400 dark:text-gray-500 font-semibold uppercase tracking-wider mb-2 mt-6 first:mt-0 px-2">
                       {item.Group}
                     </h2>
                   )}
 
-                  {item.subItens ? (
-                    <button
-                      onClick={() => handleToggleSubmenu(item.title)}
-                      className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                        isOpenSubmenu
-                          ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                          : "text-gray-200 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                      }`}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <Icon className="w-5 h-5" />
-                        <span className="font-medium">{item.title}</span>
-                      </div>
-                      <ChevronRight
-                        className={`w-4 h-4 transition-transform ${
-                          isOpenSubmenu ? "rotate-90" : ""
-                        }`}
-                      />
-                    </button>
-                  ) : (
-                    <Link
-                      to={item.path || "#"}
-                      onClick={onClose}
-                      className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? "bg-red-100 dark:bg-blue-900/20 text-red-600 dark:text-blue-400"
-                          : "text-gray-200 dark:text-gray-300 hover:bg-red-50 hover:text-red-400 dark:hover:bg-gray-800"
-                      }`}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <Icon className="w-5 h-5" />
-                        <span className="font-medium">{item.title}</span>
-                      </div>
-                    </Link>
-                  )}
-
-                  {/* Submenu */}
-                  <AnimatePresence>
-                    {item.subItens && isOpenSubmenu && (
-                      <Motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="ml-8 mt-1 space-y-1 overflow-hidden"
-                      >
-                        {item.subItens.map((sub) => {
-                          const SubIcon = sub.icon || Icon;
-                          const isSubActive = location.pathname === sub.path;
-
-                          return (
-                            <Link
-                              key={sub.path}
-                              to={sub.path}
-                              onClick={onClose}
-                              className={`w-full flex items-center justify-between p-2 rounded-lg transition-all duration-200 ${
-                                isSubActive
-                                  ? "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-700"
-                                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                              }`}
-                            >
-                              <div className="flex items-center space-x-3">
-                                <SubIcon className="w-4 h-4" />
-                                <span className="text-sm font-medium">
-                                  {sub.name}
-                                </span>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </Motion.div>
-                    )}
-                  </AnimatePresence>
+                  {/* Lógica de Renderização do Link (Igual ao original) */}
+                  <Link
+                    to={item.path || "#"}
+                    onClick={onClose}
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
+                      isActive
+                        ? "bg-[#8B0000] text-white shadow-md"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <IconComp className="w-5 h-5" />
+                      <span className="font-medium">{item.title}</span>
+                    </div>
+                  </Link>
                 </div>
               );
             })}
           </nav>
 
           {/* Rodapé */}
-          <footer className="flex-none bg-[#14244D] dark:bg-gray-900 border-t border-gray-600 dark:border-gray-700 p-4">
-            <p className="text-xs text-gray-400 text-center">
-              © 2026 SparkLab
-            </p>
+          <footer className="flex-none bg-[#0f1b3a] dark:bg-black/20 border-t border-gray-500/30 p-4">
+            <p className="text-xs text-gray-500 text-center">© 2026 SparkLab</p>
           </footer>
         </div>
       </aside>

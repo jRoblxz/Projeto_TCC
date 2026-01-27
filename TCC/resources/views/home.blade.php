@@ -73,7 +73,7 @@
 
                 {{-- ✅ LISTAGEM DINÂMICA DE PENEIRAS DO BANCO --}}
                 @if(isset($peneiras) && $peneiras->count() > 0)
-                    @foreach($peneiras as $peneira)
+                    @foreach($peneiras->take(5) as $peneira)
                         <div class="peneira-item {{ $peneira->status == 'EM_ANDAMENTO' ? 'ativa' : '' }} {{ $peneira->status == 'FINALIZADA' ? 'encerrada' : '' }} {{ $peneira->status == 'CANCELADA' ? 'encerrada' : '' }}" 
                              onclick="window.location.href='{{ route('peneiras.show', $peneira->id) }}'">
                             <div class="peneira-header">
@@ -129,7 +129,7 @@
 
                 <div id="candidates-list">
                     @if(isset($jogadores) && $jogadores->count() > 0)
-                        @foreach($jogadores as $jogador)
+                        @foreach($jogadores->take(6) as $jogador)
                             <div class="candidate-card" data-status="pending"
                                 onclick="window.location.href='{{ route('jogadores.info', ['jogadores' => $jogador->id]) }}'">
                                 <div class="candidate-avatar">

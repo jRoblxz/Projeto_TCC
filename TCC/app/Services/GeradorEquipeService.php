@@ -40,42 +40,43 @@ class GeradorEquipeService
             ->pluck('jpe.jogador_id');
 
         // 3. Busca os Modelos dos jogadores que estão inscritos E sem equipe
-        $jogadoresDisponiveis = Jogadores::with('pessoa') // 'with('pessoa')' é crucial para pegar a idade
+        $jogadoresDisponiveis = Jogadores::with('pessoa')
             ->whereIn('id', $jogadoresInscritosIds)
             ->whereNotIn('id', $jogadoresEmEquipeIds)
-            ->get() // Pega a coleção de jogadores
-            ->shuffle(); // Embaralha para dar chance a todos
+            ->get()
+            ->shuffle();
 
         // 4. Verifica se tem gente suficiente
         if ($jogadoresDisponiveis->count() < self::TAMANHO_EQUIPE) {
-            throw new \Exception('Não há jogadores suficientes ('. $jogadoresDisponiveis->count() .') para formar uma nova equipe de 11.');
+            throw new \Exception('Não há jogadores suficientes (' . $jogadoresDisponiveis->count() . ') para formar uma nova equipe de 11.');
         }
 
         // 5. Tenta montar equipes enquanto houver jogadores
+        $numeroEquipe = 1;
         while ($jogadoresDisponiveis->count() >= self::TAMANHO_EQUIPE) {
-            
+
             $equipeSlots = self::FORMACAO_SLOTS; // Reseta as vagas para esta equipe
             $jogadoresSelecionados = collect(); // Coleção vazia para a nova equipe
 
             // Nível 1: Preencher por Posição Principal
             $this->preencherSlotsPorPosicao($jogadoresDisponiveis, $jogadoresSelecionados, $equipeSlots, 'posicao_principal');
-            
+
             // Nível 2: Preencher por Posição Secundária
             $this->preencherSlotsPorPosicao($jogadoresDisponiveis, $jogadoresSelecionados, $equipeSlots, 'posicao_secundaria');
-            
+
             // Nível 3: Preencher vagas restantes com Regras Físicas
             $this->preencherSlotsPorFisico($jogadoresDisponiveis, $jogadoresSelecionados, $equipeSlots);
 
             // 6. Salva a equipe no banco de dados se ela estiver completa
             if ($jogadoresSelecionados->count() == self::TAMANHO_EQUIPE) {
-                
+
                 // Usa uma transação para garantir que tudo funcione
-                DB::transaction(function () use ($peneira, $jogadoresSelecionados, &$jogadoresDisponiveis) {
-                    
-                    // Cria a nova equipe
+                DB::transaction(function () use ($peneira, $jogadoresSelecionados, &$jogadoresDisponiveis, $numeroEquipe) {
+
+                    // Cria a nova equipe com o campo teams_equipe
                     $equipe = Equipe::create([
-                        'nome' => 'Equipe ' . Str::random(5), // Gera um nome aleatório
-                        'peneira_id' => $peneira->id
+                        'nome_equipe' => 'Equipe ' . chr(64 + $numeroEquipe), // Equipe A, B, C...
+                        'peneira_id' => $peneira->id,
                     ]);
 
                     // Anexa os 11 jogadores na tabela 'JogadoresPorEquipe'
@@ -84,10 +85,10 @@ class GeradorEquipeService
 
                 // Remove os jogadores selecionados da lista de disponíveis
                 $jogadoresDisponiveis = $jogadoresDisponiveis->diff($jogadoresSelecionados);
-            
+                $numeroEquipe++;
             } else {
                 // Se não conseguiu 11, para o loop (não há mais como montar)
-                break; 
+                break;
             }
         }
     }
@@ -119,7 +120,7 @@ class GeradorEquipeService
             });
 
             $selecionados = $candidatos->take($vagasRestantes);
-            
+
             foreach ($selecionados as $jogador) {
                 $jogadoresSelecionados->push($jogador);
                 $equipeSlots[$posicao]--;
@@ -138,42 +139,45 @@ class GeradorEquipeService
 
             $candidatos = collect();
 
-           
+
             switch ($posicao) {
                 case 'Goleiro':
                     // REGRA: Goleiro deve ter no mínimo 1.80m
                     $candidatos = $jogadoresDisponiveis->where('altura_cm', '>=', 180)
-                                                       ->sortByDesc('altura_cm'); // Pega o mais alto
+                        ->sortByDesc('altura_cm'); // Pega o mais alto
                     break;
-                
+
                 case 'Zagueiro':
                     // REGRA: Zagueiro deve ter no mínimo 1.78m
                     $candidatos = $jogadoresDisponiveis->where('altura_cm', '>=', 178)
-                                                       ->sortByDesc('altura_cm');
+                        ->sortByDesc('altura_cm');
                     break;
-                
+
                 case 'Atacante':
                 case 'Lateral':
                     // REGRA: Jogadores mais baixos (ex: < 1.75m)
                     // E mais novos (ex: < 20 anos)
                     $candidatos = $jogadoresDisponiveis->filter(function ($jogador) {
-                        return $jogador->altura_cm <= 175 && $jogador->pessoa->data_nascimento->age < 20;
+                        $idade = $jogador->pessoa && $jogador->pessoa->data_nascimento
+                            ? $jogador->pessoa->data_nascimento->age
+                            : 25;
+                        return $jogador->altura_cm <= 175 && $idade < 20;
                     })->sortByDesc('pessoa.data_nascimento.age'); // Pega o mais novo
                     break;
-                
+
                 default: // Volante, Meia
                     $candidatos = $jogadoresDisponiveis; // Pega quem sobrou
             }
 
             $selecionados = $candidatos->take($vagasRestantes);
-            
+
             foreach ($selecionados as $jogador) {
                 $jogadoresSelecionados->push($jogador);
                 $equipeSlots[$posicao]--;
                 $jogadoresDisponiveis = $jogadoresDisponiveis->except($jogador->id);
             }
         }
-        
+
         // Etapa Final: Se AINDA faltar gente, preenche com quem sobrou só para bater 11
         $vagasFaltando = self::TAMANHO_EQUIPE - $jogadoresSelecionados->count();
         if ($vagasFaltando > 0) {
