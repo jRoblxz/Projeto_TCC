@@ -5,13 +5,15 @@ import {
   StretchHorizontal,
   Users,
   ChevronRight,
-  UserCircle // Ícone para o perfil
+  UserCircle, // Ícone para o perfil
+  Group,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
 import ThemeToggle from "../ui/ThemeToggle";
 import { getUserData, isUserAdmin } from "../../utils/auth"; // Importe o helper
 
+import { useNavigate } from "react-router-dom";
 // ... (Interfaces SubItem e MenuItem mantidas iguais) ...
 interface SubItem {
   name: string;
@@ -37,6 +39,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   
+    const navigate = useNavigate();
+
   // Estados para dados do usuário
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -52,28 +56,42 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   // 1. Dashboard (Apenas Admin)
   if (isAdmin) {
-    menuItems.push({ title: "Dashboard", path: "/dashboard", icon: LayoutDashboard });
+    menuItems.push({
+      title: "Dashboard",
+      path: "/dashboard",
+      icon: LayoutDashboard,
+    });
   }
-
-  // 2. Itens Comuns
-  menuItems.push(
-    { title: "Peneiras", path: "/peneiras", icon: StretchHorizontal },
-    { title: "Players", path: "/players", icon: Users }
-  );
 
   // 3. Perfil (Apenas Jogador ou Todos, conforme sua preferência)
   // Assumindo que o ID do jogador está salvo em user.jogador_id ou user.id
   if (user) {
-      // Só mostra o link se REALMENTE tivermos um jogador_id válido
-      if (user.jogador_id) {
-          menuItems.push({
-              Group: "CONTA",
-              title: "Meu Perfil",
-              path: `/jogadores/${user.jogador_id}/edit`, // Usa direto o ID do jogador
-              icon: UserCircle
-          });
-      }
+    // Só mostra o link se REALMENTE tivermos um jogador_id válido
+    if (user.jogador_id) {
+      menuItems.push({
+        Group: "CONTA",
+        title: "Meu Perfil",
+        path: `/jogadores/${user.jogador_id}`, // Usa direto o ID do jogador
+        icon: UserCircle,
+      });
+    }
   }
+
+  // 2. Itens Comuns (Agrupados)
+  menuItems.push(
+    {
+      title: "Peneiras",
+      path: "/peneiras",
+      icon: StretchHorizontal,
+      Group: "Sistema",
+    },
+    {
+      title: "Players",
+      path: "/players",
+      icon: Users,
+      Group: "Sistema",
+    },
+  );
 
   const handleToggleSubmenu = (title: string) => {
     setOpenMenu((prev) => (prev === title ? null : title));
@@ -81,7 +99,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
   // Lógica da Imagem: Se tiver foto completa, usa ela. Senão, usa o logo padrão.
   // Ajuste 'pessoa.foto_url_completa' conforme a estrutura exata do seu JSON salvo
-  const userPhoto = user?.pessoa?.foto_url_completa || user?.foto_url || DefaultIcon;
+  const userPhoto =
+    user?.pessoa?.foto_url_completa || user?.foto_url || DefaultIcon;
   const userName = user?.name || user?.pessoa?.nome_completo || "Usuário";
 
   return (
@@ -105,25 +124,31 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         `}
       >
         <div className="flex flex-col h-full">
-          
           {/* --- HEADER COM FOTO DO USUÁRIO --- */}
           <div className="flex-none flex items-center justify-between p-6 border-b border-gray-500/30 dark:border-gray-700">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden bg-white border-2 border-white/20">
-                <img 
-                    src={userPhoto} 
-                    alt="User" 
-                    className="w-full h-full object-cover"
-                    onError={(e) => e.currentTarget.src = DefaultIcon} // Fallback se a URL quebrar
+              <a onClick={() => navigate(`/jogadores/${user.jogador_id}`)} className='cursor-pointer'>
+                <img
+                  src={userPhoto}
+                  alt="User"
+                  className="w-full h-full object-cover"
+                  onError={(e) => (e.currentTarget.src = DefaultIcon)} // Fallback se a URL quebrar
                 />
+              </a>
+                
               </div>
               <div className="flex flex-col">
-                  <span className="text-sm font-bold text-gray-100 line-clamp-1" title={userName}>
-                    {userName.split(' ')[0]} {/* Mostra só o primeiro nome pra caber */}
-                  </span>
-                  <span className="text-[10px] text-gray-400 uppercase">
-                    {isAdmin ? 'Administrador' : 'Atleta'}
-                  </span>
+                <span
+                  className="text-sm font-bold text-gray-100 line-clamp-1"
+                  title={userName}
+                >
+                  {userName.split(" ")[0]}{" "}
+                  {/* Mostra só o primeiro nome pra caber */}
+                </span>
+                <span className="text-[10px] text-gray-400 uppercase">
+                  {isAdmin ? "Administrador" : "Atleta"}
+                </span>
               </div>
             </div>
             <ThemeToggle />
@@ -131,14 +156,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           {/* Navegação */}
           <nav className="flex-1 overflow-y-auto p-4 space-y-2">
-            {menuItems.map((item) => {
+            {menuItems.map((item, index) => {
               const IconComp = item.icon;
               const isActive = location.pathname === item.path;
               const isOpenSubmenu = openMenu === item.title;
+              const previousItemGroup =
+                index > 0 ? menuItems[index - 1].Group : null;
+              const showGroupTitle =
+                item.Group && item.Group !== previousItemGroup;
 
               return (
                 <div key={item.title}>
-                  {item.Group && (
+                  {showGroupTitle && (
                     <h2 className="text-xs text-gray-400 dark:text-gray-500 font-semibold uppercase tracking-wider mb-2 mt-6 first:mt-0 px-2">
                       {item.Group}
                     </h2>
@@ -146,18 +175,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
                   {/* Lógica de Renderização do Link (Igual ao original) */}
                   <Link
-                      to={item.path || "#"}
-                      onClick={onClose}
-                      className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? "bg-[#8B0000] text-white shadow-md"
-                          : "text-gray-300 hover:bg-white/10 hover:text-white"
-                      }`}
-                    >
-                      <div className="flex items-center space-x-3">
-                        <IconComp className="w-5 h-5" />
-                        <span className="font-medium">{item.title}</span>
-                      </div>
+                    to={item.path || "#"}
+                    onClick={onClose}
+                    className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
+                      isActive
+                        ? "bg-[#8B0000] text-white shadow-md"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <IconComp className="w-5 h-5" />
+                      <span className="font-medium">{item.title}</span>
+                    </div>
                   </Link>
                 </div>
               );
@@ -166,9 +195,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           {/* Rodapé */}
           <footer className="flex-none bg-[#0f1b3a] dark:bg-black/20 border-t border-gray-500/30 p-4">
-            <p className="text-xs text-gray-500 text-center">
-              © 2026 SparkLab
-            </p>
+            <p className="text-xs text-gray-500 text-center">© 2026 SparkLab</p>
           </footer>
         </div>
       </aside>

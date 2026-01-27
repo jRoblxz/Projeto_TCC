@@ -1,9 +1,9 @@
 import axios from "axios";
 
 // 1. Defina a URL base dinâmica (AGORA CORRIGIDO)
-//export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1";
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1";
 
-export const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
+//export const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 
 // 2. Crie uma instância do Axios
 export const api = axios.create({
