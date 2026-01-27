@@ -57,7 +57,7 @@ const Login: React.FC = () => {
         // Verifica se o role é 'candidato'. Se for, manda para Players.
         // Caso contrário (treinador/admin), manda para o Dashboard.
         if (data.user.role === 'candidato') {
-            navigate("/players");
+            navigate(`/jogadores/${data.user.jogador_id}`);
         } else {
             navigate("/dashboard");
         }
