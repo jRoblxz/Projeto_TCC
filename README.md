@@ -174,8 +174,8 @@ Projeto desenvolvido com dedicação para fins acadêmicos.
       </a>
     </td>
     <td align="center">
-      <a href="#">
-        <img src="https://ui-avatars.com/api/?name=Kaynan+Lima&background=random" width="100px;" alt="Foto do Kaynan Lima"/><br>
+      <a href="https://github.com/Kaynan1101">
+        <img src="https://github.com/Kaynan1101.png" width="100px;" alt="Foto do Kaynan Lima"/><br>
         <sub>
           <b>Kaynan Lima</b>
         </sub>
