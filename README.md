@@ -155,7 +155,7 @@ O projeto está no ar para testes e demonstração.
 * **Backend & Banco de Dados:** Hospedados no [Railway](https://railway.app/)
 * **Frontend:** Hospedado na [Vercel](https://vercel.com/)
 
-🔗 **Acesse o projeto aqui:** [INSIRA_O_LINK_DO_SEU_PROJETO_AQUI]
+🔗 **Acesse o projeto aqui:** [Projeto TCC](https://projeto-tcc-jade.vercel.app/instrucoes)
 
 ---
 
