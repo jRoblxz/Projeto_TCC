@@ -187,5 +187,5 @@ Projeto desenvolvido com dedicação para fins acadêmicos.
 ---
 
 <div align="center">
-  Feito com 💜 por João Roblez e Kaynan Lima
+  Feito por João Roblez e Kaynan Lima
 </div>
