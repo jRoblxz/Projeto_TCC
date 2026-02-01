@@ -10,18 +10,14 @@ class Equipe extends Model
     use HasFactory;
     public $timestamps = false; // Se sua tabela não tiver created_at/updated_at
 
-    protected $table = 'Equipes'; // Confirme o nome da tabela
+    protected $table = 'equipes'; // Confirme o nome da tabela
     protected $fillable = ['nome', 'peneira_id'];
 
     public function jogadores()
     {
-        return $this->belongsToMany(
-            Jogadores::class, 
-            'JogadoresPorEquipe', // Nome da tabela pivô
-            'equipe_id', 
-            'jogador_id'
-        )
-        // [IMPORTANTE] Isso permite acessar $jogador->pivot->posicao_campo_x no Service
-        ->withPivot(['posicao_campo_x', 'posicao_campo_y', 'titular']); 
+        // COMO DEVE FICAR (Certo)
+        return $this->belongsToMany(Jogadores::class, 'jogadoresporequipe', 'equipe_id', 'jogador_id')
+            ->withPivot(['posicao_campo_x', 'posicao_campo_y', 'titular']);
+        // Nota: Verifique se no seu banco é 'jogadoresporequipe' ou 'jogadores_por_equipe' e use o correto.
     }
 }
