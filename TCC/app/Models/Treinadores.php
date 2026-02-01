@@ -10,7 +10,7 @@ class Treinadores extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $table = 'Treinadores';
+    protected $table = 'treinadores';
     protected $fillable = [
         'pessoa_id',
         'clube_organizacao',

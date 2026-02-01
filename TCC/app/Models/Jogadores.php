@@ -3,22 +3,29 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Equipe;
 
 class Jogadores extends Model
 {
     use HasFactory;
     public $timestamps = false;
 
-    protected $table = 'Jogadores';
-    
+    protected $table = 'jogadores';
+
     // [CORREÇÃO 1] Adiciona o rating aos dados retornados no JSON
     protected $appends = ['rating_medio', 'posicao_abreviada'];
 
     protected $fillable = [
-        'pessoa_id', 'pe_preferido', 'posicao_principal',
-        'posicao_secundaria', 'historico_lesoes_cirurgias',
-        'altura_cm', 'peso_kg', 'video_apresentacao_url',
+        'pessoa_id',
+        'pe_preferido',
+        'posicao_principal',
+        'posicao_secundaria',
+        'historico_lesoes_cirurgias',
+        'altura_cm',
+        'peso_kg',
+        'video_apresentacao_url',
     ];
 
     public function pessoa()
@@ -66,11 +73,6 @@ class Jogadores extends Model
 
     public function equipes()
     {
-        return $this->belongsToMany(
-            Equipe::class, 
-            'JogadoresPorEquipe', 
-            'jogador_id', 
-            'equipe_id'
-        )->withPivot(['posicao_campo_x', 'posicao_campo_y', 'titular']);
+        return $this->belongsToMany(Equipe::class, 'jogadoresporequipe', 'jogador_id', 'equipe_id');
     }
 }

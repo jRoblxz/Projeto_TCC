@@ -11,7 +11,7 @@ class Avaliacao extends Model
 
     public $timestamps = false;
 
-    protected $table = 'Avaliacoes';
+    protected $table = 'avaliacoes';
     protected $fillable = [
         'jogador_id',
         'treinador_id',
