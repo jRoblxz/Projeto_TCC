@@ -181,6 +181,14 @@ Projeto desenvolvido com dedicação para fins acadêmicos.
         </sub>
       </a>
     </td>
+    <td align="center">
+      <a href="https://github.com/JoaoPirasol">
+        <img src="https://github.com/JoaoPirasol.png" width="100px;" alt="Foto do João Pirasol"/><br>
+        <sub>
+          <b>João Pirasol</b>
+        </sub>
+      </a>
+    </td>
   </tr>
 </table>
 
