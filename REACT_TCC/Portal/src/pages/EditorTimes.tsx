@@ -87,11 +87,11 @@ const EditorTimes: React.FC = () => {
       const response = await api.get(`/peneiras/${id}/teams`);
       let data = response.data;
 
-      // [CORREÇÃO CRÍTICA] Adaptador: Transforma Array [0,1] em Objeto {A,B}
+      // [CORREÇÃO CRÍTICA] Adaptador com BLINDAGEM contra nomes nulos
       if (Array.isArray(data)) {
-        // Tenta achar pelo nome ou pega pelo índice
-        const teamA = data.find((t: any) => t.name.includes("A")) || data[0];
-        const teamB = data.find((t: any) => t.name.includes("B")) || data[1];
+        // O uso do "?." (Optional Chaining) garante que não dê erro se t.name for null
+        const teamA = data.find((t: any) => t.name?.includes("A")) || data[0];
+        const teamB = data.find((t: any) => t.name?.includes("B")) || data[1];
 
         // Recria o objeto que o componente espera
         data = {};

@@ -29,6 +29,16 @@ class GeradorEquipeService
      */
     public function gerarEquipesParaPeneira(Peneiras $peneira)
     {
+
+    // Limpa as equipes antigas e seus vínculos antes de gerar novas
+        $equipesAntigas = Equipe::where('peneira_id', $peneira->id)->get();
+        foreach ($equipesAntigas as $equipe) {
+            $equipe->jogadores()->detach(); // Remove os jogadores da tabela pivot
+            $equipe->delete(); // Deleta a equipe do banco
+        }
+
+        // ---------------------------------------------
+
         // 1. Busca IDs de jogadores inscritos na peneira
         $jogadoresInscritosIds = Inscricoes::where('peneira_id', $peneira->id)
             ->pluck('jogador_id');
@@ -73,14 +83,44 @@ class GeradorEquipeService
                 // Usa uma transação para garantir que tudo funcione
                 DB::transaction(function () use ($peneira, $jogadoresSelecionados, &$jogadoresDisponiveis, $numeroEquipe) {
 
-                    // Cria a nova equipe com o campo teams_equipe
+                    // Cria a nova equipe com o campo correto
                     $equipe = Equipe::create([
-                        'nome_equipe' => 'Equipe ' . chr(64 + $numeroEquipe), // Equipe A, B, C...
+                        'nome' => 'Equipe ' . chr(64 + $numeroEquipe), // Equipe A, B, C...
                         'peneira_id' => $peneira->id,
                     ]);
 
-                    // Anexa os 11 jogadores na tabela 'JogadoresPorEquipe'
-                    $equipe->jogadores()->attach($jogadoresSelecionados->pluck('id'));
+                    // --- INÍCIO DA CORREÇÃO DAS POSIÇÕES ---
+                    // Mapeamento padrão 4-4-2 para colocar os jogadores direto no campo
+                    $formacaoPadrao = [
+                        ['x' => 50, 'y' => 90], // 0: Goleiro
+                        ['x' => 38, 'y' => 80], // 1: Zagueiro 1 (Esquerda)
+                        ['x' => 62, 'y' => 80], // 2: Zagueiro 2 (Direita)
+                        ['x' => 15, 'y' => 75], // 3: Lateral 1 (Esquerda)
+                        ['x' => 85, 'y' => 75], // 4: Lateral 2 (Direita)
+                        ['x' => 50, 'y' => 60], // 5: Volante (Centro)
+                        ['x' => 20, 'y' => 45], // 6: Meia 1 (Esquerda)
+                        ['x' => 50, 'y' => 40], // 7: Meia 2 (Centro/Armador)
+                        ['x' => 80, 'y' => 45], // 8: Meia 3 (Direita)
+                        ['x' => 38, 'y' => 20], // 9: Atacante 1
+                        ['x' => 62, 'y' => 20], // 10: Atacante 2
+                    ];
+
+                    // Monta o array com dados extras para a tabela pivot
+                    $syncData = [];
+                    foreach ($jogadoresSelecionados->values() as $index => $jogador) {
+                        // Pega a posição correspondente da formação, ou usa o centro se falhar
+                        $pos = $formacaoPadrao[$index] ?? ['x' => 50, 'y' => 50]; 
+                        
+                        $syncData[$jogador->id] = [
+                            'posicao_campo_x' => $pos['x'],
+                            'posicao_campo_y' => $pos['y'],
+                            'titular' => 1 // <--- ESSA É A CHAVE! 1 = true (Vai pro campo)
+                        ];
+                    }
+
+                    // Anexa os 11 jogadores passando os dados da pivot junto!
+                    $equipe->jogadores()->sync($syncData);
+                    // --- FIM DA CORREÇÃO ---
                 });
 
                 // Remove os jogadores selecionados da lista de disponíveis
