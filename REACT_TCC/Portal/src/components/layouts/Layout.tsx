@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="flex h-[100dvh] w-full bg-gray-50 dark:bg-gray-800 transition text-gray-900 dark:text-white overflow-hidden">
+    <div className="flex h-[100dvh] w-full bg-gray-50 dark:bg-gray-800 transition text-gray-900  dark:text-white overflow-hidden">
       <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       <div className="flex flex-col flex-1 w-full min-w-0 relative">
         <Header onMenuClick={toggleSidebar} />

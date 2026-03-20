@@ -135,7 +135,7 @@ const Players: React.FC = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input 
                     type="text" 
-                    placeholder="uscar por nome ou posição..."
+                    placeholder="Buscar por nome ou posição..."
                     value={search}
                     onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                     className="w-full pl-10 pr-4 py-3 border dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-full focus:ring-2 focus:ring-[#8B0000] outline-none transition"

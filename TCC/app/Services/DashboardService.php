@@ -20,7 +20,7 @@ class DashboardService
 
         if (!empty($filters['subdivisao'])) {
             $sub = $filters['subdivisao'];
-            
+
             // Filtra Peneiras
             $queryPeneiras->where('sub_divisao', $sub);
 
@@ -34,20 +34,31 @@ class DashboardService
         }
 
         // 3. Consultas Auxiliares
-        $nextEvents = $queryPeneiras->orderByDesc('data_evento')->take(5)->get();
-        
-        $activeEventsCount = Peneiras::whereIn('status', ['EM_ANDAMENTO', 'AGENDADA'])
+        $nextEvents = $queryPeneiras->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA'])->orderByDesc('data_evento')->take(5)->get();
+
+        $TotalCandidates = Jogadores::with('pessoa')->get()
+            ->when(!empty($filters['subdivisao']), function ($collection) use ($filters) {
+                return $collection->filter(function ($jogador) use ($filters) {
+                    return $jogador->pessoa && ($jogador->pessoa->sub_divisao == $filters['subdivisao']);
+                });
+            })
+            ->count();
+
+        $activeEventsCount = Peneiras::whereIn('status', ['EM_ANDAMENTO'])
+            ->when(!empty($filters['subdivisao']), fn($q) => $q->where('sub_divisao', $filters['subdivisao']))
+            ->count();
+
+        $agendadasEventsCount = Peneiras::whereIn('status', ['AGENDADA'])
             ->when(!empty($filters['subdivisao']), fn($q) => $q->where('sub_divisao', $filters['subdivisao']))
             ->count();
 
         // 4. Retorno Formatado
         return [
             'stats' => [
-                'total_candidates' => $jogadoresFiltrados->count(),
-                'active_events'    => $activeEventsCount,
-                'evaluators'       => User::where('role', 'avaliador')->count(),
-                'aprovados'        => 0,
-                'em_avaliacao'     => 0,
+                'total_candidatos' => $TotalCandidates,
+                'peneiras_ativas'    => $activeEventsCount,
+                'peneiras_agendadas'  => $agendadasEventsCount,
+                'total_peneiras' => $activeEventsCount + $agendadasEventsCount
             ],
             'recent_events' => $nextEvents,
             'jogadores'     => $jogadoresFiltrados

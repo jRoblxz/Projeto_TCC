@@ -21,9 +21,8 @@ import Logo from "../assets/img/logo-copia.png";
 interface Stats {
   total_candidatos: number;
   peneiras_ativas: number;
-  aprovados: number;
-  em_avaliacao: number;
-  avaliadores: number;
+  peneiras_agendadas: number;
+  total_peneiras: number;
 }
 
 interface Peneira {
@@ -38,7 +37,7 @@ interface Peneira {
 
 interface Jogador {
   id: number;
-  rating: number; // ou rating_medio
+  rating_medio: number; // ou rating_medio
   pessoa: {
     nome_completo: string;
     data_nascimento: string; // ou calcular idade no back
@@ -114,7 +113,7 @@ const Dashboard: React.FC = () => {
         )}
 
         {/* ================= HEADER ================= */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl p-6 text-gray-900 dark:text-white shadow-lg gap-6">
+        <div className="rounded-xl p-6 text-gray-900 bg-white dark:bg-gray-900  dark:text-white shadow-lg gap-6 transition">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               {/* Logo - Certifique-se que a imagem existe em public/img */}
@@ -173,12 +172,18 @@ const Dashboard: React.FC = () => {
               )}
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mt-3">
             <StatCard
               icon={<Users className="h-6 w-6 text-white" />}
               label="Candidatos"
               value={stats?.total_candidatos || 0}
               color="bg-[#14244D]"
+            />
+            <StatCard
+              icon={<Trophy className="h-6 w-6 text-white" />}
+              label="Peneiras Agendadas"
+              value={stats?.total_peneiras || 0}
+              color="bg-green-600"
             />
             <StatCard
               icon={<Calendar className="h-6 w-6 text-white" />}
@@ -188,21 +193,9 @@ const Dashboard: React.FC = () => {
             />
             <StatCard
               icon={<Trophy className="h-6 w-6 text-white" />}
-              label="Aprovados"
-              value={stats?.aprovados || 0}
+              label="Peneiras Agendadas"
+              value={stats?.peneiras_agendadas || 0}
               color="bg-green-600"
-            />
-            <StatCard
-              icon={<ClipboardList className="h-6 w-6 text-white" />}
-              label="Em Avaliação"
-              value={stats?.em_avaliacao || 0}
-              color="bg-orange-500"
-            />
-            <StatCard
-              icon={<UserCheck className="h-6 w-6 text-white" />}
-              label="Avaliadores"
-              value={stats?.avaliadores || 0}
-              color="bg-purple-600"
             />
           </div>
         </div>
@@ -212,32 +205,32 @@ const Dashboard: React.FC = () => {
         {/* ================= MAIN GRID ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* ----- COLUNA 1: PENEIRAS ----- */}
-          <Card className="p-0 overflow-hidden border border-gray-200 shadow-md">
-            <div className="bg-gray-50 p-4 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-xl font-bold text-[#14244D] flex items-center gap-2">
-                <span className="text-2xl">⚽</span> Peneiras em Andamento
+          <Card className="p-0 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md transition">
+            <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D]  p-4 border-b dark:border-gray-700 border-gray-200 flex justify-between items-center transition">
+              <h2 className="text-2xl font-bold  flex items-center gap-2">
+                 Peneiras em Andamento
               </h2>
               <button
                 onClick={() => navigate("/peneiras/nova")} // Ajuste a rota conforme necessário
-                className="text-xs font-bold uppercase tracking-wider text-[#941B1B] hover:text-red-700 border border-[#941B1B] hover:bg-red-50 px-3 py-1 rounded transition"
+                className="text-xs font-bold uppercase tracking-wider bg-[#941B1B] text-white hover:text-red-700 border border-[#941B1B] hover:bg-red-50 px-3 py-1 rounded transition"
               >
                 Nova Peneira
               </button>
             </div>
 
-            <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar">
+            <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar transition dark:bg-gray-900 ">
               {peneiras.length > 0 ? (
                 peneiras.map((peneira) => (
                   <div
                     key={peneira.id}
-                    onClick={() => navigate(`/peneiras/${peneira.id}`)} // Ajuste a rota
+                    onClick={() => navigate(`/peneiras/${peneira.id}`)}
                     className={`
-                      relative group cursor-pointer bg-white rounded-lg p-4 border shadow-sm hover:shadow-md transition-all duration-200
+                      relative group cursor-pointer  bg-white dark:bg-gray-800  rounded-lg p-4 border shadow-sm hover:shadow-md transition-all duration-200
                       border-l-4 ${getStatusColor(peneira.status).split(" ")[2]}
                     `}
                   >
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-gray-800 text-lg group-hover:text-[#14244D] transition">
+                      <h3 className="font-bold text-gray-800 dark:text-gray-200 text-lg transition">
                         {peneira.nome_evento}
                       </h3>
                       <span
@@ -247,7 +240,7 @@ const Dashboard: React.FC = () => {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-y-1 text-sm text-gray-600">
+                    <div className="grid grid-cols-2 gap-y-1 text-sm text-gray-600 dark:text-gray-400 transition" >
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {new Date(peneira.data_evento).toLocaleDateString(
@@ -276,23 +269,23 @@ const Dashboard: React.FC = () => {
           </Card>
 
           {/* ----- COLUNA 2: JOGADORES DESTAQUE ----- */}
-          <Card className="p-0 overflow-hidden border border-gray-200 shadow-md">
-            <div className="bg-gray-50 p-4 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-[#14244D] flex items-center gap-2">
-                <span className="text-2xl">🏆</span> Jogadores Destaques
+          <Card className="p-0 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md transition">
+            <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D] p-4 border-b dark:border-gray-700 border-gray-200 transition">
+              <h2 className="text-2xl font-bold  flex items-center gap-2">
+                Jogadores Destaques
               </h2>
             </div>
 
-            <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar">
+            <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar dark:bg-gray-900 transition">
               {jogadores.length > 0 ? (
                 jogadores.map((jogador) => (
                   <div
                     key={jogador.id}
                     // onClick={() => navigate(`/players/${jogador.id}`)}
-                    className="flex items-center gap-4 bg-white p-3 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition cursor-pointer"
+                    className="transition flex items-center gap-4 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-600 shadow-sm hover:shadow-md transition cursor-pointer"
                   >
                     {/* Avatar */}
-                    <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
+                    <div className="transition h-12 w-12 rounded-full bg-gray-200  overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">
                       {jogador.pessoa.foto_perfil_url ? (
                         <img
                           src={
@@ -315,10 +308,10 @@ const Dashboard: React.FC = () => {
 
                     {/* Info */}
                     <div className="flex-1">
-                      <h4 className="font-bold text-gray-800 leading-tight">
+                      <h4 className="font-bold text-gray-800 dark:text-gray-200 leading-tight">
                         {jogador.pessoa.nome_completo}
                       </h4>
-                      <div className="text-xs text-gray-500 mt-1 flex gap-2">
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex gap-2">
                         <span className="bg-gray-100 px-2 py-0.5 rounded">
                           {/* Lógica simples de idade se não vier do back */}
                           {jogador.pessoa.idade
@@ -332,8 +325,8 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     {/* Rating */}
-                    <div className="flex flex-col items-center justify-center bg-[#14244D] text-white h-10 w-10 rounded-lg font-bold shadow-sm">
-                      <span>{Number(jogador.rating || 0).toFixed(1)}</span>
+                    <div className="flex flex-col items-center justify-center bg-[#14244D] dark:bg-[#941B1B] text-white h-10 w-10 rounded-lg font-bold shadow-sm">
+                      <span>{Number(jogador.rating_medio || 0).toFixed(1)}</span>
                     </div>
                   </div>
                 ))
@@ -349,17 +342,17 @@ const Dashboard: React.FC = () => {
 };
 
 // Componente Pequeno para os Stats
-const StatCard = ({ icon, label, value, color }: any) => (
+const StatCard = ({ label, value }: any) => (
   <div
     // Adicionei 'flex flex-col items-center justify-center' aqui
-    className={`bg-white rounded-lg p-4 text-black shadow-md transform border-1 border-black hover:scale-105 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center`}
+    className={`bg-white dark:bg-gray-800  dark:text-white rounded-lg p-4  text-black shadow-md transform border-1 dark:border-white border-black hover:scale-105 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center`}
   >
     {/* Removi o 'm-auto' pois o pai já está centralizando tudo com 'items-center' */}
     <div className="mb-2">
       <span className="text-3xl font-bold text-center text-[#851114]">{value}</span>
     </div>
 
-    <div className="text-xs md:text-sm font-medium opacity-90 text-center text-[#333]">
+    <div className="text-xs md:text-sm font-medium opacity-90 text-center dark:text-white text-[#333]">
       {label}
     </div>
   </div>
