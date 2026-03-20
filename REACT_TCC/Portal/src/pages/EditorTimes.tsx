@@ -132,6 +132,7 @@ const EditorTimes: React.FC = () => {
       toast.error("Erro ao salvar.");
     } finally {
       setSaving(false);
+      navigate(`/peneiras/${id}`); 
     }
   };
 
@@ -443,7 +444,7 @@ const EditorTimes: React.FC = () => {
         <div className="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-xl shadow-sm border border-gray-100 mb-6">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(`/peneiras/${id}`)}
               className="p-2 hover:bg-gray-100 rounded-full transition"
             >
               <ArrowLeft />
