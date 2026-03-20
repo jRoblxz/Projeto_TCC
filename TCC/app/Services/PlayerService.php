@@ -48,23 +48,42 @@ class PlayerService
         });
     }
 
-    private function updateRating($jogador, $score)
+    // Exemplo de como deve ficar a lógica da sua função updateRating
+    public function updateRating($jogador, array $atributos)
     {
-        // Reusing your existing logic nicely
-        $avaliacao = Avaliacao::where('jogador_id', $jogador->id)
-            ->orderByDesc('data_avaliacao')->first();
+        // O "?? 0" garante que se o frontend mandar vazio, o PHP assume 0 e não quebra
+        $tecnica = $atributos['tecnica'] ?? 0;
+        $condicionamento = $atributos['condicionamento'] ?? 0;
+        $finalizacao = $atributos['finalizacao'] ?? 0;
+        $velocidade = $atributos['velocidade'] ?? 0;
+        $posicionamento = $atributos['posicionamento'] ?? 0;
+        $cabeceio = $atributos['cabeceio'] ?? 0;
 
-        if ($avaliacao) {
-            $avaliacao->update(['nota' => $score, 'data_avaliacao' => now()]);
-        } else {
-            Avaliacao::create([
-                'jogador_id' => $jogador->id,
-                'treinador_id' => Auth::id() ?? 1,
-                'nota' => $score,
-                'observacoes' => 'Rating editado via API',
+        // Calcula a média exata
+        $media = ($tecnica + $condicionamento + $finalizacao + $velocidade + $posicionamento + $cabeceio) / 6;
+
+        // ---> CORREÇÃO AQUI <---
+        // Busca o primeiro treinador que existe no banco para não dar erro de chave estrangeira.
+        // Futuramente, se você for separar avaliações por treinador, você buscará o Treinador vinculado ao usuário logado.
+        $treinador = \App\Models\Treinadores::first();
+        $treinadorId = $treinador ? $treinador->id : 1; 
+
+        // Salva as notas e a observação na tabela 'Avaliacoes'
+        $jogador->avaliacoes()->updateOrCreate(
+            ['jogador_id' => $jogador->id], 
+            [
+                'nota' => round($media, 1),
+                'tecnica' => $tecnica,
+                'condicionamento' => $condicionamento,
+                'finalizacao' => $finalizacao,
+                'velocidade' => $velocidade,
+                'posicionamento' => $posicionamento,
+                'cabeceio' => $cabeceio,
+                'observacoes' => $atributos['observacoes'] ?? null,
                 'data_avaliacao' => now(),
-            ]);
-        }
+                'treinador_id' => $treinadorId // Usa um ID de treinador válido!
+            ]
+        );
     }
 
     public function getAllWithFilters($perPage, $filters)

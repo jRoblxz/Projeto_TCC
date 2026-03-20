@@ -53,33 +53,29 @@ class PlayerController extends Controller
 
     public function update(Request $request, $id)
     {
-        // For update, ideally you should also use the service, 
-        // but if you haven't refactored this part yet, keep the existing logic 
-        // OR use the service method you created:
-        
-        /* $jogador = $this->playerService->updatePlayer($id, $request->all());
-           return response()->json(['message' => 'Atualizado', 'data' => $jogador]);
-        */
-
-        // Keeping your previous logic for safety if you didn't fully switch yet:
         $jogador = \App\Models\Jogadores::with('pessoa')->findOrFail($id);
         
-        // ... rest of your update logic ...
+        // Atualiza apenas os dados normais do jogador
         $dadosJogador = $request->only([
-            'altura_cm', 'peso_kg', 'pe_preferido', 
-            'posicao_principal', 'posicao_secundaria', 'rating_medio'
+            'altura_cm', 'peso_kg', 'pe_preferido',
+            'posicao_principal', 'posicao_secundaria'
         ]);
 
         if (!empty($dadosJogador)) {
             $jogador->update($dadosJogador);
         }
 
+        // Atualiza o nome se foi enviado
         if ($request->has('nome_completo')) {
             if ($jogador->pessoa) {
                 $jogador->pessoa->update([
                     'nome_completo' => $request->input('nome_completo')
                 ]);
             }
+        }
+
+        if ($request->has('atributos')) {
+            $this->playerService->updateRating($jogador, $request->input('atributos'));
         }
 
         return response()->json([

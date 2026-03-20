@@ -16,7 +16,13 @@ class Avaliacao extends Model
         'jogador_id',
         'treinador_id',
         'peneira_id',
-        'nota',
+        'nota', // A nota geral continuará existindo, mas será a média das outras 6
+        'tecnica',
+        'condicionamento',
+        'finalizacao',
+        'velocidade',
+        'posicionamento',
+        'cabeceio',
         'observacoes',
         'data_avaliacao'
     ];

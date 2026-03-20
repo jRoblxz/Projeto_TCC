@@ -49,7 +49,22 @@ const Players: React.FC = () => {
   // Estados de Modal
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [newRating, setNewRating] = useState<number | string>("");
+  const [attributes, setAttributes] = useState({
+    tecnica: 0,
+    condicionamento: 0,
+    finalizacao: 0,
+    velocidade: 0,
+    posicionamento: 0,
+    cabeceio: 0,
+    observacoes: "" // <-- Voltou!
+  });
+
+  // Calcula a média em tempo real no frontend
+  const numericValues = [
+    attributes.tecnica, attributes.condicionamento, attributes.finalizacao, 
+    attributes.velocidade, attributes.posicionamento, attributes.cabeceio
+  ];
+  const currentAverage = (numericValues.reduce((acc, curr) => acc + Number(curr), 0) / 6).toFixed(1);
 
   // Permissões (Simulado - você pode pegar do Contexto de Auth)
   const isAdmin = isUserAdmin(); // Use a função importada
@@ -100,18 +115,31 @@ const Players: React.FC = () => {
     if (!selectedPlayer) return;
 
     try {
-        await api.put(`/players/${selectedPlayer.id}`, { rating_medio: newRating });
-        toast.success("Rating atualizado!");
+        // Envia o objeto completo de atributos para o backend
+        await api.put(`/players/${selectedPlayer.id}`, { atributos: attributes });
+        toast.success("Avaliação registrada!");
         setShowRatingModal(false);
         loadPlayers();
     } catch (error) {
-        toast.error("Erro ao atualizar rating");
+        toast.error("Erro ao registrar avaliação");
     }
+  };
+
+  const handleAttributeChange = (field: string, value: string) => {
+    setAttributes(prev => ({
+        ...prev,
+        [field]: Number(value)
+    }));
   };
 
   const openRatingModal = (player: Player) => {
     setSelectedPlayer(player);
-    setNewRating(player.rating_medio);
+    // Se quiser carregar a última avaliação do banco, pode fazer assim:
+    setAttributes({
+      tecnica: 0, condicionamento: 0, finalizacao: 0, 
+      velocidade: 0, posicionamento: 0, cabeceio: 0,
+      observacoes: player.ultima_avaliacao?.observacoes || "" // <-- Puxa do BD se existir
+    });
     setShowRatingModal(true);
   };
 
@@ -226,10 +254,10 @@ const Players: React.FC = () => {
             </div>
         )}
 
-        {/* === MODAL EDITAR RATING === */}
+        {/* === MODAL EDITAR RATING (ATRIBUTOS) === */}
         {showRatingModal && selectedPlayer && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 relative">
+                <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 relative">
                     <button 
                         onClick={() => setShowRatingModal(false)}
                         className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
@@ -237,18 +265,49 @@ const Players: React.FC = () => {
                         <X size={24} />
                     </button>
                     
-                    <h2 className="text-2xl font-bold text-[#8B0000] mb-2 font-['Jersey25']">Editar Rating</h2>
-                    <p className="text-gray-600 mb-6">{selectedPlayer.pessoa.nome_completo}</p>
+                    <h2 className="text-2xl font-bold text-[#8B0000] mb-1">Avaliação Técnica</h2>
+                    <p className="text-gray-600 mb-4 font-medium">{selectedPlayer.pessoa.nome_completo}</p>
+                    
+                    {/* Nota Média Calculada no Topo */}
+                    <div className="flex justify-center items-center mb-6 bg-gray-50 rounded-xl py-3 border border-gray-100">
+                        <div className="text-center">
+                            <span className="block text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">Overall (Média)</span>
+                            <span className="text-4xl font-extrabold text-[#14244D]">{currentAverage}</span>
+                        </div>
+                    </div>
                     
                     <form onSubmit={handleUpdateRating}>
-                        <div className="mb-6 text-center">
-                            <label className="block text-sm font-bold text-gray-700 mb-2">Novo Rating (0 - 10)</label>
-                            <input 
-                                type="number" 
-                                min="0" max="10" step="0.1"
-                                value={newRating}
-                                onChange={(e) => setNewRating(e.target.value)}
-                                className="w-full text-center text-4xl font-bold text-[#8B0000] border-2 border-gray-200 rounded-lg p-4 focus:border-[#8B0000] outline-none"
+                        <div className="grid grid-cols-2 gap-4 mb-8">
+                            {[
+                                { key: "tecnica", label: "Técnica" },
+                                { key: "condicionamento", label: "Condicionamento" },
+                                { key: "finalizacao", label: "Finalização" },
+                                { key: "velocidade", label: "Velocidade" },
+                                { key: "posicionamento", label: "Posicionamento" },
+                                { key: "cabeceio", label: "Cabeceio" }
+                            ].map((attr) => (
+                                <div key={attr.key} className="flex flex-col">
+                                    <label className="text-xs font-bold text-gray-700 mb-1">{attr.label}</label>
+                                    <input 
+                                        type="number" 
+                                        min="0" max="10" step="0.1"
+                                        value={attributes[attr.key as keyof typeof attributes]}
+                                        onChange={(e) => handleAttributeChange(attr.key, e.target.value)}
+                                        className="w-full text-lg font-bold text-gray-800 border-2 border-gray-200 rounded-lg p-2 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] outline-none transition"
+                                    />
+                                </div>
+                                
+                            ))}
+                        </div>
+                        {/* NOVO CAMPO DE OBSERVAÇÕES AQUI */}
+                        <div className="mb-6">
+                            <label className="text-xs font-bold text-gray-700 mb-1 block">Observações Gerais</label>
+                            <textarea 
+                                rows={3}
+                                value={attributes.observacoes}
+                                onChange={(e) => setAttributes(prev => ({ ...prev, observacoes: e.target.value }))}
+                                placeholder="Adicione comentários sobre a prestação do atleta..."
+                                className="w-full text-sm font-medium text-gray-800 border-2 border-gray-200 rounded-lg p-3 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] outline-none transition resize-none"
                             />
                         </div>
                         
@@ -256,7 +315,7 @@ const Players: React.FC = () => {
                             <button 
                                 type="button" 
                                 onClick={() => setShowRatingModal(false)}
-                                className="flex-1 py-3 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition"
+                                className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition"
                             >
                                 Cancelar
                             </button>
@@ -264,7 +323,7 @@ const Players: React.FC = () => {
                                 type="submit" 
                                 className="flex-1 py-3 bg-[#8B0000] text-white rounded-lg font-bold hover:bg-[#a01519] transition shadow-lg"
                             >
-                                Salvar
+                                Salvar Avaliação
                             </button>
                         </div>
                     </form>

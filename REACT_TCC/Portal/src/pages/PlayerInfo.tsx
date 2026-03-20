@@ -292,21 +292,25 @@ const PlayerInfo: React.FC = () => {
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {[
-                    "Técnica",
-                    "Condicionamento",
-                    "Finalização",
-                    "Velocidade",
-                    "Posicionamento",
-                    "Cabeceio",
+                    { label: "Técnica", value: player.ultima_avaliacao?.tecnica },
+                    { label: "Condicionamento", value: player.ultima_avaliacao?.condicionamento },
+                    { label: "Finalização", value: player.ultima_avaliacao?.finalizacao },
+                    { label: "Velocidade", value: player.ultima_avaliacao?.velocidade },
+                    { label: "Posicionamento", value: player.ultima_avaliacao?.posicionamento },
+                    { label: "Cabeceio", value: player.ultima_avaliacao?.cabeceio },
                   ].map((item) => (
                     <div
-                      key={item}
+                      key={item.label}
                       className="bg-white dark:bg-gray-800 p-4 rounded-[10px] text-center shadow-sm border-2 dark:border-gray-700 border-[#e9ecef] hover:-translate-y-0.5 hover:border-[#851114] transition-all"
                     >
-                      <h5 className="text-[#333] dark:text-white mb-2 font-bold text-lg  ">
-                        {item}
+                      <h5 className="text-[#333] dark:text-white mb-2 font-bold text-lg">
+                        {item.label}
                       </h5>
-                      <div className="text-2xl text-[#851114]  ">N/A</div>
+                      <div className="text-2xl text-[#851114] font-bold">
+                        {item.value !== undefined && item.value !== null 
+                          ? Number(item.value).toFixed(1) 
+                          : "N/A"}
+                      </div>
                     </div>
                   ))}
                 </div>
