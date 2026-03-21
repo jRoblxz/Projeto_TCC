@@ -80,4 +80,6 @@ class PeneiraController extends Controller
             return response()->json(['error' => 'Erro ao deletar: ' . $e->getMessage()], 400);
         }
     }
+
+    
 }

@@ -27,6 +27,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'me']);
 
+    Route::get('/players-stats', [PlayerController::class, 'stats']);
+
     // Visualizar Jogadores
     Route::get('players', [PlayerController::class, 'index']);
     Route::get('players/{id}', [PlayerController::class, 'show']);

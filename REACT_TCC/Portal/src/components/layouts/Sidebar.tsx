@@ -7,6 +7,10 @@ import {
   ChevronRight,
   UserCircle, // Ícone para o perfil
   Group,
+  Video,
+  Database,
+  ChartPie,
+  Trophy,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
@@ -90,6 +94,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       path: "/players",
       icon: Users,
       Group: "Sistema",
+    },
+  );
+
+  menuItems.push(
+    {
+      title: "Análise de Vídeo",
+      path: "/tracking",
+      icon: Video,
+      Group: "Analises",
+    },
+    {
+      title: "Análise de Atributos",
+      path: "/analise",
+      icon: ChartPie,
+      Group: "Analises",
+    },
+    {
+      title: "Atletas em Destaque",
+      path: "/destaques",
+      icon: Trophy,
+      Group: "Analises",
     },
   );
 

@@ -161,4 +161,12 @@ class PlayerController extends Controller
             return response()->json(['message' => 'Erro ao salvar imagem: ' . $e->getMessage()], 500);
         }
     }
+
+    public function stats()
+    {
+        // O Controller apenas chama o Service e devolve a resposta em JSON
+        $estatisticas = $this->playerService->getStats();
+        
+        return response()->json($estatisticas);
+    }
 }

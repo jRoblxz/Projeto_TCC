@@ -24,6 +24,9 @@ import EditorTimes from "./pages/EditorTimes";
 import InscricaoForm from "./pages/InscricaoForm";
 import Confirmacao from "./pages/Confirmacao";
 import Instrucao from "./pages/Instrucao";
+import TrackingPartida from "./pages/TrackingPartida";
+import AnaliseDados from "./pages/AnaliseDados";
+import AtletasDestaque from "./pages/AtletasDestaques";
 
 const App: FC = () => {
   return (
@@ -132,6 +135,34 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/tracking"
+            element={
+              <ProtectedRoute>
+                <TrackingPartida />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/analise"
+            element={
+              <ProtectedRoute>
+                <AnaliseDados />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/destaques"
+            element={
+              <ProtectedRoute>
+                <AtletasDestaque />
+              </ProtectedRoute>
+            }
+          />
+
 
           {/* Redirecionamentos */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

@@ -51,38 +51,37 @@ class PlayerService
     // Exemplo de como deve ficar a lógica da sua função updateRating
     public function updateRating($jogador, array $atributos)
     {
-        // O "?? 0" garante que se o frontend mandar vazio, o PHP assume 0 e não quebra
-        $tecnica = $atributos['tecnica'] ?? 0;
-        $condicionamento = $atributos['condicionamento'] ?? 0;
-        $finalizacao = $atributos['finalizacao'] ?? 0;
-        $velocidade = $atributos['velocidade'] ?? 0;
-        $posicionamento = $atributos['posicionamento'] ?? 0;
-        $cabeceio = $atributos['cabeceio'] ?? 0;
+        $observacoes = $atributos['observacoes'] ?? null;
+        unset($atributos['observacoes']); // Tira o texto da conta matemática
 
-        // Calcula a média exata
-        $media = ($tecnica + $condicionamento + $finalizacao + $velocidade + $posicionamento + $cabeceio) / 6;
+        // Pega apenas as notas numéricas enviadas
+        $notas = array_filter($atributos, function($valor) {
+            return is_numeric($valor);
+        });
 
-        // ---> CORREÇÃO AQUI <---
-        // Busca o primeiro treinador que existe no banco para não dar erro de chave estrangeira.
-        // Futuramente, se você for separar avaliações por treinador, você buscará o Treinador vinculado ao usuário logado.
+        // Calcula a média dinâmica (soma as notas e divide pela quantidade de notas)
+        $qtdNotas = count($notas);
+        $media = $qtdNotas > 0 ? array_sum($notas) / $qtdNotas : 0;
+
         $treinador = \App\Models\Treinadores::first();
         $treinadorId = $treinador ? $treinador->id : 1; 
 
-        // Salva as notas e a observação na tabela 'Avaliacoes'
+        // Monta os dados base
+        $dadosParaSalvar = [
+            'nota' => round($media, 1),
+            'observacoes' => $observacoes,
+            'data_avaliacao' => now(),
+            'treinador_id' => $treinadorId
+        ];
+
+        // Mescla as notas específicas (Técnica, Reflexo, etc) ao array de salvamento
+        foreach ($notas as $chave => $valor) {
+            $dadosParaSalvar[$chave] = $valor;
+        }
+
         $jogador->avaliacoes()->updateOrCreate(
             ['jogador_id' => $jogador->id], 
-            [
-                'nota' => round($media, 1),
-                'tecnica' => $tecnica,
-                'condicionamento' => $condicionamento,
-                'finalizacao' => $finalizacao,
-                'velocidade' => $velocidade,
-                'posicionamento' => $posicionamento,
-                'cabeceio' => $cabeceio,
-                'observacoes' => $atributos['observacoes'] ?? null,
-                'data_avaliacao' => now(),
-                'treinador_id' => $treinadorId // Usa um ID de treinador válido!
-            ]
+            $dadosParaSalvar
         );
     }
 
@@ -129,5 +128,78 @@ class PlayerService
 
         $query->orderBy('rating_medio', 'desc');
         return $query->paginate($perPage);
+    }
+
+    // Cole isso dentro do PlayerService.php
+    
+    public function getStats()
+    {
+        // 1. Busca os IDs das peneiras que estão com status "Em Andamento"
+        $peneirasAtivasIds = DB::table('peneiras')
+            ->whereIn('status', ['EM_ANDAMENTO', 'Em Andamento', 'Em andamento', 'em_andamento'])
+            ->pluck('id');
+
+        // 2. Busca os IDs dos jogadores inscritos APENAS nessas peneiras ativas
+        $jogadoresAtivosIds = DB::table('inscricoes')
+            ->whereIn('peneira_id', $peneirasAtivasIds)
+            ->pluck('jogador_id')
+            ->unique(); 
+
+        // 3. Total de jogadores ativos
+        $totalJogadores = $jogadoresAtivosIds->count();
+        
+        // 4. Agrupamento por posição
+        $posicoes = Jogadores::select('posicao_principal', DB::raw('count(*) as quantidade'))
+            ->whereIn('id', $jogadoresAtivosIds)
+            ->whereNotNull('posicao_principal')
+            ->groupBy('posicao_principal')
+            ->get()
+            ->map(function ($item) {
+                return ['name' => $item->posicao_principal, 'quantidade' => $item->quantidade];
+            });
+            
+        // 5. Média geral e Avaliados
+        $mediaGeral = Avaliacao::whereIn('jogador_id', $jogadoresAtivosIds)->avg('nota');
+        $avaliados = Avaliacao::whereIn('jogador_id', $jogadoresAtivosIds)->distinct('jogador_id')->count('jogador_id');
+
+        // ---> CORREÇÃO DOS DESTAQUES <---
+        // Usamos get() antes de contar para evitar o erro de SQL com o withAvg()
+        $destaques = Jogadores::with('pessoa')
+            ->whereIn('id', $jogadoresAtivosIds)
+            ->withAvg('avaliacoes as rating_medio', 'nota')
+            ->having('rating_medio', '>=', 8.0)
+            ->orderByDesc('rating_medio')
+            ->get();
+
+        $totalDestaques = $destaques->count();
+        $topDestaques = $destaques->take(5);
+
+        // 6. Inscritos por Subdivisão
+        $inscritosSubdivisao = DB::table('inscricoes')
+            ->join('peneiras', 'inscricoes.peneira_id', '=', 'peneiras.id')
+            ->whereIn('peneiras.id', $peneirasAtivasIds)
+            ->select('peneiras.sub_divisao', DB::raw('count(inscricoes.id) as quantidade'))
+            ->groupBy('peneiras.sub_divisao')
+            ->get()
+            ->map(function ($item) {
+                return ['name' => $item->sub_divisao ?: 'Geral', 'quantidade' => $item->quantidade];
+            });
+
+        return [
+            'total' => $totalJogadores,
+            'posicoes' => $posicoes,
+            'media_geral' => round($mediaGeral ?? 0, 1),
+            'total_avaliados' => $avaliados,
+            'total_destaques' => $totalDestaques, // Retorna o número total para o Card
+            'inscritos_subdivisao' => $inscritosSubdivisao,
+            'jogadores_destaque' => $topDestaques->map(function($jogador) {
+                return [
+                    'id' => $jogador->id,
+                    'nome_completo' => $jogador->pessoa->nome_completo,
+                    'foto_perfil_url' => $jogador->pessoa->foto_perfil_url,
+                    'rating_medio' => round($jogador->rating_medio ?? 0, 1)
+                ];
+            })
+        ];
     }
 }

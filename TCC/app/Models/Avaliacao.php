@@ -13,18 +13,11 @@ class Avaliacao extends Model
 
     protected $table = 'avaliacoes';
     protected $fillable = [
-        'jogador_id',
-        'treinador_id',
-        'peneira_id',
-        'nota', // A nota geral continuará existindo, mas será a média das outras 6
-        'tecnica',
-        'condicionamento',
-        'finalizacao',
-        'velocidade',
-        'posicionamento',
-        'cabeceio',
-        'observacoes',
-        'data_avaliacao'
+        'jogador_id', 'treinador_id', 'peneira_id', 'nota', 'observacoes', 'data_avaliacao',
+        'tecnica', 'condicionamento', 'finalizacao', 'velocidade', 'posicionamento', 'cabeceio',
+        // NOVOS:
+        'reflexo', 'saida_goleiro', 'jogo_aereo', 'um_contra_um', 'fisico', 
+        'marcacao', 'desarme', 'passe', 'cruzamento', 'visao_jogo'
     ];
 
     // Relacionamento com jogador
