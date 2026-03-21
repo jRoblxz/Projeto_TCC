@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Layout from "../components/layouts/LayoutForm";
+import Layout from "../components/layouts/LayoutSiteGremio";
 import CustomInput from "../components/ui/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { api } from "../config/api";
@@ -178,7 +178,7 @@ const InscricaoForm: React.FC = () => {
 
   return (
     <Layout>
-      <div className="max-w-[900px] mx-auto relative -top-[30px] rounded-[24px] p-8 md:p-[50px] bg-[#F3F3F3] shadow-lg">
+      <div className="max-w-[900px] mx-auto relative -mt-[100px] md:-mt-[220px] z-20 rounded-[24px] p-8 md:p-[50px] bg-[#F3F3F3] shadow-lg">
         <div className="flex justify-around mb-8 border-b pb-4">
           <div className={`text-center text-sm md:text-base ${step === 1 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}>1. Informações básicas</div>
           <div className={`text-center text-sm md:text-base ${step === 2 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}>2. Informações jogador</div>
@@ -323,7 +323,6 @@ const InscricaoForm: React.FC = () => {
         </form>
       </div>
       <footer className="text-center p-5 mt-10 text-[#666] text-sm">
-        <p>Grêmio Prudente &copy; 2025. Todos os direitos reservados.</p>
       </footer>
     </Layout>
   );
