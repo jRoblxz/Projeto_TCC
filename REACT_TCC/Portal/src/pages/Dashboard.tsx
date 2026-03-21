@@ -289,7 +289,7 @@ const Dashboard: React.FC = () => {
                   <div
                     key={jogador.id}
                     // onClick={() => navigate(`/players/${jogador.id}`)}
-                    className="transition flex items-center gap-4 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-600 shadow-sm hover:shadow-md transition cursor-pointer"
+                    className="flex items-center gap-4 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-600 shadow-sm hover:shadow-md transition cursor-pointer"
                   >
                     {/* Avatar */}
                     <div className="transition h-12 w-12 rounded-full bg-gray-200  overflow-hidden flex-shrink-0 border-2 border-white shadow-sm">

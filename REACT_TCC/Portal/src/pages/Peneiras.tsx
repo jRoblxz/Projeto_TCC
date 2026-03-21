@@ -515,7 +515,7 @@ const Peneiras: React.FC = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, status: e.target.value })
                       }
-                      className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D] bg-white"
+                      className="w-full dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D] bg-white"
                     >
                       <option value="AGENDADA">Agendada</option>
                       <option value="EM_ANDAMENTO">Em Andamento</option>
