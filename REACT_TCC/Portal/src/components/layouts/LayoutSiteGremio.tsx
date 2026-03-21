@@ -204,12 +204,6 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
           </a>
 
           <nav className="hidden lg:flex items-center gap-6">
-            <Link
-              to="/instrucoes"
-              className="text-[#941B1B] font-extrabold uppercase text-[13px] tracking-wide hover:text-[#18274d] hover:border-b-[3px] hover:border-[#941B1B] transition-all pb-1"
-            >
-              Peneiras
-            </Link>
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -221,6 +215,13 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
                 {link.name}
               </a>
             ))}
+            <Link
+              to="/instrucoes"
+              className="text-[#941B1B] font-extrabold uppercase text-[13px] tracking-wide hover:text-[#18274d] hover:border-b-[3px] hover:border-[#941B1B] transition-all pb-1"
+            >
+              Peneiras
+            </Link>
+            
           </nav>
 
           <div className="flex items-center gap-4">
