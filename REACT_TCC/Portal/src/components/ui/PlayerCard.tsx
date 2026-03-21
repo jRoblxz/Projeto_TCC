@@ -60,8 +60,9 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
               alt={player.pessoa?.nome_completo}
               className="w-full h-full object-cover"
               onError={(e) => {
-                  e.currentTarget.src = DefaultImage;
-              }}
+                            e.currentTarget.src =
+                              "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                          }}
             />
             {/* Overlay sutil */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />

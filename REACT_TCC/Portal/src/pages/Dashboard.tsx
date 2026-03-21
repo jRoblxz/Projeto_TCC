@@ -12,6 +12,7 @@ import {
   UserCheck,
   Loader2,
   Filter,
+  ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Logo from "../assets/img/logo-copia.png";
@@ -274,6 +275,12 @@ const Dashboard: React.FC = () => {
               <h2 className="text-2xl font-bold  flex items-center gap-2">
                 Jogadores Destaques
               </h2>
+              <button 
+                  onClick={() => navigate('/destaques')}
+                  className="w-full py-2 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-500 font-bold rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-colors flex items-center justify-center gap-1 text-sm z-10"
+                >
+                  Ver Relatório <ChevronRight size={16} />
+                </button>
             </div>
 
             <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar dark:bg-gray-900 transition">

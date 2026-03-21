@@ -151,6 +151,10 @@ const PlayerEdit: React.FC = () => {
                   src={previewImage || "/img/avatar_padrao.png"}
                   alt="avatar"
                   className="w-full h-full object-cover object-top opacity-100 group-hover:opacity-50 transition-opacity"
+                  onError={(e) => {
+                            e.currentTarget.src =
+                              "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                          }}
                 />
                 <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white font-bold bg-black/40">
                   <Upload size={24} className="mb-1" />

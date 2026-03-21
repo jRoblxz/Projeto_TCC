@@ -7,6 +7,9 @@ import { Edit, Trash, ArrowLeft, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import CustomModalExcluir from "@/components/ui/CustomModalExcluir"; // [1] Importe o Modal
 import { isUserAdmin, getUserData } from "../utils/auth";
+import PlayerRadarChart from "@/components/ui/PlayerRadarChart";
+import { getAttributesByPosition } from "@/utils/playerAttributes";
+
 
 const pulseAnimation = "animate-[pulse_2s_infinite]";
 
@@ -129,9 +132,10 @@ const PlayerInfo: React.FC = () => {
                 }
                 alt="Foto"
                 className="w-full h-full object-cover object-top"
-                onError={(e) =>
-                  (e.currentTarget.src = "/img/avatar_padrao.png")
-                }
+                onError={(e) => {
+                            e.currentTarget.src =
+                              "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                          }}
               />
             </div>
 
@@ -290,25 +294,27 @@ const PlayerInfo: React.FC = () => {
 
             {canViewDetails && (
               <>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {[
-                    { label: "Técnica", value: player.ultima_avaliacao?.tecnica },
-                    { label: "Condicionamento", value: player.ultima_avaliacao?.condicionamento },
-                    { label: "Finalização", value: player.ultima_avaliacao?.finalizacao },
-                    { label: "Velocidade", value: player.ultima_avaliacao?.velocidade },
-                    { label: "Posicionamento", value: player.ultima_avaliacao?.posicionamento },
-                    { label: "Cabeceio", value: player.ultima_avaliacao?.cabeceio },
-                  ].map((item) => (
+                {/* GRÁFICO DINÂMICO */}
+                <div className="mt-4">
+                  <PlayerRadarChart 
+                    avaliacao={player.ultima_avaliacao} 
+                    posicao={player.posicao_principal} 
+                  />
+                </div>
+
+                {/* CAIXINHAS DE NOTAS DINÂMICAS DE ACORDO COM A POSIÇÃO */}
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                  {getAttributesByPosition(player.posicao_principal).map((attr) => (
                     <div
-                      key={item.label}
+                      key={attr.key}
                       className="bg-white dark:bg-gray-800 p-4 rounded-[10px] text-center shadow-sm border-2 dark:border-gray-700 border-[#e9ecef] hover:-translate-y-0.5 hover:border-[#851114] transition-all"
                     >
-                      <h5 className="text-[#333] dark:text-white mb-2 font-bold text-lg">
-                        {item.label}
+                      <h5 className="text-[#333] dark:text-white mb-2 font-bold text-sm lg:text-base">
+                        {attr.label}
                       </h5>
-                      <div className="text-2xl text-[#851114] font-bold">
-                        {item.value !== undefined && item.value !== null 
-                          ? Number(item.value).toFixed(1) 
+                      <div className="text-xl lg:text-2xl text-[#851114] font-bold">
+                        {player.ultima_avaliacao?.[attr.key] !== undefined && player.ultima_avaliacao?.[attr.key] !== null 
+                          ? Number(player.ultima_avaliacao[attr.key]).toFixed(1) 
                           : "N/A"}
                       </div>
                     </div>

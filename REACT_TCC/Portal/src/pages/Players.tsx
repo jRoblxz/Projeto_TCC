@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "@/components/layouts/Layout";
 import { api } from "../config/api";
 import { useNavigate } from "react-router-dom";
-import PlayerCard from "../components/ui/PlayerCard"; // Importe o card que criamos
+import PlayerCard from "../components/ui/PlayerCard";
 import {
   Search,
   Plus,
@@ -12,9 +12,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { isUserAdmin } from "../utils/auth"; // Importe a função
+import { isUserAdmin } from "../utils/auth";
+import { getAttributesByPosition } from "@/utils/playerAttributes"; // IMPORTAÇÃO CORRIGIDA
 
-// Interface dos dados (Baseado no seu BD)
+// 1. INTERFACE CORRIGIDA (ultima_avaliacao como 'any' para aceitar todos os atributos)
 interface Player {
   id: number;
   rating_medio: number;
@@ -27,9 +28,7 @@ interface Player {
     foto_url_completa?: string;
     sub_divisao: string;
   };
-  ultima_avaliacao?: {
-    observacoes: string;
-  };
+  ultima_avaliacao?: any;
 }
 
 const FILTERS = [
@@ -46,41 +45,19 @@ const Players: React.FC = () => {
   // Estados de Dados
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
-  const [meta, setMeta] = useState<any>(null); // Paginação
+  const [meta, setMeta] = useState<any>(null);
   const [page, setPage] = useState(1);
 
   // Estados de Filtro
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Todos");
 
-  // Estados de Modal
+  // 2. ESTADOS DO MODAL ATUALIZADOS
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [attributes, setAttributes] = useState({
-    tecnica: 0,
-    condicionamento: 0,
-    finalizacao: 0,
-    velocidade: 0,
-    posicionamento: 0,
-    cabeceio: 0,
-    observacoes: "", // <-- Voltou!
-  });
+  const [attributes, setAttributes] = useState<any>({});
 
-  // Calcula a média em tempo real no frontend
-  const numericValues = [
-    attributes.tecnica,
-    attributes.condicionamento,
-    attributes.finalizacao,
-    attributes.velocidade,
-    attributes.posicionamento,
-    attributes.cabeceio,
-  ];
-  const currentAverage = (
-    numericValues.reduce((acc, curr) => acc + Number(curr), 0) / 6
-  ).toFixed(1);
-
-  // Permissões (Simulado - você pode pegar do Contexto de Auth)
-  const isAdmin = isUserAdmin(); // Use a função importada
+  const isAdmin = isUserAdmin();
 
   // --- CARREGAR DADOS ---
   const loadPlayers = async () => {
@@ -94,7 +71,7 @@ const Players: React.FC = () => {
       const response = await api.get(`/players?${params.toString()}`);
 
       setPlayers(response.data.data);
-      setMeta(response.data.meta || response.data); // Ajuste conforme retorno do Laravel
+      setMeta(response.data.meta || response.data);
     } catch (error) {
       console.error(error);
       toast.error("Erro ao carregar jogadores");
@@ -106,7 +83,7 @@ const Players: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       loadPlayers();
-    }, 500); // Debounce na busca
+    }, 500);
     return () => clearTimeout(timer);
   }, [page, search, activeFilter]);
 
@@ -126,14 +103,38 @@ const Players: React.FC = () => {
     }
   };
 
+  // 3. FUNÇÕES DO MODAL DINÂMICO
+  const openRatingModal = (player: Player) => {
+    setSelectedPlayer(player);
+
+    const posAttributes = getAttributesByPosition(player.posicao_principal);
+    const initialAttributes: any = {
+      observacoes: player.ultima_avaliacao?.observacoes || "",
+    };
+
+    posAttributes.forEach((attr) => {
+      initialAttributes[attr.key] = player.ultima_avaliacao?.[attr.key] || 0;
+    });
+
+    setAttributes(initialAttributes);
+    setShowRatingModal(true);
+  };
+
+  const handleAttributeChange = (field: string, value: string) => {
+    setAttributes((prev: any) => ({
+      ...prev,
+      [field]: Number(value),
+    }));
+  };
+
   const handleUpdateRating = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPlayer) return;
 
     try {
-      // Envia o objeto completo de atributos para o backend
+      // Envia o objeto 'atributos' para o backend (Controller novo já aceita isso)
       await api.put(`/players/${selectedPlayer.id}`, { atributos: attributes });
-      toast.success("Avaliação registrada!");
+      toast.success("Avaliação registrada com sucesso!");
       setShowRatingModal(false);
       loadPlayers();
     } catch (error) {
@@ -141,27 +142,17 @@ const Players: React.FC = () => {
     }
   };
 
-  const handleAttributeChange = (field: string, value: string) => {
-    setAttributes((prev) => ({
-      ...prev,
-      [field]: Number(value),
-    }));
-  };
+  // Cálculo da média em tempo real no topo do modal
+  const numericValues = Object.keys(attributes)
+    .filter((key) => key !== "observacoes")
+    .map((key) => Number(attributes[key]) || 0);
 
-  const openRatingModal = (player: Player) => {
-    setSelectedPlayer(player);
-    // Se quiser carregar a última avaliação do banco, pode fazer assim:
-    setAttributes({
-      tecnica: 0,
-      condicionamento: 0,
-      finalizacao: 0,
-      velocidade: 0,
-      posicionamento: 0,
-      cabeceio: 0,
-      observacoes: player.ultima_avaliacao?.observacoes || "", // <-- Puxa do BD se existir
-    });
-    setShowRatingModal(true);
-  };
+  const currentAverage =
+    numericValues.length > 0
+      ? (
+          numericValues.reduce((a, b) => a + b, 0) / numericValues.length
+        ).toFixed(1)
+      : "0.0";
 
   return (
     <Layout>
@@ -174,7 +165,6 @@ const Players: React.FC = () => {
 
         {/* === BARRA DE FILTROS E BUSCA === */}
         <div className="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border dark:border-gray-700 border-gray-100 mb-8 flex flex-col lg:flex-row gap-4 justify-between items-center sticky top-4 z-40">
-          {/* Busca */}
           <div className="relative w-full lg:w-1/3 ">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
@@ -189,7 +179,6 @@ const Players: React.FC = () => {
             />
           </div>
 
-          {/* Botões de Filtro */}
           <div className="flex gap-2 overflow-x-auto pb-2 w-full lg:w-auto scrollbar-hide">
             {FILTERS.map((f) => (
               <button
@@ -198,14 +187,11 @@ const Players: React.FC = () => {
                   setActiveFilter(f.value);
                   setPage(1);
                 }}
-                className={`
-                            px-4 py-2 rounded-full whitespace-nowrap text-sm font-bold transition border
-                            ${
-                              activeFilter === f.value
-                                ? "bg-[#8B0000] text-white border-[#8B0000] shadow-md transform scale-105"
-                                : "bg-white text-gray-600 dark:text-white hover:bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700"
-                            }
-                        `}
+                className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-bold transition border ${
+                  activeFilter === f.value
+                    ? "bg-[#8B0000] text-white border-[#8B0000] shadow-md transform scale-105"
+                    : "bg-white text-gray-600 dark:text-white hover:bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700"
+                }`}
               >
                 {f.label}
               </button>
@@ -220,7 +206,6 @@ const Players: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-            {/* Cards dos Jogadores */}
             {players.map((player) => (
               <PlayerCard
                 key={player.id}
@@ -237,21 +222,21 @@ const Players: React.FC = () => {
                 <p className="text-xl">Nenhum jogador encontrado.</p>
               </div>
             )}
-          </div>
-        )}
 
-        {/* Botão Adicionar (Card Fixo) */}
-        {isAdmin && (
-          <div
-            onClick={() => navigate("/instrucoes")} // Ajuste sua rota de criação
-            className="w-[280px] h-[380px] border-4 border-dashed border-[#8B0000]/30 bg-[#8B0000]/5 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-[#8B0000]/10 hover:border-[#8B0000] transition-all group"
-          >
-            <div className="w-20 h-20 bg-[#8B0000]/10 rounded-full flex items-center justify-center group-hover:scale-110 transition">
-              <Plus className="h-10 w-10 text-[#8B0000]" />
-            </div>
-            <span className="mt-4 text-[#8B0000] font-bold text-lg">
-              Novo Jogador
-            </span>
+            {/* Botão Adicionar */}
+            {isAdmin && (
+              <div
+                onClick={() => navigate("/instrucoes")}
+                className="w-[280px] h-[380px] border-4 border-dashed border-[#8B0000]/30 bg-[#8B0000]/5 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-[#8B0000]/10 hover:border-[#8B0000] transition-all group"
+              >
+                <div className="w-20 h-20 bg-[#8B0000]/10 rounded-full flex items-center justify-center group-hover:scale-110 transition">
+                  <Plus className="h-10 w-10 text-[#8B0000]" />
+                </div>
+                <span className="mt-4 text-[#8B0000] font-bold text-lg">
+                  Novo Jogador
+                </span>
+              </div>
+            )}
           </div>
         )}
 
@@ -278,7 +263,7 @@ const Players: React.FC = () => {
           </div>
         )}
 
-        {/* === MODAL EDITAR RATING (ATRIBUTOS) === */}
+        {/* === MODAL EDITAR RATING (AGORA DINÂMICO) === */}
         {showRatingModal && selectedPlayer && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-6 relative">
@@ -309,15 +294,11 @@ const Players: React.FC = () => {
               </div>
 
               <form onSubmit={handleUpdateRating}>
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  {[
-                    { key: "tecnica", label: "Técnica" },
-                    { key: "condicionamento", label: "Condicionamento" },
-                    { key: "finalizacao", label: "Finalização" },
-                    { key: "velocidade", label: "Velocidade" },
-                    { key: "posicionamento", label: "Posicionamento" },
-                    { key: "cabeceio", label: "Cabeceio" },
-                  ].map((attr) => (
+                {/* Atributos Mapeados Dinamicamente baseados na Posição */}
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  {getAttributesByPosition(
+                    selectedPlayer.posicao_principal,
+                  ).map((attr) => (
                     <div key={attr.key} className="flex flex-col">
                       <label className="text-xs font-bold text-gray-700 mb-1">
                         {attr.label}
@@ -327,7 +308,7 @@ const Players: React.FC = () => {
                         min="0"
                         max="10"
                         step="0.1"
-                        value={attributes[attr.key as keyof typeof attributes]}
+                        value={attributes[attr.key] || ""}
                         onChange={(e) =>
                           handleAttributeChange(attr.key, e.target.value)
                         }
@@ -336,16 +317,17 @@ const Players: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                {/* NOVO CAMPO DE OBSERVAÇÕES AQUI */}
+
+                {/* Campo de Observações */}
                 <div className="mb-6">
                   <label className="text-xs font-bold text-gray-700 mb-1 block">
                     Observações Gerais
                   </label>
                   <textarea
                     rows={3}
-                    value={attributes.observacoes}
+                    value={attributes.observacoes || ""}
                     onChange={(e) =>
-                      setAttributes((prev) => ({
+                      setAttributes((prev: any) => ({
                         ...prev,
                         observacoes: e.target.value,
                       }))
