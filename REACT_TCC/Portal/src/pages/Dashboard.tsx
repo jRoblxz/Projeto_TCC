@@ -76,6 +76,19 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const calculateAge = (birthDateString: string): string => {
+    if (!birthDateString) return "N/A";
+    const birthDate = new Date(birthDateString);
+    if (isNaN(birthDate.getTime())) return "N/A";
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age.toString();
+  };
+
   // Efeito para carregar ao iniciar ou mudar o filtro
   useEffect(() => {
     loadDashboardData();
@@ -312,8 +325,8 @@ const Dashboard: React.FC = () => {
                       </h4>
                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex gap-2">
                         <span className="bg-gray-100 px-2 py-0.5 rounded">
-                          {jogador.pessoa.idade
-                            ? `${jogador.pessoa.idade} anos`
+                          {jogador.pessoa.data_nascimento
+                            ? calculateAge(jogador.pessoa.data_nascimento)
                             : "N/A"}
                         </span>
                         <span className="bg-gray-100 px-2 py-0.5 rounded">
