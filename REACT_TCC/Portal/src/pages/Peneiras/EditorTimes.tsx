@@ -1,0 +1,334 @@
+import React, { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { api } from "@/config/api";
+import Layout from "@/components/layouts/Layout";
+import TeamCard from "@/components/players/View/TeamCard";
+import { ArrowLeft, Save, RotateCcw } from "lucide-react";
+import toast from "react-hot-toast";
+import { isUserAdmin } from "@/utils/auth";
+import { FORMATIONS } from "@/utils/formations";
+
+const EditorTimes: React.FC = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const isAdmin = isUserAdmin();
+  const [teams, setTeams] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  // Refs para controlar o arrasto sem depender apenas do state (performance)
+  const draggingItem = useRef<{ id: number; fromTeam: string } | null>(null);
+  const fieldRefs = {
+    A: useRef<HTMLDivElement>(null),
+    B: useRef<HTMLDivElement>(null),
+  };
+
+  useEffect(() => {
+    fetchTeams();
+  }, [id]);
+
+  const applyFormation = (players: any[], formationName: string) => {
+    const coords = FORMATIONS[formationName] || FORMATIONS["4-4-2"];
+    let fieldIndex = 0;
+
+    return players.map((p) => {
+      if (p.inField) {
+        const pos = coords[fieldIndex] || { x: 50, y: 50 };
+        fieldIndex++;
+        return { ...p, x: pos.x, y: pos.y };
+      }
+      return p;
+    });
+  };
+
+  const fetchTeams = async () => {
+    try {
+      const response = await api.get(`/peneiras/${id}/teams`);
+      let data = response.data;
+
+      // Adaptador com BLINDAGEM contra nomes nulos
+      if (Array.isArray(data)) {
+        // O uso do "?." (Optional Chaining) garante que não dê erro se t.name for null
+        const teamA = data.find((t: any) => t.name?.includes("A")) || data[0];
+        const teamB = data.find((t: any) => t.name?.includes("B")) || data[1];
+
+        // Recria o objeto que o componente espera
+        data = {};
+        if (teamA) data["A"] = teamA;
+        if (teamB) data["B"] = teamB;
+      }
+
+      // Auto-distribuição se estiverem no centro
+      ["A", "B"].forEach((key) => {
+        if (data[key]) {
+          const team = data[key];
+          const playersInCenter = team.players.filter(
+            (p: any) => p.x === 50 && p.y === 50 && p.inField,
+          ).length;
+
+          if (playersInCenter > 5) {
+            team.formation = team.formation || "4-4-2";
+            team.players = applyFormation(team.players, team.formation);
+          }
+        }
+      });
+
+      setTeams(data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao carregar times.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await api.post(`/peneiras/${id}/teams/save`, { teams });
+      toast.success("Times salvos com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao salvar.");
+    } finally {
+      setSaving(false);
+      navigate(`/peneiras/${id}`);
+    }
+  };
+
+  const handleReset = async () => {
+    if (!confirm("Resetar fará uma nova geração automática. Continuar?"))
+      return;
+    try {
+      setLoading(true);
+      await api.post(`/peneiras/${id}/teams/generate`);
+      window.location.reload();
+    } catch (e) {
+      setLoading(false);
+      toast.error("Erro ao resetar");
+    }
+  };
+
+  const handleFormationChange = (teamKey: string, newFormation: string) => {
+    const team = teams[teamKey];
+    const newPlayers = applyFormation(team.players, newFormation);
+    setTeams({
+      ...teams,
+      [teamKey]: { ...team, formation: newFormation, players: newPlayers },
+    });
+  };
+
+  // =========================================================================
+  // LÓGICA DE ARRASTO (POINTER EVENTS)
+  // =========================================================================
+
+  const handlePointerDown = (
+    e: React.PointerEvent,
+    player: any,
+    teamKey: string,
+  ) => {
+    if (!isAdmin) return;
+    e.preventDefault(); // Impede seleção de texto
+    e.stopPropagation();
+
+    // Registra quem estamos arrastando
+    draggingItem.current = { id: player.id, fromTeam: teamKey };
+
+    // Adiciona listeners globais para mover e soltar
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+  };
+
+  const onPointerMove = (e: PointerEvent) => {
+    if (!draggingItem.current) return;
+
+    // Aqui poderíamos atualizar a posição visualmente em tempo real
+    // Mas para simplificar, o React atualiza no final ou você pode implementar
+
+    // ATENÇÃO: Atualizar state no mousemove pode ser pesado, mas para 22 jogadores é ok.
+    // Para otimizar, usaríamos refs e transform CSS direto.
+
+    const { id, fromTeam } = draggingItem.current;
+
+    // Precisamos descobrir em qual campo o mouse está em cima
+    let targetTeam = fromTeam;
+    let targetRect =
+      fieldRefs[fromTeam as "A" | "B"].current?.getBoundingClientRect();
+
+    // Verifica se o mouse está sobre o campo A
+    const rectA = fieldRefs["A"].current?.getBoundingClientRect();
+    if (
+      rectA &&
+      e.clientX >= rectA.left &&
+      e.clientX <= rectA.right &&
+      e.clientY >= rectA.top &&
+      e.clientY <= rectA.bottom
+    ) {
+      targetTeam = "A";
+      targetRect = rectA;
+    }
+
+    // Verifica se o mouse está sobre o campo B
+    const rectB = fieldRefs["B"].current?.getBoundingClientRect();
+    if (
+      rectB &&
+      e.clientX >= rectB.left &&
+      e.clientX <= rectB.right &&
+      e.clientY >= rectB.top &&
+      e.clientY <= rectB.bottom
+    ) {
+      targetTeam = "B";
+      targetRect = rectB;
+    }
+
+    if (targetRect) {
+      // Calcula nova posição %
+      const x = ((e.clientX - targetRect.left) / targetRect.width) * 100;
+      const y = ((e.clientY - targetRect.top) / targetRect.height) * 100;
+
+      setTeams((prevTeams: any) => {
+        const newTeams = JSON.parse(JSON.stringify(prevTeams));
+
+        // Remove do time antigo
+        const sourcePlayers = newTeams[fromTeam].players;
+        const pIndex = sourcePlayers.findIndex((p: any) => p.id === id);
+        if (pIndex === -1) return prevTeams;
+
+        const playerObj = sourcePlayers[pIndex];
+
+        // Se mudou de time
+        if (fromTeam !== targetTeam) {
+          sourcePlayers.splice(pIndex, 1); // Remove do antigo
+          playerObj.inField = true;
+          playerObj.x = Math.max(0, Math.min(100, x));
+          playerObj.y = Math.max(0, Math.min(100, y));
+          newTeams[targetTeam].players.push(playerObj); // Adiciona no novo
+
+          // Atualiza a ref para continuar o rastreio no time novo
+          draggingItem.current = { id, fromTeam: targetTeam };
+        } else {
+          // Mesmo time, só atualiza posição
+          playerObj.inField = true; // Se está movendo no campo, é titular
+          playerObj.x = Math.max(0, Math.min(100, x));
+          playerObj.y = Math.max(0, Math.min(100, y));
+        }
+
+        return newTeams;
+      });
+    }
+  };
+
+  const onPointerUp = () => {
+    window.removeEventListener("pointermove", onPointerMove);
+    window.removeEventListener("pointerup", onPointerUp);
+    draggingItem.current = null;
+  };
+
+  // Função para mover do banco para o campo (clique simples ou arrasto simplificado)
+  const moveFromBenchToField = (player: any, teamKey: string) => {
+    setTeams((prev: any) => {
+      const newTeams = { ...prev };
+      const p = newTeams[teamKey].players.find((p: any) => p.id === player.id);
+      if (p) {
+        p.inField = true;
+        p.x = 50;
+        p.y = 50;
+      }
+      return newTeams;
+    });
+  };
+
+  // Função para mover do campo para o banco (botão X)
+  const moveToBench = (player: any, teamKey: string) => {
+    setTeams((prev: any) => {
+      const newTeams = { ...prev };
+      const p = newTeams[teamKey].players.find((p: any) => p.id === player.id);
+      if (p) p.inField = false;
+      return newTeams;
+    });
+  };
+
+  if (loading || !teams)
+    return (
+      <Layout>
+        <div className="flex justify-center p-20 text-[#14244D]">
+          Carregando...
+        </div>
+      </Layout>
+    );
+
+  return (
+    <Layout>
+      <div className="max-w-[1600px] mx-auto p-4 ">
+        <div className="flex flex-col md:flex-row justify-between items-center bg-white p-5 rounded-xl shadow-sm border border-gray-100 mb-6">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => navigate(`/peneiras/${id}`)}
+              className="p-2 hover:bg-gray-100 rounded-full transition"
+            >
+              <ArrowLeft />
+            </button>
+            <div>
+              <h1 className="text-2xl font-bold text-[#14244D]">
+                Editor de Times
+              </h1>
+              <p className="text-sm text-gray-500">
+                Arraste os jogadores no campo. Clique nos reservas para subir.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3 mt-4 md:mt-0">
+            {isAdmin && (
+              <>
+                <button
+                  onClick={handleReset}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 flex items-center gap-2 transition"
+                >
+                  <RotateCcw size={18} /> Resetar
+                </button>
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="px-6 py-2 bg-[#14244D] text-white font-bold rounded-lg hover:bg-[#1e3a8a] shadow-md flex items-center gap-2 disabled:opacity-50 transition"
+                >
+                  <Save size={18} /> {saving ? "Salvando..." : "Salvar Times"}
+                </button>
+              </>
+            )}
+            {!isAdmin && (
+              <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded font-bold text-sm">
+                Modo Visualização
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <TeamCard
+            teamKey="A"
+            team={teams.A}
+            colorClass="border-blue-500"
+            isAdmin={isAdmin}
+            onFormationChange={handleFormationChange}
+            onPointerDown={handlePointerDown}
+            onMoveToBench={moveToBench}
+            onMoveFromBenchToField={moveFromBenchToField}
+            fieldRef={fieldRefs.A}
+          />
+          <TeamCard
+            teamKey="B"
+            team={teams.B}
+            colorClass="border-red-500"
+            isAdmin={isAdmin}
+            onFormationChange={handleFormationChange}
+            onPointerDown={handlePointerDown}
+            onMoveToBench={moveToBench}
+            onMoveFromBenchToField={moveFromBenchToField}
+            fieldRef={fieldRefs.B}
+          />
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default EditorTimes;

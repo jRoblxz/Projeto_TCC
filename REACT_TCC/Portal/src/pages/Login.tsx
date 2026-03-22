@@ -1,11 +1,10 @@
 import React, { useState, FormEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { api } from "../config/api"; // Sua instância configurada
-import "../App.css"; // Se tiver reset global
+import { api } from "@/config/api"; 
+import "@/App.css"; 
 import Logo from '@/assets/img/logo-copia.png';
-
-import { isUserAdmin } from "../utils/auth";
+import { isUserAdmin } from "@/utils/auth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -15,14 +14,12 @@ const Login: React.FC = () => {
   
     const isAdmin = isUserAdmin(); 
 
-    // 2. ADICIONE ESSE BLOCO LOGO NO INÍCIO DO COMPONENTE
   useEffect(() => {
-    // Verifica se já existe um tema salvo. Se NÃO existir, força o Light.
     const savedTheme = localStorage.getItem("theme");
     
     if (!savedTheme) {
-      document.documentElement.classList.remove("dark"); // Remove classe dark do HTML
-      localStorage.setItem("theme", "light"); // Salva light como padrão
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   }, []);
   
@@ -49,7 +46,7 @@ const Login: React.FC = () => {
 
       if (data.access_token) {
         localStorage.setItem("auth_token", data.access_token);
-        localStorage.setItem("user_data", JSON.stringify(data.user)); // Opcional
+        localStorage.setItem("user_data", JSON.stringify(data.user));
 
         toast.success("Login realizado com sucesso!");
 
@@ -84,15 +81,14 @@ const Login: React.FC = () => {
   };
 
   return (
-    // Fundo Azul Escuro (#14244D) cobrindo a tela inteira
     <div className="min-h-screen bg-[#14244D] flex items-center justify-center p-4">
       
-      {/* Container Principal (Card) com Sombra */}
+      {/* Container Principal */}
       <div className="flex flex-col md:flex-row w-full max-w-[800px] bg-white rounded-[10px] overflow-hidden shadow-[0px_15px_15px_rgba(0,0,0,0.5)]">
         
-        {/* Lado Esquerdo (Branco com Logo) */}
+        {/* Lado Esquerdo */}
         <div className="w-full md:w-1/2 bg-white p-10 flex flex-col justify-center items-center">
-          {/* Certifique-se que a imagem está na pasta public/img/logo.png */}
+
           <img 
             src={Logo}
             alt="Logo Prudente" 
@@ -101,7 +97,7 @@ const Login: React.FC = () => {
           <h2 className="text-4xl font-bold mb-2.5 text-[#851114]">GRÊMIO PRUDENTE</h2>
         </div>
 
-        {/* Lado Direito (Vermelho #851114) */}
+        {/* Lado Direito */}
         <div className="w-full md:w-1/2 bg-[#851114] text-white p-10 flex flex-col justify-center">
           
           {/* Cabeçalho */}
@@ -137,7 +133,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            {/* Botão Estilizado (Verde #16801b) */}
+            {/* Botão Estilizado */}
             <button
               type="submit"
               disabled={loading}
@@ -159,16 +155,13 @@ const Login: React.FC = () => {
                 </span>
               </div>
 
-              {/* Ícone da Seta (Arrow Container) */}
+              {/* Ícone da Seta */}
               <div className="
                 p-[1px] border-[4px] border-black rounded-full bg-white 
                 relative overflow-hidden z-10 w-[35px] h-[35px] flex items-center justify-center
                 transition-transform duration-200 group-hover:translate-x-[2px]
               ">
-                 {/* Fundo verde que desliza no hover da seta */}
-                 <div className="absolute inset-0 bg-[#16801b] transform -translate-x-full transition-transform duration-200 group-hover:translate-x-0 -z-10"></div>
-                 
-                 {/* SVG Original */}
+                 <div className="absolute inset-0 bg-[#16801b] transform -translate-x-full transition-transform duration-200 group-hover:translate-x-0 -z-10"></div>   
                  <svg width="18" height="18" viewBox="0 0 45 38" fill="none" xmlns="http://www.w3.org/2000/svg" className="z-20">
                     <path
                         d="M43.7678 20.7678C44.7441 19.7915 44.7441 18.2085 43.7678 17.2322L27.8579 1.32233C26.8816 0.34602 25.2986 0.34602 24.3223 1.32233C23.346 2.29864 23.346 3.88155 24.3223 4.85786L38.4645 19L24.3223 33.1421C23.346 34.1184 23.346 35.7014 24.3223 36.6777C25.2986 37.654 26.8816 37.654 27.8579 36.6777L43.7678 20.7678ZM0 21.5L42 21.5V16.5L0 16.5L0 21.5Z"

@@ -6,27 +6,31 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import "@/App.css";
 
-// Páginas
-import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Peneira from "./pages/Peneiras";
-import Players from "./pages/Players";
+// ---------- Páginas ----------//
+import Login from "@/pages/Login";
+import Dashboard from "@/pages/Dashboard";
+import InscricaoForm from "@/pages/Inscricoes/InscricaoForm";
+import Confirmacao from "@/pages/Inscricoes/Confirmacao";
+import Instrucao from "@/pages/Inscricoes/Instrucao";
 
-// Componentes
-import ProtectedRoute from "./components/ProtectedRoute";
+//Players
+import Players from "@/pages/Jogadores/Players";
+import PlayerInfo from "@/pages/Jogadores/PlayerInfo";
+import PlayerEdit from "@/pages/Jogadores/PlayerEdit";
 
-import "./App.css";
-import PlayerInfo from "./pages/PlayerInfo";
-import PlayerEdit from "./pages/PlayerEdit";
-import PeneiraDetalhes from "./pages/PeneiraDetalhes";
-import EditorTimes from "./pages/EditorTimes";
-import InscricaoForm from "./pages/InscricaoForm";
-import Confirmacao from "./pages/Confirmacao";
-import Instrucao from "./pages/Instrucao";
-import TrackingPartida from "./pages/TrackingPartida";
-import AnaliseDados from "./pages/AnaliseDados";
-import AtletasDestaque from "./pages/AtletasDestaques";
+//Peneiras
+import Peneira from "@/pages/Peneiras/Peneiras";
+import PeneiraDetalhes from "@/pages/Peneiras/PeneiraDetalhes";
+import EditorTimes from "@/pages/Peneiras/EditorTimes";
+
+
+//ANalises
+import TrackingPartida from "@/pages/Analises/TrackingPartida";
+import AnaliseDados from "@/pages/Analises/AnaliseDados";
+import AtletasDestaque from "@/pages/Analises/AtletasDestaques";
 
 const App: FC = () => {
   return (
@@ -162,7 +166,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
 
           {/* Redirecionamentos */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

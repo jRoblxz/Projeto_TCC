@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Layout from "@/components/layouts/Layout";
-import Card from "@/components/ui/Card"; // Usando seu componente de Card existente
-import { api } from "../config/api"; // Usando a config do Axios
+import Card from "@/components/ui/Card";
+import { api } from "@/config/api";
 import { useNavigate } from "react-router-dom";
 import {
   Users,
   Trophy,
   Calendar,
   MapPin,
-  ClipboardList,
-  UserCheck,
   Loader2,
   Filter,
   ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Logo from "../assets/img/logo-copia.png";
+import StatCard from "@/components/ui/StatCard";
 
-
-// Interfaces para Tipagem (Typescript)
+// Interfaces para Tipagem
 interface Stats {
   total_candidatos: number;
   peneiras_ativas: number;
   peneiras_agendadas: number;
   total_peneiras: number;
 }
-
 interface Peneira {
   id: number;
   nome_evento: string;
@@ -35,16 +32,15 @@ interface Peneira {
   sub_divisao: string;
   inscricoes_count?: number;
 }
-
 interface Jogador {
   id: number;
-  rating_medio: number; // ou rating_medio
+  rating_medio: number;
   pessoa: {
     nome_completo: string;
-    data_nascimento: string; // ou calcular idade no back
+    data_nascimento: string;
     foto_perfil_url?: string;
     sub_divisao?: string;
-    idade?: number; // Se vier calculado do back
+    idade?: number;
     foto_url_completa?: string;
   };
 }
@@ -70,9 +66,7 @@ const Dashboard: React.FC = () => {
       const data = response.data;
 
       setStats(data.stats);
-      setPeneiras(data.recent_events || data.peneiras); // Adapte conforme o retorno exato do seu Controller
-      // Se seu endpoint dashboard retornar jogadores, use aqui.
-      // Caso contrário, precisaria de um endpoint separado ou ajustar o DashboardController.
+      setPeneiras(data.recent_events || data.peneiras);
       setJogadores(data.jogadores || []);
     } catch (error) {
       console.error("Erro ao carregar dashboard", error);
@@ -117,7 +111,6 @@ const Dashboard: React.FC = () => {
         <div className="rounded-xl p-6 text-gray-900 bg-white dark:bg-gray-900  dark:text-white shadow-lg gap-6 transition">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4">
-              {/* Logo - Certifique-se que a imagem existe em public/img */}
               <img
                 src={Logo}
                 alt="Logo"
@@ -173,6 +166,8 @@ const Dashboard: React.FC = () => {
               )}
             </div>
           </div>
+
+          {/* ================= STATS CARDS ================= */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mt-3">
             <StatCard
               icon={<Users className="h-6 w-6 text-white" />}
@@ -201,18 +196,16 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* ================= STATS CARDS ================= */}
-
         {/* ================= MAIN GRID ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* ----- COLUNA 1: PENEIRAS ----- */}
           <Card className="p-0 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md transition">
             <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D]  p-4 border-b dark:border-gray-700 border-gray-200 flex justify-between items-center transition">
               <h2 className="text-2xl font-bold  flex items-center gap-2">
-                 Peneiras em Andamento
+                Peneiras em Andamento
               </h2>
               <button
-                onClick={() => navigate("/peneiras/nova")} // Ajuste a rota conforme necessário
+                onClick={() => navigate("/peneiras/nova")}
                 className="text-xs font-bold uppercase tracking-wider bg-[#941B1B] text-white hover:text-red-700 border border-[#941B1B] hover:bg-red-50 px-3 py-1 rounded transition"
               >
                 Nova Peneira
@@ -241,7 +234,7 @@ const Dashboard: React.FC = () => {
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-y-1 text-sm text-gray-600 dark:text-gray-400 transition" >
+                    <div className="grid grid-cols-2 gap-y-1 text-sm text-gray-600 dark:text-gray-400 transition">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         {new Date(peneira.data_evento).toLocaleDateString(
@@ -275,12 +268,12 @@ const Dashboard: React.FC = () => {
               <h2 className="text-2xl font-bold  flex items-center gap-2">
                 Jogadores Destaques
               </h2>
-              <button 
-                  onClick={() => navigate('/destaques')}
-                  className="w-full py-2 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-500 font-bold rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-colors flex items-center justify-center gap-1 text-sm z-10"
-                >
-                  Ver Relatório <ChevronRight size={16} />
-                </button>
+              <button
+                onClick={() => navigate("/destaques")}
+                className="w-full py-2 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-500 font-bold rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-colors flex items-center justify-center gap-1 text-sm z-10"
+              >
+                Ver Relatório <ChevronRight size={16} />
+              </button>
             </div>
 
             <div className="p-4 space-y-3 max-h-[500px] overflow-y-auto custom-scrollbar dark:bg-gray-900 transition">
@@ -288,7 +281,6 @@ const Dashboard: React.FC = () => {
                 jogadores.map((jogador) => (
                   <div
                     key={jogador.id}
-                    // onClick={() => navigate(`/players/${jogador.id}`)}
                     className="flex items-center gap-4 bg-white dark:bg-gray-800 p-3 rounded-lg border border-gray-100 dark:border-gray-600 shadow-sm hover:shadow-md transition cursor-pointer"
                   >
                     {/* Avatar */}
@@ -320,7 +312,6 @@ const Dashboard: React.FC = () => {
                       </h4>
                       <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 flex gap-2">
                         <span className="bg-gray-100 px-2 py-0.5 rounded">
-                          {/* Lógica simples de idade se não vier do back */}
                           {jogador.pessoa.idade
                             ? `${jogador.pessoa.idade} anos`
                             : "N/A"}
@@ -333,7 +324,9 @@ const Dashboard: React.FC = () => {
 
                     {/* Rating */}
                     <div className="flex flex-col items-center justify-center bg-[#14244D] dark:bg-[#941B1B] text-white h-10 w-10 rounded-lg font-bold shadow-sm">
-                      <span>{Number(jogador.rating_medio || 0).toFixed(1)}</span>
+                      <span>
+                        {Number(jogador.rating_medio || 0).toFixed(1)}
+                      </span>
                     </div>
                   </div>
                 ))
@@ -347,23 +340,6 @@ const Dashboard: React.FC = () => {
     </Layout>
   );
 };
-
-// Componente Pequeno para os Stats
-const StatCard = ({ label, value }: any) => (
-  <div
-    // Adicionei 'flex flex-col items-center justify-center' aqui
-    className={`bg-white dark:bg-gray-800  dark:text-white rounded-lg p-4  text-black shadow-md transform border-1 dark:border-white border-black hover:scale-105 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center`}
-  >
-    {/* Removi o 'm-auto' pois o pai já está centralizando tudo com 'items-center' */}
-    <div className="mb-2">
-      <span className="text-3xl font-bold text-center text-[#851114]">{value}</span>
-    </div>
-
-    <div className="text-xs md:text-sm font-medium opacity-90 text-center dark:text-white text-[#333]">
-      {label}
-    </div>
-  </div>
-);
 
 // Componente para lista vazia
 const EmptyState = ({ message, icon }: { message: string; icon: string }) => (
