@@ -55,7 +55,7 @@ class PeneiraService
             // 1. Limpeza de Equipes e Vínculos
             $equipeIds = DB::table('equipes')->where('peneira_id', $id)->pluck('id');
             if ($equipeIds->count() > 0) {
-                DB::table('jogadoresPorEquipe')->whereIn('equipe_id', $equipeIds)->delete();
+                DB::table('jogadoresporpquipe')->whereIn('equipe_id', $equipeIds)->delete();
                 DB::table('equipes')->where('peneira_id', $id)->delete();
             }
 
