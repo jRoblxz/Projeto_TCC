@@ -169,12 +169,11 @@ const PeneiraDetalhes: React.FC = () => {
   };
 
   const filteredPlayers = jogadores.filter((player) => {
-    const matchesSearch = player.pessoa.nome_completo
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+    const nome = player?.pessoa?.nome_completo?.toLowerCase() || "";
+    const matchesSearch = nome.includes(searchTerm.toLowerCase());
     const matchesPosition =
       positionFilter === "Todas Posições" ||
-      player.posicao_principal === positionFilter;
+      player?.posicao_principal === positionFilter;
     return matchesSearch && matchesPosition;
   });
 
@@ -430,6 +429,9 @@ const PeneiraDetalhes: React.FC = () => {
               <span className="text-sm font-normal text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
                 {jogadores.length}
               </span>
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                Gerencie os jogadores inscritos e suas avaliações (Para avaliar clique no icone de editar).
+              </p>
             </h2>
           </div>
 
@@ -465,16 +467,25 @@ const PeneiraDetalhes: React.FC = () => {
           {/* Grid de Cards */}
           {filteredPlayers.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-              {filteredPlayers.map((jogador) => (
-                <PlayerCard
-                  key={jogador.id}
-                  player={jogador} //
-                  isAdmin={isAdmin}
-                  onEditRating={openRatingModal}
-                  onDelete={handleDeletePlayer}
-                  onViewMore={(id) => navigate(`/jogadores/${id}`)}
-                />
-              ))}
+              {filteredPlayers
+                .filter((jogador) => jogador && jogador.id != null)
+                .map((jogador) => (
+                  <PlayerCard
+                    key={
+                      jogador.id ??
+                      jogador?.pessoa?.nome_completo
+                    }
+                    player={jogador}
+                    isAdmin={isAdmin}
+                    onEditRating={openRatingModal}
+                    onDelete={handleDeletePlayer}
+                    onViewMore={(id) =>
+                      id
+                        ? navigate(`/jogadores/${id}`)
+                        : toast.error("ID de jogador inválido")
+                    }
+                  />
+                ))}
             </div>
           ) : (
             <div className="text-center py-20 bg-gray-50 rounded-xl border border-dashed border-gray-300">

@@ -25,17 +25,20 @@ const TeamCard: React.FC<TeamCardProps> = ({
   onMoveFromBenchToField,
   fieldRef,
 }) => {
-  const fieldPlayers = team.players.filter((p: any) => p.inField);
-  const benchPlayers = team.players.filter((p: any) => !p.inField);
+  const teamPlayers = Array.isArray(team?.players) ? team.players : [];
+  const fieldPlayers = teamPlayers.filter((p: any) => p?.inField);
+  const benchPlayers = teamPlayers.filter((p: any) => !p?.inField);
 
   return (
     <div
       className={`bg-white p-5 rounded-xl shadow-lg border-t-4 ${colorClass} h-full flex flex-col`}
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-[#14244D]">{team.nome}</h3>
+        <h3 className="text-xl font-bold text-[#14244D]">
+          {team?.nome || `Time ${teamKey}`}
+        </h3>
         <select
-          value={team.formation || "4-4-2"}
+          value={team?.formation || "4-4-2"}
           onChange={(e) => onFormationChange(teamKey, e.target.value)}
           className="border border-gray-300 rounded px-2 py-1 text-sm bg-gray-50 outline-none"
         >

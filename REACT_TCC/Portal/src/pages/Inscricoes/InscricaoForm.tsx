@@ -219,6 +219,7 @@ const InscricaoForm: React.FC = () => {
                   <option value="" disabled>Selecione</option>
                   <option value="direito">Direito</option>
                   <option value="esquerdo">Esquerdo</option>
+                  <option value="Ambos">Ambos</option>
                 </CustomInput>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -231,8 +232,8 @@ const InscricaoForm: React.FC = () => {
                     <option value="Lateral Esquerdo">Lateral Esquerdo</option>
                     <option value="Volante">Volante</option>
                     <option value="Meia">Meia</option>
-                    <option value="Atacante">Ponta Direita</option>
-                    <option value="Atacante">Ponta Esquerda</option>
+                    <option value="Ponta Direita">Ponta Direita</option>
+                    <option value="Ponta Esquerda">Ponta Esquerda</option>
                     <option value="Atacante">Atacante</option>
                 </CustomInput>
                 <CustomInput type="select" label="Posição secundária:" value={formData.posicao_secundaria} onChange={(v) => handleInputChange("posicao_secundaria", v)}>
@@ -244,8 +245,8 @@ const InscricaoForm: React.FC = () => {
                     <option value="Lateral Esquerdo">Lateral Esquerdo</option>
                     <option value="Volante">Volante</option>
                     <option value="Meia">Meia</option>
-                    <option value="Atacante">Ponta Direita</option>
-                    <option value="Atacante">Ponta Esquerda</option>
+                    <option value="Ponta Direita">Ponta Direita</option>
+                    <option value="Ponta Esquerda">Ponta Esquerda</option>
                     <option value="Atacante">Atacante</option>
                 </CustomInput>
               </div>

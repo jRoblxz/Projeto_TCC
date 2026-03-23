@@ -159,7 +159,10 @@ const Players: React.FC = () => {
         {/* === HEADER === */}
         <div className="text-center mb-8 bg-[#14244D] dark:bg-gray-900 rounded-xl p-6 shadow-md text-white">
           <h1 className="text-3xl font-bold mb-2 ">Jogadores Inscritos</h1>
-          <p className="text-gray-500">Sistema de Avaliação de Atletas</p>
+          <p className="text-gray-500">Sistema de Avaliação de Atletas 
+              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                Gerencie os jogadores inscritos e suas avaliações (Para avaliar clique no icone de editar).
+              </p></p>
         </div>
 
         {/* === BARRA DE FILTROS E BUSCA === */}
