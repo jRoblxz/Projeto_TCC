@@ -43,7 +43,9 @@ const InscricaoForm: React.FC = () => {
     const fetchPeneiras = async () => {
       try {
         const response = await api.get("/peneiras?per_page=100");
-        const lista = Array.isArray(response.data) ? response.data : (response.data.data || []);
+        const lista = Array.isArray(response.data)
+          ? response.data
+          : response.data.data || [];
         setPeneiras(lista);
       } catch (error) {
         console.error("Erro ao buscar peneiras", error);
@@ -66,7 +68,8 @@ const InscricaoForm: React.FC = () => {
     const nascimento = new Date(formData.data_nascimento);
     let idade = hoje.getFullYear() - nascimento.getFullYear();
     const mes = hoje.getMonth() - nascimento.getMonth();
-    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) idade--;
+    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate()))
+      idade--;
 
     if (idade >= 6 && idade <= 7) return "Sub-7";
     if (idade >= 8 && idade <= 9) return "Sub-9";
@@ -82,7 +85,7 @@ const InscricaoForm: React.FC = () => {
   const extrairNumero = (str: string) => {
     const match = str && str.match(/(\d+)/);
     return match ? parseInt(match[0], 10) : null;
-  }
+  };
 
   // 3. Filtrar Peneiras (CORRIGIDO: STATUS + PRIORIDADE DE SUBDIVISION)
   const peneirasDisponiveis = useMemo(() => {
@@ -92,7 +95,9 @@ const InscricaoForm: React.FC = () => {
 
     return peneiras.filter((p) => {
       // REGRA 1: Filtra Status (Ignora canceladas/finalizadas)
-      const statusValido = ["AGENDADA", "EM_ANDAMENTO"].includes(p.status?.toUpperCase());
+      const statusValido = ["AGENDADA", "EM_ANDAMENTO"].includes(
+        p.status?.toUpperCase(),
+      );
       if (!statusValido) return false;
 
       // REGRA 2: Filtra Categoria
@@ -102,7 +107,7 @@ const InscricaoForm: React.FC = () => {
       // Só tenta ler do título se a subdivision for nula/vazia
       // Isso impede que uma peneira "Sub-15" com título errado "Sub-20" apareça para o usuário de 20 anos
       if (numApi === null && p.title) {
-         numApi = extrairNumero(p.title);
+        numApi = extrairNumero(p.title);
       }
 
       return numApi === numUsuario;
@@ -118,7 +123,9 @@ const InscricaoForm: React.FC = () => {
     else handleSubmit();
   };
 
-  const handlePrev = () => { if (step > 1) setStep(step - 1); };
+  const handlePrev = () => {
+    if (step > 1) setStep(step - 1);
+  };
 
   const handleSubmit = async () => {
     // 1. Validação básica
@@ -135,7 +142,7 @@ const InscricaoForm: React.FC = () => {
       data.append("nome_completo", formData.nome_completo);
       data.append("data_nascimento", formData.data_nascimento);
       data.append("cidade", formData.cidade);
-      data.append("cpf", formData.cpf);
+      data.append("cpf", formData.cpf.replace(/\D/g, ""));
       // Envia RG apenas se tiver valor
       if (formData.rg) data.append("rg", formData.rg);
       data.append("email", formData.email);
@@ -145,16 +152,19 @@ const InscricaoForm: React.FC = () => {
       data.append("posicao_secundaria", formData.posicao_secundaria);
       data.append("altura_cm", formData.altura_cm);
       data.append("peso_kg", formData.peso_kg);
-      data.append("historico_lesoes_cirurgias", formData.historico_lesoes_cirurgias);
-      
+      data.append(
+        "historico_lesoes_cirurgias",
+        formData.historico_lesoes_cirurgias,
+      );
+
       if (formData.video_apresentacao_url) {
-          data.append("video_apresentacao_url", formData.video_apresentacao_url);
+        data.append("video_apresentacao_url", formData.video_apresentacao_url);
       }
 
       // 3. [CRUCIAL] Tratamento da Foto
       // Só adiciona ao FormData se for um arquivo real
       if (formData.foto_perfil_url instanceof File) {
-          data.append("foto_perfil_url", formData.foto_perfil_url);
+        data.append("foto_perfil_url", formData.foto_perfil_url);
       }
 
       // 4. [CORREÇÃO FINAL] Forçar o cabeçalho Multipart
@@ -163,15 +173,14 @@ const InscricaoForm: React.FC = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      
-      navigate("/confirmacao");
 
+      navigate("/confirmacao");
     } catch (error: any) {
       console.error(error);
       if (error.response?.data?.message) {
-          toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
-          toast.error("Erro ao realizar inscrição.");
+        toast.error("Erro ao realizar inscrição.");
       }
     }
   };
@@ -180,9 +189,21 @@ const InscricaoForm: React.FC = () => {
     <Layout>
       <div className="max-w-[900px] mx-auto relative -mt-[100px] md:-mt-[220px] z-20 rounded-[24px] p-8 md:p-[50px] bg-[#F3F3F3] shadow-lg">
         <div className="flex justify-around mb-8 border-b pb-4">
-          <div className={`text-center text-sm md:text-base ${step === 1 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}>1. Informações básicas</div>
-          <div className={`text-center text-sm md:text-base ${step === 2 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}>2. Informações jogador</div>
-          <div className={`text-center text-sm md:text-base ${step === 3 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}>3. Finalização</div>
+          <div
+            className={`text-center text-sm md:text-base ${step === 1 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}
+          >
+            1. Informações básicas
+          </div>
+          <div
+            className={`text-center text-sm md:text-base ${step === 2 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}
+          >
+            2. Informações jogador
+          </div>
+          <div
+            className={`text-center text-sm md:text-base ${step === 3 ? "text-[#1B294E] font-bold text-lg" : "text-gray-400"}`}
+          >
+            3. Finalização
+          </div>
         </div>
 
         <form>
@@ -190,24 +211,63 @@ const InscricaoForm: React.FC = () => {
             <div className="animate-fadeIn">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
                 <div className="md:col-span-9">
-                  <CustomInput label="Nome completo:" value={formData.nome_completo} onChange={(v) => handleInputChange("nome_completo", v)} placeholder="Informe seu nome" />
+                  <CustomInput
+                    label="Nome completo:"
+                    value={formData.nome_completo}
+                    onChange={(v) => handleInputChange("nome_completo", v)}
+                    placeholder="Informe seu nome"
+                  />
                 </div>
                 <div className="md:col-span-3">
-                  <CustomInput type="date" label="Nascimento:" value={formData.data_nascimento} onChange={(v) => handleInputChange("data_nascimento", v)} />
+                  <CustomInput
+                    type="date"
+                    label="Nascimento:"
+                    value={formData.data_nascimento}
+                    onChange={(v) => handleInputChange("data_nascimento", v)}
+                  />
                 </div>
               </div>
               <div className="mb-4">
                 <div className="md:w-1/2">
-                  <CustomInput label="Cidade:" value={formData.cidade} onChange={(v) => handleInputChange("cidade", v)} placeholder="Informe sua cidade" />
+                  <CustomInput
+                    label="Cidade:"
+                    value={formData.cidade}
+                    onChange={(v) => handleInputChange("cidade", v)}
+                    placeholder="Informe sua cidade"
+                  />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
-                <div className="md:col-span-5"><CustomInput label="CPF:" value={formData.cpf} onChange={(v) => handleInputChange("cpf", v)} mask="cpf" /></div>
-                <div className="md:col-span-4"><CustomInput label="RG:" value={formData.rg} onChange={(v) => handleInputChange("rg", v)} type="number" /></div>
+                <div className="md:col-span-5">
+                  <CustomInput
+                    label="CPF:"
+                    value={formData.cpf}
+                    onChange={(v) => handleInputChange("cpf", v)}
+                    mask="cpf"
+                  />
+                </div>
+                <div className="md:col-span-4">
+                  <CustomInput
+                    label="RG:"
+                    value={formData.rg}
+                    onChange={(v) => handleInputChange("rg", v)}
+                    type="number"
+                  />
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <CustomInput type="email" label="E-mail:" value={formData.email} onChange={(v) => handleInputChange("email", v)} />
-                <CustomInput label="Celular:" value={formData.telefone} onChange={(v) => handleInputChange("telefone", v)} mask="telefone" />
+                <CustomInput
+                  type="email"
+                  label="E-mail:"
+                  value={formData.email}
+                  onChange={(v) => handleInputChange("email", v)}
+                />
+                <CustomInput
+                  label="Celular:"
+                  value={formData.telefone}
+                  onChange={(v) => handleInputChange("telefone", v)}
+                  mask="telefone"
+                />
               </div>
             </div>
           )}
@@ -215,55 +275,116 @@ const InscricaoForm: React.FC = () => {
           {step === 2 && (
             <div className="animate-fadeIn">
               <div className="mb-4 md:w-1/3">
-                <CustomInput type="select" label="Pé dominante:" value={formData.pe_preferido} onChange={(v) => handleInputChange("pe_preferido", v)}>
-                  <option value="" disabled>Selecione</option>
+                <CustomInput
+                  type="select"
+                  label="Pé dominante:"
+                  value={formData.pe_preferido}
+                  onChange={(v) => handleInputChange("pe_preferido", v)}
+                >
+                  <option value="" disabled>
+                    Selecione
+                  </option>
                   <option value="direito">Direito</option>
                   <option value="esquerdo">Esquerdo</option>
                   <option value="Ambos">Ambos</option>
                 </CustomInput>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <CustomInput type="select" label="Posição principal:" value={formData.posicao_principal} onChange={(v) => handleInputChange("posicao_principal", v)}>
-                    <option value="" disabled>Selecione</option>
-                    <option value="Goleiro">Goleiro</option>
-                    <option value="Zagueiro">Zagueiro Direito</option>
-                    <option value="Zagueiro">Zagueiro Esquerdo</option>
-                    <option value="Lateral Direito">Lateral Direito</option>
-                    <option value="Lateral Esquerdo">Lateral Esquerdo</option>
-                    <option value="Volante">Volante</option>
-                    <option value="Meia">Meia</option>
-                    <option value="Ponta Direita">Ponta Direita</option>
-                    <option value="Ponta Esquerda">Ponta Esquerda</option>
-                    <option value="Atacante">Atacante</option>
+                <CustomInput
+                  type="select"
+                  label="Posição principal:"
+                  value={formData.posicao_principal}
+                  onChange={(v) => handleInputChange("posicao_principal", v)}
+                >
+                  <option value="" disabled>
+                    Selecione
+                  </option>
+                  <option value="Goleiro">Goleiro</option>
+                  <option value="Zagueiro">Zagueiro Direito</option>
+                  <option value="Zagueiro">Zagueiro Esquerdo</option>
+                  <option value="Lateral Direito">Lateral Direito</option>
+                  <option value="Lateral Esquerdo">Lateral Esquerdo</option>
+                  <option value="Volante">Volante</option>
+                  <option value="Meia">Meia</option>
+                  <option value="Ponta Direita">Ponta Direita</option>
+                  <option value="Ponta Esquerda">Ponta Esquerda</option>
+                  <option value="Atacante">Atacante</option>
                 </CustomInput>
-                <CustomInput type="select" label="Posição secundária:" value={formData.posicao_secundaria} onChange={(v) => handleInputChange("posicao_secundaria", v)}>
-                    <option value="" disabled>Selecione</option>
-                    <option value="Goleiro">Goleiro</option>
-                    <option value="Zagueiro">Zagueiro Direito</option>
-                    <option value="Zagueiro">Zagueiro Esquerdo</option>
-                    <option value="Lateral Direito">Lateral Direito</option>
-                    <option value="Lateral Esquerdo">Lateral Esquerdo</option>
-                    <option value="Volante">Volante</option>
-                    <option value="Meia">Meia</option>
-                    <option value="Ponta Direita">Ponta Direita</option>
-                    <option value="Ponta Esquerda">Ponta Esquerda</option>
-                    <option value="Atacante">Atacante</option>
+                <CustomInput
+                  type="select"
+                  label="Posição secundária:"
+                  value={formData.posicao_secundaria}
+                  onChange={(v) => handleInputChange("posicao_secundaria", v)}
+                >
+                  <option value="" disabled>
+                    Selecione
+                  </option>
+                  <option value="Goleiro">Goleiro</option>
+                  <option value="Zagueiro">Zagueiro Direito</option>
+                  <option value="Zagueiro">Zagueiro Esquerdo</option>
+                  <option value="Lateral Direito">Lateral Direito</option>
+                  <option value="Lateral Esquerdo">Lateral Esquerdo</option>
+                  <option value="Volante">Volante</option>
+                  <option value="Meia">Meia</option>
+                  <option value="Ponta Direita">Ponta Direita</option>
+                  <option value="Ponta Esquerda">Ponta Esquerda</option>
+                  <option value="Atacante">Atacante</option>
                 </CustomInput>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                <CustomInput label="Altura (cm):" value={formData.altura_cm} onChange={(v) => handleInputChange("altura_cm", v)} type="number" />
-                <CustomInput label="Peso (kg):" value={formData.peso_kg} onChange={(v) => handleInputChange("peso_kg", v)} type="number" />
+                <CustomInput
+                  label="Altura (cm):"
+                  value={formData.altura_cm}
+                  onChange={(v) => handleInputChange("altura_cm", v)}
+                  type="number"
+                />
+                <CustomInput
+                  label="Peso (kg):"
+                  value={formData.peso_kg}
+                  onChange={(v) => handleInputChange("peso_kg", v)}
+                  type="number"
+                />
               </div>
               <div className="mb-4">
-                <p className="text-[#333] mb-2 font-semibold">Já fez cirurgia?</p>
+                <p className="text-[#333] mb-2 font-semibold">
+                  Já fez cirurgia?
+                </p>
                 <div className="flex gap-4 checkbox-wrapper-1">
                   <div className="flex items-center">
-                    <input className="substituted" type="radio" name="cirurgia" id="cirurgia_sim" checked={formData.historico_lesoes_cirurgias === "sim"} onChange={() => handleInputChange("historico_lesoes_cirurgias", "sim")} />
-                    <label htmlFor="cirurgia_sim" className="ml-1 cursor-pointer">Sim</label>
+                    <input
+                      className="substituted"
+                      type="radio"
+                      name="cirurgia"
+                      id="cirurgia_sim"
+                      checked={formData.historico_lesoes_cirurgias === "sim"}
+                      onChange={() =>
+                        handleInputChange("historico_lesoes_cirurgias", "sim")
+                      }
+                    />
+                    <label
+                      htmlFor="cirurgia_sim"
+                      className="ml-1 cursor-pointer"
+                    >
+                      Sim
+                    </label>
                   </div>
                   <div className="flex items-center">
-                    <input className="substituted" type="radio" name="cirurgia" id="cirurgia_nao" checked={formData.historico_lesoes_cirurgias === "nao"} onChange={() => handleInputChange("historico_lesoes_cirurgias", "nao")} />
-                    <label htmlFor="cirurgia_nao" className="ml-1 cursor-pointer">Não</label>
+                    <input
+                      className="substituted"
+                      type="radio"
+                      name="cirurgia"
+                      id="cirurgia_nao"
+                      checked={formData.historico_lesoes_cirurgias === "nao"}
+                      onChange={() =>
+                        handleInputChange("historico_lesoes_cirurgias", "nao")
+                      }
+                    />
+                    <label
+                      htmlFor="cirurgia_nao"
+                      className="ml-1 cursor-pointer"
+                    >
+                      Não
+                    </label>
                   </div>
                 </div>
               </div>
@@ -273,8 +394,12 @@ const InscricaoForm: React.FC = () => {
           {step === 3 && (
             <div className="animate-fadeIn">
               <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-800">
-                <p className="font-bold">Categoria Identificada: {categoriaUsuario || "Indefinida"}</p>
-                <p className="text-sm">Listando peneiras encontradas: {peneirasDisponiveis.length}</p>
+                <p className="font-bold">
+                  Categoria Identificada: {categoriaUsuario || "Indefinida"}
+                </p>
+                <p className="text-sm">
+                  Listando peneiras encontradas: {peneirasDisponiveis.length}
+                </p>
               </div>
 
               <div className="mb-6">
@@ -286,45 +411,80 @@ const InscricaoForm: React.FC = () => {
                   disabled={peneirasDisponiveis.length === 0}
                 >
                   <option value="" disabled>
-                    {loading ? "Carregando..." : peneirasDisponiveis.length === 0 ? "Nenhuma disponível" : "Selecione"}
+                    {loading
+                      ? "Carregando..."
+                      : peneirasDisponiveis.length === 0
+                        ? "Nenhuma disponível"
+                        : "Selecione"}
                   </option>
                   {peneirasDisponiveis.map((peneira) => {
                     let dataShow = "Data a definir";
-                    if(peneira.date) {
-                        try { dataShow = new Date(peneira.date.replace(" ", "T")).toLocaleDateString(); } catch(e){}
+                    if (peneira.date) {
+                      try {
+                        dataShow = new Date(
+                          peneira.date.replace(" ", "T"),
+                        ).toLocaleDateString();
+                      } catch (e) {}
                     }
                     return (
-                        <option key={peneira.id} value={peneira.id}>
+                      <option key={peneira.id} value={peneira.id}>
                         {peneira.title} - {dataShow}
-                        </option>
+                      </option>
                     );
                   })}
                 </CustomInput>
                 {peneirasDisponiveis.length === 0 && categoriaUsuario && (
                   <p className="text-red-500 text-sm mt-1">
-                    Não há peneiras abertas (agendadas) para a categoria {categoriaUsuario} no momento.
+                    Não há peneiras abertas (agendadas) para a categoria{" "}
+                    {categoriaUsuario} no momento.
                   </p>
                 )}
               </div>
 
               <div className="mb-6 md:w-3/4">
-                <CustomInput label="Vídeo de apresentação (YouTube):" value={formData.video_apresentacao_url} onChange={(v) => handleInputChange("video_apresentacao_url", v)} />
+                <CustomInput
+                  label="Vídeo de apresentação (YouTube):"
+                  value={formData.video_apresentacao_url}
+                  onChange={(v) =>
+                    handleInputChange("video_apresentacao_url", v)
+                  }
+                />
               </div>
               <div className="mb-6 md:w-3/4">
-                <label className="block text-[#851114] font-bold mb-1 text-sm">Foto 3x4:</label>
-                <CustomInput type="file" value="" onChange={(file) => handleInputChange("foto_perfil_url", file)} />
+                <label className="block text-[#851114] font-bold mb-1 text-sm">
+                  Foto 3x4:
+                </label>
+                <CustomInput
+                  type="file"
+                  value=""
+                  onChange={(file) =>
+                    handleInputChange("foto_perfil_url", file)
+                  }
+                />
               </div>
             </div>
           )}
 
           <div className="flex justify-between mt-8 pt-4 border-t border-gray-300">
-            <button type="button" onClick={handlePrev} disabled={step === 1} className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:opacity-50 transition">Voltar</button>
-            <button type="button" onClick={handleNext} className="px-6 py-2 bg-[#007bff] text-white rounded hover:bg-blue-700 transition shadow-md">{step === 3 ? "Enviar Inscrição" : "Avançar"}</button>
+            <button
+              type="button"
+              onClick={handlePrev}
+              disabled={step === 1}
+              className="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 disabled:opacity-50 transition"
+            >
+              Voltar
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              className="px-6 py-2 bg-[#007bff] text-white rounded hover:bg-blue-700 transition shadow-md"
+            >
+              {step === 3 ? "Enviar Inscrição" : "Avançar"}
+            </button>
           </div>
         </form>
       </div>
-      <footer className="text-center p-5 mt-10 text-[#666] text-sm">
-      </footer>
+      <footer className="text-center p-5 mt-10 text-[#666] text-sm"></footer>
     </Layout>
   );
 };
