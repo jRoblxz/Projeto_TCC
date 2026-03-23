@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\PlayerController;
 use App\Http\Controllers\Api\PeneiraController;
 use App\Http\Controllers\Api\TeamController;
 use App\Http\Controllers\Api\PublicController;
+use App\Http\Controllers\Api\VideoJobController;
+use App\Http\Controllers\Api\WebhookController;
 
 // --- Rotas Públicas (Sem Token) ---
 Route::prefix('v1')->group(function () {
@@ -15,6 +17,9 @@ Route::prefix('v1')->group(function () {
     // Registro de Candidato (Público)
     Route::get('peneiras/open', [PublicController::class, 'getOpenPeneiras']);
     Route::post('register/candidate', [PublicController::class, 'registerCandidate']);
+
+    // Webhook do Modal (Sem autenticação, mas com secret)
+    Route::post('/webhook/modal', [WebhookController::class, 'modal']);
 });
 
 // --- Rotas Protegidas (Sanctum) ---
@@ -60,5 +65,12 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         // Gerar/Salvar Times
         Route::post('peneiras/{id}/teams/generate', [TeamController::class, 'generate']);
         Route::post('peneiras/{id}/teams/save', [TeamController::class, 'store']);
+
+
+        Route::post('/video-jobs',      [VideoJobController::class, 'store']);
+        Route::get('/video-jobs',       [VideoJobController::class, 'index']);
+        Route::get('/video-jobs/{videoJob}', [VideoJobController::class, 'show']);
+
+
     });
 });

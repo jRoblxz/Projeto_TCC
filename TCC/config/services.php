@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'modal' => [
+        'trigger_url' => env('MODAL_TRIGGER_URL'),
+        'webhook_secret' => env('MODAL_WEBHOOK_SECRET'),
+    ],
+
 ];
