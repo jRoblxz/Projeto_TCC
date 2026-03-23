@@ -55,13 +55,13 @@ class PeneiraService
             // 1. Limpeza de Equipes e Vínculos
             $equipeIds = DB::table('equipes')->where('peneira_id', $id)->pluck('id');
             if ($equipeIds->count() > 0) {
-                DB::table('JogadoresPorEquipe')->whereIn('equipe_id', $equipeIds)->delete();
+                DB::table('jogadoresPorEquipe')->whereIn('equipe_id', $equipeIds)->delete();
                 DB::table('equipes')->where('peneira_id', $id)->delete();
             }
 
             // 2. Apagar Avaliações e Inscrições
-            DB::table('Avaliacoes')->where('peneira_id', $id)->delete();
-            DB::table('Inscricoes')->where('peneira_id', $id)->delete();
+            DB::table('avaliacoes')->where('peneira_id', $id)->delete();
+            DB::table('inscricoes')->where('peneira_id', $id)->delete();
 
             // 3. Apagar Peneira
             $peneira->delete();
