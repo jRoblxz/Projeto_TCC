@@ -10,12 +10,14 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::table('users', function (Blueprint $table) {
-        // Adiciona a coluna 'role' com 'treinador' como padrão
-        $table->string('role')->default('treinador')->after('email'); 
-    });
-}
+    {
+        Schema::table('users', function (Blueprint $table) {
+            // Se a coluna 'role' NÃO existir, aí sim ele cria!
+            if (!Schema::hasColumn('users', 'role')) {
+                $table->string('role')->default('treinador')->after('email');
+            }
+        });
+    }
 
 public function down()
 {
