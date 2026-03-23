@@ -12,23 +12,26 @@ class CheckRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $role
+     * @param  string  ...$roles (Agora aceita múltiplas roles)
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, string $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // 1. Verifica se tem usuário logado e se o papel (role) é o correto
-        if (! $request->user() || $request->user()->role !== $role) {
-            
-            // --- [CORREÇÃO] ---
-            // Em vez de deslogar ou redirecionar, retornamos um erro 403 (Proibido).
-            // Assim, o Frontend sabe que o usuário existe, mas não pode mexer aqui.
+        $user = $request->user();
+
+        // 1. Verifica se tem usuário logado
+        if (!$user) {
+            return response()->json(['message' => 'Não autenticado.'], 401);
+        }
+
+        // 2. Verifica se a role do usuário está dentro da lista de roles permitidas
+        if (!in_array($user->role, $roles)) {
             return response()->json([
-                'message' => 'Acesso negado. Você não tem permissão de ' . $role
+                'message' => 'Acesso negado. Você não tem permissão de adm'
             ], 403);
         }
 
-        // 2. Se passou na verificação, deixa a requisição continuar
+        // 3. Se passou na verificação, deixa a requisição continuar
         return $next($request);
     }
 }

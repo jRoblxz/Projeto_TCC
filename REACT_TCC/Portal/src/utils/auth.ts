@@ -11,5 +11,5 @@ export const getUserData = () => {
 export const isUserAdmin = (): boolean => {
     const user = getUserData();
     // Verifica se o usuário existe e se a role é 'adm'
-    return user?.role === 'adm'; 
+    return user?.role === 'adm'|| user?.role === 'treinador';
 };

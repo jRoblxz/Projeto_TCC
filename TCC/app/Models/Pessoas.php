@@ -25,6 +25,7 @@ class Pessoas extends Model
         'email',
         'senha',
         'foto_perfil_url',
+      //  'user_id',
     ];
 
     protected $casts = [

@@ -7,10 +7,113 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Treinadores; // <-- IMPORTANTE: Model de treinadores adicionada
 use Illuminate\Support\Facades\Validator;
+use App\Models\Pessoas; // Adicione esta linha lá em cima
+use Google\Cloud\Storage\StorageClient;
 
 class AuthController extends Controller
 {
+    /**
+     * Registro: Cria novos usuários (Admins ou Treinadores)
+     */
+    /**
+     * Registro: Cria novos usuários (Admins ou Treinadores)
+     */
+    /**
+     * Registro: Cria novos usuários (Admins ou Treinadores)
+     */
+    /**
+     * Registro: Cria novos usuários (Admins ou Treinadores)
+     */
+    public function register(Request $request)
+    {
+        // 1. Validação dos dados (incluindo foto e campos opcionais do treinador)
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|in:admin,treinador', 
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            // Campos opcionais do treinador
+            'clube_organizacao' => 'nullable|string|max:255',
+            'cargo' => 'nullable|string|max:255',
+            'cref' => 'nullable|string|max:255',
+            'anos_experiencia' => 'nullable|integer',
+            'biografia_resumo' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
+        }
+
+        try {
+            // 2. Cria o usuário de acesso na tabela 'users'
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+            ]);
+
+            // 3. Upload da foto (Direto pelo Google Cloud Storage SDK)
+            $fotoPath = null;
+            if ($request->hasFile('foto_perfil')) {
+                $arquivo = $request->file('foto_perfil');
+                
+                $projectId = env('GOOGLE_CLOUD_PROJECT_ID');
+                $bucketName = env('GOOGLE_CLOUD_STORAGE_BUCKET');
+                $keyFilePath = env('GOOGLE_CLOUD_KEY_FILE');
+
+                $storage = new StorageClient([
+                    'projectId' => $projectId,
+                    'keyFilePath' => $keyFilePath,
+                ]);
+
+                $bucket = $storage->bucket($bucketName);
+                
+                // Cria um nome único para o arquivo
+                $nomeDoArquivo = 'user/' . time() . '_' . uniqid() . '.' . $arquivo->getClientOriginalExtension();
+
+                // Faz o upload 
+                $bucket->upload(
+                    file_get_contents($arquivo->getRealPath()),
+                    ['name' => $nomeDoArquivo]
+                );
+
+                $fotoPath = $nomeDoArquivo;
+            }
+
+            // 4. Cria os dados pessoais na tabela 'pessoas'
+            // REMOVIDO o user_id daqui! A ligação será feita pelo e-mail automaticamente.
+            $pessoa = Pessoas::create([
+                'nome_completo' => $request->name,
+                'email' => $request->email,
+                'foto_perfil_url' => $fotoPath,
+            ]);
+
+            // 5. Se for treinador, vincula os campos extras na tabela 'treinadores'
+            if ($request->role === 'treinador') {
+                Treinadores::create([
+                    'pessoa_id' => $pessoa->id,
+                    'clube_organizacao' => $request->clube_organizacao,
+                    'cargo' => $request->cargo,
+                    'cref' => $request->cref,
+                    'anos_experiencia' => $request->anos_experiencia,
+                    'biografia_resumo' => $request->biografia_resumo,
+                ]);
+            }
+
+            return response()->json([
+                'message' => 'Usuário criado com sucesso!',
+                'user' => $user
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erro ao salvar usuário: ' . $e->getMessage()], 500);
+        }
+    }
+
     /**
      * Login: Valida credenciais e cria o Token (Sanctum)
      */
@@ -60,6 +163,7 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'jogador_id' => $jogadorId, // ID correto recuperado via Pessoa
                 'pessoa' => $user->pessoa,  // Dados da pessoa
+                'isAdmin' => in_array($user->role, ['admin', 'treinador']),
             ]
         ], 200);
     }
@@ -71,15 +175,13 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         $user = $request->user();
-        $user->load('pessoa.jogador'); // Carrega a cadeia
+        $user->load('pessoa.jogador'); 
 
         $userData = $user->toArray();
-
-        // Injeta o jogador_id manualmente na resposta
-        $userData['jogador_id'] = null;
-        if ($user->pessoa && $user->pessoa->jogador) {
-            $userData['jogador_id'] = $user->pessoa->jogador->id;
-        }
+        $userData['jogador_id'] = $user->pessoa && $user->pessoa->jogador ? $user->pessoa->jogador->id : null;
+        
+        // ADICIONE ESTA LINHA:
+        $userData['isAdmin'] = in_array($user->role, ['admin', 'treinador']);
 
         return response()->json($userData);
     }

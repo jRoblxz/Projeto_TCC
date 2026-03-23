@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "@/config/api";
 import Layout from "@/components/layouts/Layout";
-import TeamCard from "@/components/players/View/TeamCard";
+import TeamCard from "@/components/ui/TeamCard";
 import { ArrowLeft, Save, RotateCcw } from "lucide-react";
 import toast from "react-hot-toast";
 import { isUserAdmin } from "@/utils/auth";

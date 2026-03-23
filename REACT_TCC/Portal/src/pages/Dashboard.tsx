@@ -134,7 +134,7 @@ const Dashboard: React.FC = () => {
                   Sistema de Peneiras
                 </h1>
                 <p className="text-[#333] dark:text-gray-400 text-sm">
-                  Gestão e Formação • Champions FC
+                  Gestão e Formação de Atletas • Grêmio Prudente
                 </p>
               </div>
             </div>

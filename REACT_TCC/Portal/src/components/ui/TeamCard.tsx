@@ -1,5 +1,6 @@
 import React from "react";
 import { Shirt } from "lucide-react";
+import clsx from "clsx";
 import { FORMATIONS } from "@/utils/formations";
 
 interface TeamCardProps {
@@ -95,7 +96,10 @@ const TeamCard: React.FC<TeamCardProps> = ({
           <div
             key={player.id}
             onPointerDown={(e) => onPointerDown(e, player, teamKey)}
-            className="absolute flex flex-col items-center cursor-move hover:scale-110 active:scale-110 transition-transform z-20 touch-none"
+            className={clsx(
+              "absolute flex flex-col items-center hover:scale-110 active:scale-110 transition-transform z-20 touch-none",
+              isAdmin && "cursor-move",
+            )}
             style={{
               left: `${player.x}%`,
               top: `${player.y}%`,
@@ -103,16 +107,20 @@ const TeamCard: React.FC<TeamCardProps> = ({
             }}
           >
             {/* Botão para mandar pro banco rápido */}
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                onMoveToBench(player, teamKey);
-              }}
-              className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] cursor-pointer hover:bg-red-700 z-30"
-              title="Mandar para o banco"
-            >
-              x
-            </div>
+            {isAdmin && (
+              <>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onMoveToBench(player, teamKey);
+                  }}
+                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] cursor-pointer hover:bg-red-700 z-30"
+                  title="Mandar para o banco"
+                >
+                  x
+                </div>
+              </>
+            )}
 
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md border-2 border-yellow-400 ${teamKey === "A" ? "bg-blue-800" : "bg-red-800"}`}

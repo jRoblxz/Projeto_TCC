@@ -15,6 +15,7 @@ import Dashboard from "@/pages/Dashboard";
 import InscricaoForm from "@/pages/Inscricoes/InscricaoForm";
 import Confirmacao from "@/pages/Inscricoes/Confirmacao";
 import Instrucao from "@/pages/Inscricoes/Instrucao";
+import CadastroAdmin from "@/pages/Inscricoes/CadastroAdmin";
 
 //Players
 import Players from "@/pages/Jogadores/Players";
@@ -166,6 +167,15 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/cadastro-admin"
+            element={
+              <ProtectedRoute>
+                <CadastroAdmin />
+              </ProtectedRoute>
+            }
+          />
+
 
           {/* Redirecionamentos */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

@@ -11,6 +11,7 @@ import {
   Database,
   ChartPie,
   Trophy,
+  FilePlus,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
@@ -97,27 +98,39 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     },
   );
 
-  menuItems.push(
-    {
-      title: "Análise de Vídeo",
-      path: "/tracking",
-      icon: Video,
-      Group: "Analises",
-    },
-    {
-      title: "Análise de Atributos",
-      path: "/analise",
-      icon: ChartPie,
-      Group: "Analises",
-    },
-    {
-      title: "Atletas em Destaque",
-      path: "/destaques",
-      icon: Trophy,
-      Group: "Analises",
-    },
-  );
+  if (isAdmin){
+    menuItems.push(
+      {
+        title: "Análise de Vídeo",
+        path: "/tracking",
+        icon: Video,
+        Group: "Analises",
+      },
+      {
+        title: "Análise de Atributos",
+        path: "/analise",
+        icon: ChartPie,
+        Group: "Analises",
+      },
+      {
+        title: "Atletas em Destaque",
+        path: "/destaques",
+        icon: Trophy,
+        Group: "Analises",
+      },
+    );
+}
 
+if (isAdmin){
+    menuItems.push(
+      {
+        title: "Cadastros",
+        path: "/cadastro-admin",
+        icon: FilePlus,
+        Group: "Gestão",
+      },
+    );
+}
   const handleToggleSubmenu = (title: string) => {
     setOpenMenu((prev) => (prev === title ? null : title));
   };
@@ -168,7 +181,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   className="text-sm font-bold text-gray-100 line-clamp-1"
                   title={userName}
                 >
-                  {userName.split(" ")[0]}{" "}
+                  {userName}
+                  {/* {userName.split(" ")[0]}{" "} */}
                   {/* Mostra só o primeiro nome pra caber */}
                 </span>
                 <span className="text-[10px] text-gray-400 uppercase">

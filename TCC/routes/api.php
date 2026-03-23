@@ -40,9 +40,12 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     // Visualizar Times
     Route::get('peneiras/{id}/teams', [TeamController::class, 'index']);
 
+    // Rota de cadastro de administradores/treinadores
+    Route::post('/register', [AuthController::class, 'register']);
+
 
     // === ROTAS EXCLUSIVAS DE ADMINISTRADOR (ESCRITA) ===
-    Route::middleware('role:adm')->group(function () {
+    Route::middleware('auth:sanctum', 'role:adm,treinador')->group(function () {
         
         Route::get('dashboard', [DashboardController::class, 'index']);
 
