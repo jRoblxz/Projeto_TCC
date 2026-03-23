@@ -24,7 +24,7 @@ class PublicController extends Controller
     {
         // Usa o service existente (ou cria um método específico lá)
         $peneiras = \App\Models\Peneiras::whereIn('status', ['AGENDADA', 'EM_ANDAMENTO'])
-            ->select('id', 'title', 'date', 'subdivision', 'status')
+            ->select('id', 'title', 'date','local', 'subdivision', 'status')
             ->orderByDesc('date')
             ->get();
             

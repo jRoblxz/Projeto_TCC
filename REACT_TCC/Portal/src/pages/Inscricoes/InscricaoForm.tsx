@@ -10,7 +10,8 @@ interface Peneira {
   title: string;
   subdivision: string;
   date: string;
-  status: string; // Adicionado campo status
+  status: string; 
+  location?: string;
 }
 
 const InscricaoForm: React.FC = () => {
@@ -113,6 +114,7 @@ const InscricaoForm: React.FC = () => {
       return numApi === numUsuario;
     });
   }, [peneiras, categoriaUsuario]);
+  console.log("Peneiras que chegaram do Laravel:", peneirasDisponiveis);
 
   const handleNext = () => {
     if (step === 1 && !formData.data_nascimento) {
@@ -174,7 +176,39 @@ const InscricaoForm: React.FC = () => {
         },
       });
 
-      navigate("/confirmacao");
+      const peneiraCompleta = peneirasDisponiveis.find(
+        (p) => p.id.toString() === formData.peneira_id,
+      );
+
+      // Formata a data para o padrão brasileiro (DD/MM/YYYY)
+      let dataFormatada = "Data a definir";
+      if (peneiraCompleta && peneiraCompleta.date) {
+        try {
+          const dataObj = new Date(peneiraCompleta.date.replace(" ", "T"));
+          dataFormatada = dataObj.toLocaleDateString("pt-BR"); // Formata: 15/12/2024
+
+          // Se quiser colocar a hora junto (ex: 15/12/2024 às 08:00), use:
+          // dataFormatada = dataObj.toLocaleDateString('pt-BR') + ' às ' + dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        } catch (e) {
+          console.error("Erro ao formatar data", e);
+        }
+      }
+
+      // Prepara os dados exatamente com os nomes que a tela de Confirmação espera
+      const dadosParaConfirmacao = {
+        nome: peneiraCompleta?.title || "Peneira",
+        data_inicio: dataFormatada,
+        // Como não vi o 'local' na sua interface Peneira, deixei um texto padrão.
+        // Se vier da API, troque para: local: peneiraCompleta.local
+        location: peneiraCompleta?.location ,
+      };
+
+      // Navega e envia a bagagem
+      navigate("/confirmacao", {
+        state: {
+          peneira: dadosParaConfirmacao,
+        },
+      });
     } catch (error: any) {
       console.error(error);
       if (error.response?.data?.message) {

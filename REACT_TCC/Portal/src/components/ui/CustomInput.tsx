@@ -132,7 +132,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
           onChange={handleFileChange}
           className={clsx(
             baseStyles,
-            "text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#14244D] file:text-white hover:file:bg-[#1e3a8a]"
+            "text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#14244D] file:text-[#14244D] hover:file:text-white hover:file:bg-[#1e3a8a]"
           )}
         />
       ) : (

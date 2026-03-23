@@ -58,7 +58,7 @@ class Pessoas extends Model
             12, 13 => 'Sub-13',
             14, 15 => 'Sub-15',
             16, 17 => 'Sub-17',
-            18, 19, 20 => 'Sub-20',
+            18, 19, 20, 21 => 'Sub-20',
             default => 'Sem Sub Divisao',
         };
     }

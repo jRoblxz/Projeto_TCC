@@ -1,11 +1,14 @@
 import React from 'react';
 import Layout from '@/components/layouts/LayoutForm';
-import { useNavigate } from "react-router-dom";
-
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Confirmacao: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Extrai os dados da peneira que foram passados pelo navigate()
+  const peneira = location.state?.peneira;
+
   return (
     <Layout>
       {/* Background Balls Animation */}
@@ -13,11 +16,6 @@ const Confirmacao: React.FC = () => {
         <div className="absolute w-[60px] h-[60px] bg-white/10 rounded-full top-[20%] left-[10%] animate-float" style={{ animationDuration: '15s' }}></div>
         <div className="absolute w-[60px] h-[60px] bg-white/10 rounded-full top-[60%] right-[20%] animate-float" style={{ animationDuration: '18s', animationDelay: '2s' }}></div>
         <div className="absolute w-[60px] h-[60px] bg-white/10 rounded-full bottom-[20%] left-[30%] animate-float" style={{ animationDuration: '20s', animationDelay: '4s' }}></div>
-      </div>
-
-      {/* Confetti (simplificado com CSS puro ou use uma lib) */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-         {/* Adicionar elementos de confete aqui se desejar, ou usar uma lib como 'react-confetti' */}
       </div>
 
       <div className="relative z-10 max-w-[500px] w-[90%] mx-auto mt-[50px] bg-white/95 backdrop-blur-md rounded-[20px] p-10 text-center shadow-[0_20px_60px_rgba(0,0,0,0.3)] animate-fadeIn">
@@ -31,7 +29,7 @@ const Confirmacao: React.FC = () => {
 
         <h1 className="text-[#851114] text-2xl font-bold mb-4 animate-fadeIn">Inscrição Confirmada!</h1>
         <p className="text-[#666] text-base mb-8 leading-relaxed animate-fadeIn">
-          Parabéns! Sua inscrição na peneira foi realizada com sucesso.
+          Parabéns! Sua inscrição {peneira?.nome ? `na ${peneira.nome}` : 'na peneira'} foi realizada com sucesso.
           Prepare-se para mostrar seu talento!
         </p>
 
@@ -46,14 +44,25 @@ const Confirmacao: React.FC = () => {
 
         <div className="bg-black/5 rounded-[15px] p-5 my-6 text-left animate-fadeIn delay-500">
           <InfoItem icon="📧" title="Confirmação por E-mail" text="Enviamos todos os detalhes para seu e-mail cadastrado" />
-          <InfoItem icon="📅" title="Data da Peneira" text="15 de Dezembro de 2024 - 08:00h" />
-          <InfoItem icon="📍" title="Local" text="Centro de Treinamento - Campo Principal" />
+          
+          {/* Dados dinâmicos usando o que veio da rota */}
+          <InfoItem 
+            icon="📅" 
+            title="Data da Peneira" 
+            text={peneira?.data_inicio ? peneira.data_inicio : "Data a definir"} 
+          />
+          <InfoItem 
+            icon="📍" 
+            title="Local" 
+            text={peneira?.location ? peneira.location : "Local a definir"} 
+          />
+          
           <InfoItem icon="👕" title="O que levar" text="Chuteira, caneleira, roupa esportiva e documento com foto" />
         </div>
       </div>
 
       <footer className="text-center p-5 mt-10 text-[#fff] text-sm relative z-10">
-        <p>Grêmio Prudente x SparkLab &copy; 2025. Todos os direitos reservados.</p>
+        <p>Grêmio Prudente x SparkLab &copy; {new Date().getFullYear()}. Todos os direitos reservados.</p>
       </footer>
     </Layout>
   );

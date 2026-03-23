@@ -277,13 +277,13 @@ const Dashboard: React.FC = () => {
 
           {/* ----- COLUNA 2: JOGADORES DESTAQUE ----- */}
           <Card className="p-0 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md transition">
-            <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D] p-4 border-b dark:border-gray-700 border-gray-200 transition">
+            <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D] p-4 border-b dark:border-gray-700 border-gray-200 transition flex justify-between items-center">
               <h2 className="text-2xl font-bold  flex items-center gap-2">
                 Jogadores Destaques
               </h2>
               <button
                 onClick={() => navigate("/destaques")}
-                className="w-full py-2 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-500 font-bold rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-colors flex items-center justify-center gap-1 text-sm z-10"
+                className="p-2 bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-500 font-bold rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/50 transition-colors flex items-center gap-1 text-sm z-10"
               >
                 Ver Relatório <ChevronRight size={16} />
               </button>
