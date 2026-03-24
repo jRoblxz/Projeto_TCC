@@ -27,7 +27,7 @@ class VideoJobController extends Controller
         $gcsPath  = "videos/input/{$uuid}.mp4";
 
         // Sobe o vídeo para o Google Cloud Storage
-        Storage::disk('gcs')->put($gcsPath, file_get_contents($file->getRealPath()));
+        Storage::disk('gcs_videos')->put($gcsPath, file_get_contents($file->getRealPath()));
 
         // Cria o registro do job
         $job = VideoJob::create([

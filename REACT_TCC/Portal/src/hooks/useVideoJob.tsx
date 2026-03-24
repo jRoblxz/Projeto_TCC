@@ -1,7 +1,6 @@
 // hooks/useVideoJob.ts
-// Hook React para polling do status do job
-
 import { useEffect, useState, useCallback } from 'react'
+import { api } from '@/config/api' // <-- Importe a sua instância do axios aqui!
 
 export type JobStatus = 'pending' | 'processing' | 'done' | 'failed'
 
@@ -24,20 +23,20 @@ export function useVideoJob(jobId: number | null) {
   const [error, setError] = useState<string | null>(null)
 
   const fetchJob = useCallback(async () => {
-    if (!jobId) return
+    if (!jobId) return;
+    
     try {
-      const res = await fetch(`/api/video-jobs/${jobId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Accept': 'application/json',
-        },
-      })
-      if (!res.ok) throw new Error('Erro ao buscar status')
-      const data: VideoJob = await res.json()
-      setJob(data)
-      return data.status
+      // O Axios já coloca o "http://.../api/v1" e o token de autenticação automaticamente!
+      const response = await api.get(`/video-jobs/${jobId}`);
+      
+      // No axios, os dados ficam dentro da propriedade .data
+      const data: VideoJob = response.data; 
+      
+      setJob(data);
+      return data.status;
     } catch (err) {
-      setError('Erro ao verificar status do job')
+      console.error("Erro ao buscar status do job:", err);
+      setError('Erro ao verificar status do job');
     }
   }, [jobId])
 

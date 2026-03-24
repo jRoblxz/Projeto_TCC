@@ -40,6 +40,17 @@ return [
             'throw' => true,
         ],
 
+        // --- ADICIONE ESTE NOVO DISCO AQUI ---
+        'gcs_videos' => [
+            'driver' => 'gcs',
+            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', base_path('google.json')),
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'seu-projeto-id'),
+            // A mágica acontece aqui: apontando para a variável nova!
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET', 'videos-tcc'), 
+            'path_prefix' => '', 
+            'visibility' => 'public', 
+        ],
+
     ],
 
     'links' => [
