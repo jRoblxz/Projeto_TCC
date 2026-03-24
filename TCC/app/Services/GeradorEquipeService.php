@@ -44,8 +44,8 @@ class GeradorEquipeService
             ->pluck('jogador_id');
 
         // 2. Busca IDs de jogadores que JÁ estão em alguma equipe DESTA peneira
-        $jogadoresEmEquipeIds = DB::table('Equipes AS e')
-            ->join('JogadoresPorEquipe AS jpe', 'e.id', '=', 'jpe.equipe_id')
+        $jogadoresEmEquipeIds = DB::table('equipes AS e')
+            ->join('jogadoresporequipe AS jpe', 'e.id', '=', 'jpe.equipe_id')
             ->where('e.peneira_id', $peneira->id)
             ->pluck('jpe.jogador_id');
 
