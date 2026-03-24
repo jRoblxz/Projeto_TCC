@@ -23,7 +23,6 @@ class WebhookController extends Controller
         if ($secret !== config('services.modal.webhook_secret')) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-
         $jobId  = $request->input('job_id');
         $status = $request->input('status');
         $job    = VideoJob::find($jobId);
