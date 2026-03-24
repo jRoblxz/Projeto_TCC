@@ -86,6 +86,7 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
+          {/* Peneiras */}
 
           <Route
             path="/peneiras"
@@ -114,6 +115,8 @@ const App: FC = () => {
             }
           />
 
+          {/* Jogadores */}
+
           <Route
             path="/players"
             element={
@@ -140,6 +143,8 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
+
+          {/* Análises */}
 
           <Route
             path="/tracking"

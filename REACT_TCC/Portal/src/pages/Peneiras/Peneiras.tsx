@@ -217,7 +217,7 @@ const Peneiras: React.FC = () => {
     <Layout>
       <div className="p-6 space-y-6 min-h-screen pb-20">
         {/* === CABEÇALHO COM BUSCA === */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 dark:bg-gray-900 bg-white p-4 rounded-xl shadow-sm border dark:border-gray-700 border-gray-100">
+        <div className="transition flex flex-col md:flex-row justify-between items-center gap-4 dark:bg-gray-900 bg-white p-4 rounded-xl shadow-sm border dark:border-gray-700 border-gray-100">
           <h1 className="text-2xl font-bold text-[#14244D] dark:text-gray-200">
             Gerenciamento de Peneiras
           </h1>
@@ -226,13 +226,13 @@ const Peneiras: React.FC = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Buscar (Server-side)..."
+                placeholder="Buscar por título, local ou descrição..."
                 value={searchTerm}
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
                   setPage(1);
                 }}
-                className="w-full pl-10 pr-4 py-2 border dark:bg-gray-800 dark:border-gray-700  border-gray-300 rounded-lg focus:ring-2 focus:ring-[#14244D] outline-none"
+                className=" transitionw-full pl-10 pr-4 py-2 border dark:bg-gray-800 dark:border-gray-700  border-gray-300 rounded-lg focus:ring-2 focus:ring-[#14244D] outline-none"
               />
             </div>
             {isAdmin && (
@@ -259,7 +259,7 @@ const Peneiras: React.FC = () => {
                 setActiveStatus(e.target.value);
                 setPage(1);
               }}
-              className="w-full appearance-none bg-white dark:bg-gray-900 border dark:border-gray-700  border-gray-300 text-gray-700 dark:text-gray-300 py-2 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#14244D] cursor-pointer"
+              className="transition w-full appearance-none bg-white dark:bg-gray-900 border dark:border-gray-700  border-gray-300 text-gray-700 dark:text-gray-300 py-2 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#14244D] cursor-pointer"
             >
               <option value="">Status: Todos</option>
               <option value="AGENDADA">Agendada</option>
@@ -382,7 +382,7 @@ const Peneiras: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-400 bg-white border border-dashed rounded-xl">
+                <div className="transition col-span-full flex flex-col items-center justify-center py-20 text-gray-400 dark:bg-gray-800 bg-white border dark:border-gray-700 border-dashed rounded-xl">
                   <Search className="h-12 w-12 mb-4 opacity-20" />
                   <p>Nenhuma peneira encontrada com estes filtros.</p>
                 </div>

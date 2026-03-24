@@ -98,7 +98,7 @@ const TrackingPartida: React.FC = () => {
           
           {!videoFile ? (
             <div
-              className={`w-full max-w-2xl border-4 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center transition-all duration-300 ease-in-out cursor-pointer
+              className={`w-full max-w-2xl border-4 border-dashed border-gray-100 dark:border-gray-800 rounded-2xl p-10 flex flex-col items-center justify-center transition-all duration-300 ease-in-out cursor-pointer
                 ${isDragging 
                   ? "border-[#8B0000] bg-[#8B0000]/5 scale-105" 
                   : "border-gray-300 hover:border-[#14244D] hover:bg-gray-50 dark:hover:bg-gray-800"
@@ -108,7 +108,7 @@ const TrackingPartida: React.FC = () => {
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
             >
-              <div className="w-20 h-20 bg-[#14244D]/10 text-[#14244D] rounded-full flex items-center justify-center mb-6">
+              <div className="w-20 h-20 bg-[#14244D]/10  text-[#14244D] rounded-full flex items-center justify-center mb-6">
                 <UploadCloud size={40} />
               </div>
               <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-2 text-center">

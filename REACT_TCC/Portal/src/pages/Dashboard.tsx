@@ -183,28 +183,20 @@ const Dashboard: React.FC = () => {
           {/* ================= STATS CARDS ================= */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mt-3">
             <StatCard
-              icon={<Users className="h-6 w-6 text-white" />}
               label="Candidatos"
               value={stats?.total_candidatos || 0}
-              color="bg-[#14244D]"
             />
             <StatCard
-              icon={<Trophy className="h-6 w-6 text-white" />}
               label="Peneiras Agendadas"
               value={stats?.total_peneiras || 0}
-              color="bg-green-600"
             />
             <StatCard
-              icon={<Calendar className="h-6 w-6 text-white" />}
               label="Peneiras Ativas"
               value={stats?.peneiras_ativas || 0}
-              color="bg-[#941B1B]"
             />
             <StatCard
-              icon={<Trophy className="h-6 w-6 text-white" />}
               label="Peneiras Agendadas"
               value={stats?.peneiras_agendadas || 0}
-              color="bg-green-600"
             />
           </div>
         </div>
