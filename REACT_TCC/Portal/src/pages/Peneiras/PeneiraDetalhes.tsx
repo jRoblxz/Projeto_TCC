@@ -139,6 +139,8 @@ const PeneiraDetalhes: React.FC = () => {
     }
   };
 
+
+
   useEffect(() => {
     loadData();
   }, [id, navigate]);
@@ -305,7 +307,7 @@ const PeneiraDetalhes: React.FC = () => {
               <InfoBox
                 icon={<Calendar className="text-white" />}
                 title="Data e Horário"
-                value={peneira.data_evento}
+                value={peneira.data_evento?.replace("-", "/")}
               />
               <InfoBox
                 icon={<MapPin className="text-white" />}
