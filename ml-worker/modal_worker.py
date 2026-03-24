@@ -12,13 +12,14 @@ from pathlib import Path
 # ── Imagem Docker com todas as dependências ───────────────────────────────────
 image = (
     modal.Image.debian_slim(python_version="3.11")
-    .apt_install("ffmpeg", "libgl1", "libglib2.0-0")
+    .apt_install("ffmpeg", "libgl1", "libglib2.0-0", "git")
     .pip_install(
         "ultralytics",
         "supervision",
         "scikit-learn",
         "opencv-python-headless",
         "google-cloud-storage",
+        "fastapi[standard]",
         "requests",
     )
     .run_commands(
@@ -39,7 +40,7 @@ model_volume = modal.Volume.from_name("football-models", create_if_missing=True)
 #   LARAVEL_WEBHOOK_URL    → URL do endpoint webhook no Laravel
 #   LARAVEL_WEBHOOK_SECRET → token secreto para validar o webhook
 secrets = [
-    modal.Secret.from_name("football-tracker-secrets"),
+    modal.Secret.from_name("tcc-football"),
 ]
 
 
@@ -435,7 +436,7 @@ def process_video(
 
 
 @app.function(secrets=secrets)
-@modal.web_endpoint(method="POST")
+@modal.fastapi_endpoint(method="POST")
 def trigger(body: dict):
     """
     Endpoint HTTP que o Laravel chama para disparar o processamento.
