@@ -12,10 +12,12 @@ import {
   CheckCircle,
   AlertTriangle,
   Download,
+  BarChart3, User, Flame, Activity,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { api } from "@/config/api"; // Certifique-se de que o caminho do seu axios está correto
 import { useVideoJob } from "@/hooks/useVideoJob"; // Ajuste o caminho do seu hook
+
 
 const TrackingPartida: React.FC = () => {
   const navigate = useNavigate();
@@ -26,6 +28,8 @@ const TrackingPartida: React.FC = () => {
   // Novos estados para a integração
   const [isUploading, setIsUploading] = useState(false);
   const [jobId, setJobId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<"geral" | "individual">("geral");
+  const [selectedPlayerId, setSelectedPlayerId] = useState<number>(1);
 
   // O seu hook assumindo o controle após o upload!
   const { job, error: jobError } = useVideoJob(jobId);
@@ -249,39 +253,202 @@ const TrackingPartida: React.FC = () => {
             </div>
           )}
 
-          {/* Status: Concluído */}
+          {/* Status: Concluído - DASHBOARD DE ANÁLISE */}
           {job?.status === "done" && (
-            <div className="flex flex-col items-center w-full animate-in zoom-in duration-500">
-              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6">
-                <CheckCircle size={40} />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">
-                Análise Concluída!
-              </h2>
+            <div className="w-full animate-in zoom-in duration-500">
+              
+              {/* Cabeçalho do Resultado */}
+              <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-100 dark:border-gray-800 pb-6">
+                <div className="flex items-center gap-4 mb-4 md:mb-0">
+                  <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                    <CheckCircle size={28} />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Análise Concluída</h2>
+                    <p className="text-sm text-gray-500">Dados processados pela IA de Visão Computacional</p>
+                  </div>
+                </div>
 
-              {/* Player do Vídeo Processado */}
-              {job.video_url && (
-                <div className="w-full max-w-4xl bg-black rounded-xl overflow-hidden shadow-lg mb-8 aspect-video">
-                  <video
-                    src={job.video_url}
-                    controls
-                    className="w-full h-full object-cover"
-                  />
+                {job.csv_url && (
+                  <a
+                    href={job.csv_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-2.5 bg-[#14244D] text-white font-bold rounded-xl hover:bg-[#1e3a8a] transition shadow-md flex items-center gap-2"
+                  >
+                    <Download size={20} /> Exportar CSV
+                  </a>
+                )}
+              </div>
+
+              {/* NAVEGAÇÃO DE ABAS */}
+              <div className="flex gap-4 mb-6 border-b border-gray-200 dark:border-gray-700 pb-2 overflow-x-auto">
+                <button
+                  onClick={() => setActiveTab("geral")}
+                  className={`flex items-center gap-2 px-4 py-2 font-bold transition-all whitespace-nowrap ${
+                    activeTab === "geral"
+                      ? "text-[#8B0000] border-b-4 border-[#8B0000]"
+                      : "text-gray-500 hover:text-[#14244D]"
+                  }`}
+                >
+                  <BarChart3 size={20} /> Panorama Geral
+                </button>
+                <button
+                  onClick={() => setActiveTab("individual")}
+                  className={`flex items-center gap-2 px-4 py-2 font-bold transition-all whitespace-nowrap ${
+                    activeTab === "individual"
+                      ? "text-[#8B0000] border-b-4 border-[#8B0000]"
+                      : "text-gray-500 hover:text-[#14244D]"
+                  }`}
+                >
+                  <User size={20} /> Análise Individual
+                </button>
+              </div>
+
+              {/* === ABA 1: PANORAMA GERAL === */}
+              {activeTab === "geral" && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Lado Esquerdo: Player de Vídeo */}
+                  <div className="flex flex-col gap-4">
+                    <h3 className="font-bold text-[#14244D] dark:text-white text-lg">Câmera Tática (Tracking)</h3>
+                    {job.video_url && (
+                      <div className="w-full bg-black rounded-2xl overflow-hidden shadow-lg aspect-video border border-gray-200 dark:border-gray-800">
+                        <video
+                          src={job.video_url}
+                          controls
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Lado Direito: Estatísticas estilo SofaScore */}
+                  <div className="flex flex-col gap-4">
+                    <h3 className="font-bold text-[#14244D] dark:text-white text-lg">Estatísticas da Partida</h3>
+                    
+                    <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
+                      
+                      {/* Cabeçalho dos Times */}
+                      <div className="flex justify-between items-center mb-6">
+                        <div className="text-center">
+                          <div className="w-10 h-10 bg-[#14244D] rounded-full mx-auto mb-1"></div>
+                          <span className="font-bold text-gray-800 dark:text-white text-sm">Time A</span>
+                        </div>
+                        <div className="text-2xl font-black text-gray-400">vs</div>
+                        <div className="text-center">
+                          <div className="w-10 h-10 bg-[#8B0000] rounded-full mx-auto mb-1"></div>
+                          <span className="font-bold text-gray-800 dark:text-white text-sm">Time B</span>
+                        </div>
+                      </div>
+
+                      {/* Componente Fake das Barras (SofaScore Style) */}
+                      <div className="space-y-5">
+                        {[
+                          { label: "Posse de Bola", a: 41, b: 59, isPct: true },
+                          { label: "Grandes Chances", a: 2, b: 1, isPct: false },
+                          { label: "Finalizações", a: 11, b: 14, isPct: false },
+                          { label: "Escanteios", a: 5, b: 8, isPct: false },
+                          { label: "Desarmes", a: 15, b: 12, isPct: false },
+                        ].map((stat, idx) => {
+                          const total = stat.a + stat.b;
+                          const pctA = total > 0 ? (stat.a / total) * 100 : 50;
+                          const pctB = total > 0 ? (stat.b / total) * 100 : 50;
+                          
+                          return (
+                            <div key={idx} className="flex flex-col gap-1">
+                              <div className="flex justify-between text-sm font-bold">
+                                <span className={stat.a > stat.b ? "text-[#14244D]" : "text-gray-500"}>{stat.a}{stat.isPct ? "%" : ""}</span>
+                                <span className="text-gray-600 dark:text-gray-300 font-medium">{stat.label}</span>
+                                <span className={stat.b > stat.a ? "text-[#8B0000]" : "text-gray-500"}>{stat.b}{stat.isPct ? "%" : ""}</span>
+                              </div>
+                              <div className="flex w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden gap-1">
+                                <div style={{ width: `${pctA}%` }} className="h-full bg-[#14244D] rounded-r-full"></div>
+                                <div style={{ width: `${pctB}%` }} className="h-full bg-[#8B0000] rounded-l-full"></div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
               )}
 
-              {/* Botão de Download do CSV com Coordenadas */}
-              {job.csv_url && (
-                <a
-                  href={job.csv_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-4 bg-[#14244D] text-white font-bold rounded-xl hover:bg-[#1e3a8a] transition shadow-lg flex items-center gap-3"
-                >
-                  <Download size={24} />
-                  Baixar Coordenadas (CSV)
-                </a>
+              {/* === ABA 2: ANÁLISE INDIVIDUAL === */}
+              {activeTab === "individual" && (
+                <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-8">
+                  
+                  {/* Lista de Jogadores Fake */}
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 p-4 h-fit">
+                    <h3 className="font-bold text-[#14244D] dark:text-white mb-4">Atletas Rastreáveis</h3>
+                    <div className="space-y-2">
+                      {[
+                        { id: 1, name: "Jogador #7", team: "A" },
+                        { id: 2, name: "Jogador #10", team: "B" },
+                        { id: 3, name: "Jogador #9", team: "A" },
+                      ].map((player) => (
+                        <button
+                          key={player.id}
+                          onClick={() => setSelectedPlayerId(player.id)}
+                          className={`w-full flex items-center justify-between p-3 rounded-xl transition-all text-sm font-bold ${
+                            selectedPlayerId === player.id ? "bg-[#8B0000] text-white shadow-md" : "hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                          }`}
+                        >
+                          <span>{player.name}</span>
+                          <span className={`w-2 h-2 rounded-full ${player.team === "A" ? "bg-[#14244D]" : "bg-white"}`}></span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Detalhes do Jogador */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Mapa de Calor Fake */}
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6 shadow-sm flex flex-col items-center">
+                      <div className="w-full flex justify-between items-center mb-6">
+                        <h3 className="font-bold text-[#14244D] dark:text-white flex items-center gap-2"><Flame size={20} className="text-orange-500"/> Mapa de Calor</h3>
+                      </div>
+                      
+                      {/* Campo de futebol simulado com blur simulando heatmap */}
+                      <div className="relative w-full aspect-[2/3] max-w-[250px] bg-green-600 rounded-md border-2 border-white/50 overflow-hidden shadow-inner flex flex-col justify-between p-4">
+                         {/* Linhas do campo */}
+                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1/6 border-2 border-white/40 border-t-0 rounded-b-md"></div>
+                         <div className="absolute top-1/2 left-0 w-full border border-white/40"></div>
+                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 border-2 border-white/40 rounded-full"></div>
+                         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1/6 border-2 border-white/40 border-b-0 rounded-t-md"></div>
+                         
+                         {/* Mancha do Heatmap (Dinâmico baseado no ID selecionado para dar efeito) */}
+                         <div className={`absolute blur-[20px] rounded-full mix-blend-screen opacity-80 ${selectedPlayerId === 1 ? 'top-1/4 right-4 w-24 h-40 bg-red-500' : selectedPlayerId === 2 ? 'bottom-1/3 left-1/4 w-32 h-32 bg-yellow-500' : 'top-1/2 left-1/2 -translate-x-1/2 w-20 h-48 bg-orange-500'}`}></div>
+                      </div>
+                    </div>
+
+                    {/* Stats Individuais Fakes */}
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-6 shadow-sm">
+                       <h3 className="font-bold text-[#14244D] dark:text-white flex items-center gap-2 mb-6"><Activity size={20} className="text-[#8B0000]"/> Movimentação</h3>
+                       
+                       <div className="space-y-6">
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1">Distância Percorrida</p>
+                            <p className="text-3xl font-black text-gray-800 dark:text-white">{selectedPlayerId === 1 ? '8.2' : selectedPlayerId === 2 ? '9.4' : '7.1'} <span className="text-lg font-medium text-gray-400">km</span></p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-500 mb-1">Velocidade Máxima (Sprints)</p>
+                            <p className="text-3xl font-black text-gray-800 dark:text-white">{selectedPlayerId === 1 ? '31.5' : selectedPlayerId === 2 ? '33.1' : '29.8'} <span className="text-lg font-medium text-gray-400">km/h</span></p>
+                          </div>
+                          
+                          <div className="pt-4 border-t border-gray-100 dark:border-gray-800">
+                             <p className="text-xs text-gray-400 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                               Nota: Os dados táticos reais serão injetados aqui a partir do arquivo CSV gerado pela Inteligência Artificial.
+                             </p>
+                          </div>
+                       </div>
+                    </div>
+
+                  </div>
+                </div>
               )}
+
             </div>
           )}
 
