@@ -48,6 +48,7 @@ return [
             // A mágica acontece aqui: apontando para a variável nova!
             'bucket' => env('GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET', 'videos-tcc'), 
             'path_prefix' => '', 
+            'throw' => true,
             //'visibility' => 'public', 
         ],
 
