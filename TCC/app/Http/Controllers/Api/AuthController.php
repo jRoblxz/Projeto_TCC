@@ -33,7 +33,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|in:admin,treinador', 
+            'role' => 'required|in:adm,treinador', 
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             // Campos opcionais do treinador
             'clube_organizacao' => 'nullable|string|max:255',
@@ -163,7 +163,7 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'jogador_id' => $jogadorId, // ID correto recuperado via Pessoa
                 'pessoa' => $user->pessoa,  // Dados da pessoa
-                'isAdmin' => in_array($user->role, ['admin', 'treinador']),
+                'isAdmin' => in_array($user->role, ['adm', 'treinador']),
             ]
         ], 200);
     }
@@ -181,7 +181,7 @@ class AuthController extends Controller
         $userData['jogador_id'] = $user->pessoa && $user->pessoa->jogador ? $user->pessoa->jogador->id : null;
         
         // ADICIONE ESTA LINHA:
-        $userData['isAdmin'] = in_array($user->role, ['admin', 'treinador']);
+        $userData['isAdmin'] = in_array($user->role, ['adm', 'treinador']);
 
         return response()->json($userData);
     }
