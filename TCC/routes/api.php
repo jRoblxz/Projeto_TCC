@@ -74,6 +74,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::get('/video-jobs',       [VideoJobController::class, 'index']);
         Route::get('/video-jobs/{videoJob}', [VideoJobController::class, 'show']);
         Route::post('/video-jobs/upload-url', [VideoJobController::class, 'getUploadUrl']);
+        Route::put('/video-jobs/{videoJob}', [VideoJobController::class, 'update']);
+        Route::delete('/video-jobs/{videoJob}', [VideoJobController::class, 'destroy']);
 
 
     });

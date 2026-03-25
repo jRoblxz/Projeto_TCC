@@ -46,22 +46,22 @@ const EditorTimes: React.FC = () => {
       const response = await api.get(`/peneiras/${id}/teams`);
       let data = response.data;
 
-      // Adaptador com BLINDAGEM contra nomes nulos
-      if (Array.isArray(data)) {
-        // O uso do "?." (Optional Chaining) garante que não dê erro se t.name for null
-        const teamA = data.find((t: any) => t.name?.includes("A")) || data[0];
-        const teamB = data.find((t: any) => t.name?.includes("B")) || data[1];
+      // BLINDAGEM: Times padrão caso o banco de dados retorne vazio
+      let teamA = { name: "Equipe A", players: [], formation: "4-4-2" };
+      let teamB = { name: "Equipe B", players: [], formation: "4-4-2" };
 
-        // Recria o objeto que o componente espera
-        data = {};
-        if (teamA) data["A"] = teamA;
-        if (teamB) data["B"] = teamB;
+      if (Array.isArray(data)) {
+        teamA = data.find((t: any) => t.name?.includes("A")) || data[0] || teamA;
+        teamB = data.find((t: any) => t.name?.includes("B")) || data[1] || teamB;
       }
+
+      // Garante que o objeto SEMPRE tenha as chaves A e B
+      const safeData: any = { A: teamA, B: teamB };
 
       // Auto-distribuição se estiverem no centro
       ["A", "B"].forEach((key) => {
-        if (data[key]) {
-          const team = data[key];
+        const team = safeData[key];
+        if (team && team.players) {
           const playersInCenter = team.players.filter(
             (p: any) => p.x === 50 && p.y === 50 && p.inField,
           ).length;
@@ -73,7 +73,7 @@ const EditorTimes: React.FC = () => {
         }
       });
 
-      setTeams(data);
+      setTeams(safeData);
     } catch (error) {
       console.error(error);
       toast.error("Erro ao carregar times.");
@@ -141,73 +141,63 @@ const EditorTimes: React.FC = () => {
   const onPointerMove = (e: PointerEvent) => {
     if (!draggingItem.current) return;
 
-    // Aqui poderíamos atualizar a posição visualmente em tempo real
-    // Mas para simplificar, o React atualiza no final ou você pode implementar
-
-    // ATENÇÃO: Atualizar state no mousemove pode ser pesado, mas para 22 jogadores é ok.
-    // Para otimizar, usaríamos refs e transform CSS direto.
-
     const { id, fromTeam } = draggingItem.current;
 
-    // Precisamos descobrir em qual campo o mouse está em cima
     let targetTeam = fromTeam;
-    let targetRect =
-      fieldRefs[fromTeam as "A" | "B"].current?.getBoundingClientRect();
+    let targetRect = fieldRefs[fromTeam as "A" | "B"].current?.getBoundingClientRect();
 
-    // Verifica se o mouse está sobre o campo A
     const rectA = fieldRefs["A"].current?.getBoundingClientRect();
     if (
       rectA &&
-      e.clientX >= rectA.left &&
-      e.clientX <= rectA.right &&
-      e.clientY >= rectA.top &&
-      e.clientY <= rectA.bottom
+      e.clientX >= rectA.left && e.clientX <= rectA.right &&
+      e.clientY >= rectA.top && e.clientY <= rectA.bottom
     ) {
       targetTeam = "A";
       targetRect = rectA;
     }
 
-    // Verifica se o mouse está sobre o campo B
     const rectB = fieldRefs["B"].current?.getBoundingClientRect();
     if (
       rectB &&
-      e.clientX >= rectB.left &&
-      e.clientX <= rectB.right &&
-      e.clientY >= rectB.top &&
-      e.clientY <= rectB.bottom
+      e.clientX >= rectB.left && e.clientX <= rectB.right &&
+      e.clientY >= rectB.top && e.clientY <= rectB.bottom
     ) {
       targetTeam = "B";
       targetRect = rectB;
     }
 
     if (targetRect) {
-      // Calcula nova posição %
       const x = ((e.clientX - targetRect.left) / targetRect.width) * 100;
       const y = ((e.clientY - targetRect.top) / targetRect.height) * 100;
+
+      // ATUALIZAÇÃO SEGURA DA REF: Fora do setTeams para não bugar a memória!
+      if (fromTeam !== targetTeam) {
+        draggingItem.current = { id, fromTeam: targetTeam };
+      }
 
       setTeams((prevTeams: any) => {
         const newTeams = JSON.parse(JSON.stringify(prevTeams));
 
-        // Remove do time antigo
+        // BLINDAGEM MÁXIMA: Previne a tela branca caso arraste rápido demais
+        if (!newTeams[fromTeam] || !newTeams[fromTeam].players) return prevTeams;
+        if (!newTeams[targetTeam]) newTeams[targetTeam] = { players: [], name: `Equipe ${targetTeam}` };
+        if (!newTeams[targetTeam].players) newTeams[targetTeam].players = [];
+
         const sourcePlayers = newTeams[fromTeam].players;
         const pIndex = sourcePlayers.findIndex((p: any) => p.id === id);
+        
         if (pIndex === -1) return prevTeams;
 
         const playerObj = sourcePlayers[pIndex];
 
-        // Se mudou de time
         if (fromTeam !== targetTeam) {
-          sourcePlayers.splice(pIndex, 1); // Remove do antigo
+          sourcePlayers.splice(pIndex, 1);
           playerObj.inField = true;
           playerObj.x = Math.max(0, Math.min(100, x));
           playerObj.y = Math.max(0, Math.min(100, y));
-          newTeams[targetTeam].players.push(playerObj); // Adiciona no novo
-
-          // Atualiza a ref para continuar o rastreio no time novo
-          draggingItem.current = { id, fromTeam: targetTeam };
+          newTeams[targetTeam].players.push(playerObj);
         } else {
-          // Mesmo time, só atualiza posição
-          playerObj.inField = true; // Se está movendo no campo, é titular
+          playerObj.inField = true;
           playerObj.x = Math.max(0, Math.min(100, x));
           playerObj.y = Math.max(0, Math.min(100, y));
         }

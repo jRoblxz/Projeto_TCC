@@ -4,61 +4,62 @@ namespace App\Services;
 
 use App\Models\Jogadores;
 use App\Models\Peneiras;
-use App\Models\User;
 
 class DashboardService
 {
     public function getStats(array $filters)
     {
-        // 1. Query Base de Peneiras
-        $queryPeneiras = Peneiras::query();
+        // Pega o filtro se existir
+        $subdivisao = $filters['subdivisao'] ?? null;
 
-        // 2. Buscar e Filtrar Jogadores (Lógica movida da Controller)
-        $allJogadores = Jogadores::with('pessoa')->get()
-            ->sortByDesc('rating_medio')
-            ->values();
+        // ==========================================
+        // 1. CONSULTAS DE PENEIRAS (Rápido no SQL)
+        // ==========================================
+        $queryPeneiras = Peneiras::when($subdivisao, fn($q) => $q->where('sub_divisao', $subdivisao));
 
-        if (!empty($filters['subdivisao'])) {
-            $sub = $filters['subdivisao'];
+        // Usa o clone para não misturar os 'wheres' nas consultas seguintes
+        $activeEventsCount = (clone $queryPeneiras)->where('status', 'EM_ANDAMENTO')->count();
+        $agendadasEventsCount = (clone $queryPeneiras)->where('status', 'AGENDADA')->count();
 
-            // Filtra Peneiras
-            $queryPeneiras->where('sub_divisao', $sub);
+        // Próximos eventos (Ordena no SQL e pega só 5)
+        $nextEvents = (clone $queryPeneiras)
+            ->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA'])
+            ->orderByDesc('data_evento')
+            ->take(5)
+            ->get();
 
-            // Filtra Jogadores
-            $jogadoresFiltrados = $allJogadores->filter(function ($jogador) use ($sub) {
-                return $jogador->pessoa && ($jogador->pessoa->sub_divisao == $sub);
-            })->values();
-        } else {
-            // Sem filtro: Top 10
-            $jogadoresFiltrados = $allJogadores->take(10);
-        }
 
-        // 3. Consultas Auxiliares
-        $nextEvents = $queryPeneiras->whereIn('status', ['EM_ANDAMENTO', 'AGENDADA'])->orderByDesc('data_evento')->take(5)->get();
+        // ==========================================
+        // 2. CONSULTAS DE JOGADORES (Problema N+1 Resolvido!)
+        // ==========================================
+        $queryJogadores = Jogadores::when($subdivisao, function ($q) use ($subdivisao) {
+            // O whereHas filtra usando o banco de dados primeiro
+            $q->whereHas('pessoa', fn($query) => $query->where('sub_divisao', $subdivisao));
+        });
 
-        $TotalCandidates = Jogadores::with('pessoa')->get()
-            ->when(!empty($filters['subdivisao']), function ($collection) use ($filters) {
-                return $collection->filter(function ($jogador) use ($filters) {
-                    return $jogador->pessoa && ($jogador->pessoa->sub_divisao == $filters['subdivisao']);
-                });
-            })
-            ->count();
+        // Conta direto no banco
+        $TotalCandidates = (clone $queryJogadores)->count();
 
-        $activeEventsCount = Peneiras::whereIn('status', ['EM_ANDAMENTO'])
-            ->when(!empty($filters['subdivisao']), fn($q) => $q->where('sub_divisao', $filters['subdivisao']))
-            ->count();
+        // O SEGREDO ESTÁ AQUI: withAvg()
+        // Ele vai na tabela 'avaliacoes', tira a média da coluna 'nota' e finge que o 
+        // nome dessa coluna é 'rating_medio'. Isso mata o N+1 instantaneamente!
+        $jogadoresFiltrados = (clone $queryJogadores)
+            ->with('pessoa')
+            ->withAvg('avaliacoes as rating_medio', 'nota') // A Mágica do Laravel
+            ->orderByDesc('rating_medio') // Como a coluna agora existe, ordenamos no SQL!
+            ->take(10) // Trazemos APENAS 10 jogadores para a RAM
+            ->get();   
 
-        $agendadasEventsCount = Peneiras::whereIn('status', ['AGENDADA'])
-            ->when(!empty($filters['subdivisao']), fn($q) => $q->where('sub_divisao', $filters['subdivisao']))
-            ->count();
 
-        // 4. Retorno Formatado
+        // ==========================================
+        // 3. RETORNO
+        // ==========================================
         return [
             'stats' => [
-                'total_candidatos' => $TotalCandidates,
+                'total_candidatos'   => $TotalCandidates,
                 'peneiras_ativas'    => $activeEventsCount,
-                'peneiras_agendadas'  => $agendadasEventsCount,
-                'total_peneiras' => $activeEventsCount + $agendadasEventsCount
+                'peneiras_agendadas' => $agendadasEventsCount,
+                'total_peneiras'     => $activeEventsCount + $agendadasEventsCount
             ],
             'recent_events' => $nextEvents,
             'jogadores'     => $jogadoresFiltrados
