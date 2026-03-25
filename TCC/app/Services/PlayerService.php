@@ -164,15 +164,22 @@ class PlayerService
 
         // ---> CORREÇÃO DOS DESTAQUES <---
         // Usamos get() antes de contar para evitar o erro de SQL com o withAvg()
-        $destaques = Jogadores::with('pessoa')
-            ->whereIn('id', $jogadoresAtivosIds)
+        // ---> CORREÇÃO DOS DESTAQUES <---
+        $baseDestaquesQuery = Jogadores::whereIn('id', $jogadoresAtivosIds)
             ->withAvg('avaliacoes as rating_medio', 'nota')
-            ->having('rating_medio', '>=', 8.0)
-            ->orderByDesc('rating_medio')
-            ->get();
+            ->having('rating_medio', '>=', 8.0);
 
-        $totalDestaques = $destaques->count();
-        $topDestaques = $destaques->take(5);
+        // Conta DIRETO no banco de dados (rápido e não usa RAM)
+        // Nota: O Laravel usa get()->count() aqui apenas para o having não quebrar o SQL nativo,
+        // mas como não demos o ->with('pessoa'), é uma query extremamente leve só com IDs.
+        $totalDestaques = (clone $baseDestaquesQuery)->get()->count(); 
+
+        // Puxa APENAS os 5 melhores para a memória, já com os dados completos
+        $topDestaques = (clone $baseDestaquesQuery)
+            ->with('pessoa')
+            ->orderByDesc('rating_medio')
+            ->take(5)
+            ->get();
 
         // 6. Inscritos por Subdivisão
         $inscritosSubdivisao = DB::table('inscricoes')

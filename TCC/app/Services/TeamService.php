@@ -19,10 +19,16 @@ class TeamService
     // Retorna os dados formatados para o Frontend
     public function getTeamsForPeneira($peneiraId)
     {
-        $equipes = Equipe::with(['jogadores.pessoa'])
-            ->where('peneira_id', $peneiraId)
-            ->orderBy('nome') // Garante ordem (Time A, Time B)
-            ->get();
+       // Carrega as equipes, os jogadores com suas pessoas e JÁ COM A MÉDIA DO BANCO!
+        $equipes = Equipe::with([
+            'jogadores' => function ($query) {
+                $query->with('pessoa')
+                      ->withAvg('avaliacoes as rating_medio', 'nota'); // Mata o N+1 aqui!
+            }
+        ])
+        ->where('peneira_id', $peneiraId)
+        ->orderBy('nome') // Garante ordem (Time A, Time B)
+        ->get();
 
         $teamsList = []; // Mudamos o nome para indicar que é uma lista
         
