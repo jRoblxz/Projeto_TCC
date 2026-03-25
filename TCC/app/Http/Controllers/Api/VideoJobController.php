@@ -24,12 +24,30 @@ class VideoJobController extends Controller
 
         $file     = $request->file('video');
         $uuid     = Str::uuid();
-        $gcsPath  = "videos/input/{$uuid}.mp4";
+        $filename = "{$uuid}.mp4";
+        $gcsPath  = "videos/input/{$filename}";
 
-        // Sobe o vídeo para o Google Cloud Storage
-        Storage::disk('gcs_videos')->put($gcsPath, file_get_contents($file->getRealPath()));
+        try {
+            // 1. Mudamos para putFileAs (Otimizado, não trava a memória)
+            // Ele tenta salvar e retorna o caminho se der certo, ou false se falhar
+            $uploadSucesso = Storage::disk('gcs_videos')->putFileAs('videos/input', $file, $filename);
 
-        // Cria o registro do job
+            // 2. A Trava: Se o Laravel retornar false, ele para aqui e te avisa
+            if (!$uploadSucesso) {
+                return response()->json([
+                    'message' => 'Falha silenciosa: O Laravel tentou enviar, mas o Google Cloud recusou. Verifique se a variável GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET está certa no .env!'
+                ], 500);
+            }
+
+        } catch (\Exception $e) {
+            // 3. O Debugger: Se o Google Cloud cuspir um erro (403, 404), vai aparecer no seu React
+            return response()->json([
+                'message' => 'Erro bloqueante do Google Cloud: ' . $e->getMessage()
+            ], 500);
+        }
+
+        // Se o código chegou até aqui, é porque o VÍDEO ESTÁ NO BUCKET! Uhul!
+        // Agora sim podemos criar o Job e chamar a IA do Modal.
         $job = VideoJob::create([
             'user_id'           => Auth::id(),
             'status'            => 'pending',
@@ -37,14 +55,21 @@ class VideoJobController extends Controller
             'input_gcs_path'    => $gcsPath,
         ]);
 
-        // Dispara o worker no Modal (não bloqueia)
-        Http::timeout(10)->post(config('services.modal.trigger_url'), [
-            'job_id'           => $job->id,
-            'input_gcs_path'   => $gcsPath,
-            'ball_model_gcs'   => 'models/ball.pt',
-            'player_model_gcs' => 'models/player.pt',
-            'field_model_gcs'  => 'models/field.pt',
-        ]);
+        try {
+            // Dispara o worker no Modal
+            Http::timeout(10)->post(config('services.modal.trigger_url'), [
+                'job_id'           => $job->id,
+                'input_gcs_path'   => $gcsPath,
+                'ball_model_gcs'   => 'models/ball.pt',
+                'player_model_gcs' => 'models/player.pt',
+                'field_model_gcs'  => 'models/field.pt',
+            ]);
+        } catch (\Exception $e) {
+             // Caso o Modal esteja fora do ar ou a URL esteja errada
+             return response()->json([
+                'message' => 'Vídeo salvo, mas erro ao chamar a IA (Modal): ' . $e->getMessage()
+            ], 500);
+        }
 
         return response()->json([
             'job_id' => $job->id,
