@@ -19,50 +19,26 @@ class VideoJobController extends Controller
      */
     public function store(Request $request)
     {
+        // 1. Agora validamos apenas os textos que o React envia
         $request->validate([
-            'video' => 'required|file|mimetypes:video/mp4,video/avi,video/quicktime|max:512000', // 500MB
+            'gcs_path'          => 'required|string',
+            'original_filename' => 'nullable|string', 
         ]);
 
-        $file     = $request->file('video');
-        $uuid     = Str::uuid();
-        $gcsPath  = "videos/input/{$uuid}.mp4";
+        $gcsPath = $request->input('gcs_path');
+        $originalFilename = $request->input('original_filename', 'video_upload.mp4');
 
-        try {
-            // 1. Instanciamos o Google Cloud SDK diretamente (Bypass no Laravel)
-            $storage = new StorageClient([
-                'keyFilePath' => env('GOOGLE_CLOUD_KEY_FILE'),
-                'projectId'   => env('GOOGLE_CLOUD_PROJECT_ID', 'projetotcc-478522')
-            ]);
-
-            // 2. Selecionamos o bucket correto
-            $bucket = $storage->bucket(env('GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET', 'videos-tcc'));
-
-            // 3. Fazemos o upload direto com a biblioteca nativa, forçando resumable = false de verdade!
-            $bucket->upload(
-                fopen($file->getRealPath(), 'r'),
-                [
-                    'name' => $gcsPath,
-                    'resumable' => false
-                ]
-            );
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Erro bloqueante do Google Cloud SDK: ' . $e->getMessage()
-            ], 500);
-        }
-
-        // Se o código chegou até aqui, é porque o VÍDEO ESTÁ NO BUCKET! Uhul!
-        // Agora sim podemos criar o Job e chamar a IA do Modal.
+        // 2. O VÍDEO JÁ ESTÁ NO BUCKET! Uhul! 
+        // Criamos o Job diretamente no banco.
         $job = VideoJob::create([
             'user_id'           => Auth::id(),
             'status'            => 'pending',
-            'original_filename' => $file->getClientOriginalName(),
+            'original_filename' => $originalFilename,
             'input_gcs_path'    => $gcsPath,
         ]);
 
         try {
-            // Dispara o worker no Modal
+            // 3. Dispara o worker no Modal
             Http::timeout(10)->post(config('services.modal.trigger_url'), [
                 'job_id'           => $job->id,
                 'input_gcs_path'   => $gcsPath,
@@ -73,7 +49,7 @@ class VideoJobController extends Controller
         } catch (\Exception $e) {
              // Caso o Modal esteja fora do ar ou a URL esteja errada
              return response()->json([
-                'message' => 'Vídeo salvo, mas erro ao chamar a IA (Modal): ' . $e->getMessage()
+                'message' => 'Vídeo salvo no Google, mas erro ao chamar a IA (Modal): ' . $e->getMessage()
             ], 500);
         }
 
@@ -115,5 +91,37 @@ class VideoJobController extends Controller
             ->get(['id','status','original_filename','output_video_url','output_csv_url','created_at']);
 
         return response()->json($jobs);
+    }
+
+    public function getUploadUrl(Request $request) {
+        $uuid = Str::uuid();
+        $gcsPath = "videos/input/{$uuid}.mp4";
+
+        try {
+            $storage = new StorageClient([
+                'keyFilePath' => env('GOOGLE_CLOUD_KEY_FILE'),
+                'projectId'   => env('GOOGLE_CLOUD_PROJECT_ID', 'projetotcc-478522')
+            ]);
+            
+            $bucket = $storage->bucket(env('GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET', 'videos-tcc'));
+            $object = $bucket->object($gcsPath);
+
+            // Gera um link seguro válido por 15 minutos para fazer o PUT do vídeo
+            $url = $object->signedUrl(
+                new \DateTime('+15 minutes'),
+                [
+                    'method' => 'PUT',
+                    'contentType' => 'video/mp4'
+                ]
+            );
+
+            return response()->json([
+                'upload_url' => $url,
+                'gcs_path' => $gcsPath
+            ]);
+            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erro ao gerar link: ' . $e->getMessage()], 500);
+        }
     }
 }
