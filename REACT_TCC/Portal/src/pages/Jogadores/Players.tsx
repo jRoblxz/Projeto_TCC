@@ -223,7 +223,7 @@ const Players: React.FC = () => {
             <Loader2 className="h-12 w-12 text-[#8B0000] animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
+          <div className="grid gap-8 justify-items-center grid-cols-[repeat(auto-fit,minmax(280px,1fr))] w-full">
             {players.map((player) => (
               <PlayerCard
                 key={player.id}
