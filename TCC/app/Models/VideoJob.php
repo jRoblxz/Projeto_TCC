@@ -10,6 +10,7 @@ class VideoJob extends Model
     protected $fillable = [
         'user_id',
         'status',
+        'titulo',
         'original_filename',
         'input_gcs_path',
         'output_video_url',
