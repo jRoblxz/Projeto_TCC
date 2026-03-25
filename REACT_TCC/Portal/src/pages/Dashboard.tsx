@@ -182,22 +182,10 @@ const Dashboard: React.FC = () => {
 
           {/* ================= STATS CARDS ================= */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mt-3">
-            <StatCard
-              label="Candidatos"
-              value={stats?.total_candidatos || 0}
-            />
-            <StatCard
-              label="Peneiras Agendadas"
-              value={stats?.total_peneiras || 0}
-            />
-            <StatCard
-              label="Peneiras Ativas"
-              value={stats?.peneiras_ativas || 0}
-            />
-            <StatCard
-              label="Peneiras Agendadas"
-              value={stats?.peneiras_agendadas || 0}
-            />
+            <StatCard label="Candidatos" value={stats?.total_candidatos || 0} />
+            <StatCard label="Total de Peneiras" value={stats?.total_peneiras || 0} /> {/* <- Arrumei o label aqui */}
+            <StatCard label="Peneiras Ativas" value={stats?.peneiras_ativas || 0} />
+            <StatCard label="Peneiras Agendadas" value={stats?.peneiras_agendadas || 0} />
           </div>
         </div>
 
