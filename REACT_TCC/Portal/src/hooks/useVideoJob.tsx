@@ -6,6 +6,7 @@ export type JobStatus = 'pending' | 'processing' | 'done' | 'failed'
 
 export interface VideoJob {
   id: number
+  titulo?: string;
   status: JobStatus
   video_url: string | null
   csv_url: string | null

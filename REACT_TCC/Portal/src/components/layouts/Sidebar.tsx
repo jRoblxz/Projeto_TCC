@@ -12,6 +12,7 @@ import {
   ChartPie,
   Trophy,
   FilePlus,
+  ChartLine,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
@@ -101,9 +102,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   if (isAdmin){
     menuItems.push(
       {
-        title: "Análise de Vídeo",
-        path: "/tracking",
-        icon: Video,
+        title: "Análise de Desempenho",
+        path: "/analises",
+        icon: ChartLine,
         Group: "Analises",
       },
       {

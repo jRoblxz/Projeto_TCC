@@ -27,11 +27,11 @@ import Peneira from "@/pages/Peneiras/Peneiras";
 import PeneiraDetalhes from "@/pages/Peneiras/PeneiraDetalhes";
 import EditorTimes from "@/pages/Peneiras/EditorTimes";
 
-
 //ANalises
 import TrackingPartida from "@/pages/Analises/TrackingPartida";
 import AnaliseDados from "@/pages/Analises/AnaliseDados";
 import AtletasDestaque from "@/pages/Analises/AtletasDestaques";
+import AnalisesGaleria from "./pages/Analises/AnalisesGaleria";
 
 const App: FC = () => {
   return (
@@ -51,7 +51,6 @@ const App: FC = () => {
         <Routes>
           {/* Rota Pública */}
           <Route path="/login" element={<Login />} />
-
           {/* Rota Protegida */}
           <Route
             path="/instrucoes"
@@ -77,7 +76,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/dashboard"
             element={
@@ -87,7 +85,6 @@ const App: FC = () => {
             }
           />
           {/* Peneiras */}
-
           <Route
             path="/peneiras"
             element={
@@ -96,7 +93,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/peneiras/:id"
             element={
@@ -105,7 +101,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/peneiras/:id/editor-times"
             element={
@@ -114,9 +109,7 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           {/* Jogadores */}
-
           <Route
             path="/players"
             element={
@@ -125,7 +118,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/jogadores/:id"
             element={
@@ -134,7 +126,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/jogadores/:id/edit"
             element={
@@ -143,9 +134,7 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           {/* Análises */}
-
           <Route
             path="/tracking"
             element={
@@ -154,7 +143,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/analise"
             element={
@@ -163,7 +151,6 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/destaques"
             element={
@@ -180,8 +167,32 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
+          <Route 
+            path="/analises" 
+            element={
+              <ProtectedRoute>
+                <AnalisesGaleria />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/tracking/novo" 
+            element={
+              <ProtectedRoute>
+                <TrackingPartida />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/tracking/:id" 
+            element={
+              <ProtectedRoute>
+                <TrackingPartida />
+              </ProtectedRoute>
+            } 
+          />
 
-
+          {/* Para ver um que já existe */}
           {/* Redirecionamentos */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
