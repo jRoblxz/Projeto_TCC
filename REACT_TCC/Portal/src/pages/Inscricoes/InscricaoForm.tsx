@@ -10,7 +10,7 @@ interface Peneira {
   title: string;
   subdivision: string;
   date: string;
-  status: string; 
+  status: string;
   location?: string;
 }
 
@@ -200,7 +200,7 @@ const InscricaoForm: React.FC = () => {
         data_inicio: dataFormatada,
         // Como não vi o 'local' na sua interface Peneira, deixei um texto padrão.
         // Se vier da API, troque para: local: peneiraCompleta.local
-        location: peneiraCompleta?.location ,
+        location: peneiraCompleta?.location,
       };
 
       // Navega e envia a bagagem
@@ -334,8 +334,8 @@ const InscricaoForm: React.FC = () => {
                     Selecione
                   </option>
                   <option value="Goleiro">Goleiro</option>
-                  <option value="Zagueiro">Zagueiro Direito</option>
-                  <option value="Zagueiro">Zagueiro Esquerdo</option>
+                  <option value="Zagueiro Direito">Zagueiro Direito</option>
+                  <option value="Zagueiro Esquerdo">Zagueiro Esquerdo</option>
                   <option value="Lateral Direito">Lateral Direito</option>
                   <option value="Lateral Esquerdo">Lateral Esquerdo</option>
                   <option value="Volante">Volante</option>

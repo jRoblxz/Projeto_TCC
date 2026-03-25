@@ -83,7 +83,21 @@ const CadastroAdmin: React.FC = () => {
       });
       
       toast.success("Usuário cadastrado com sucesso!");
-      navigate(-1);
+      // Zera o formulário em vez de recarregar a página!
+      setFoto(null);
+      setFotoPreview(null);
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        password_confirmation: "",
+        role: "treinador",
+        clube_organizacao: "",
+        cargo: "",
+        cref: "",
+        anos_experiencia: "",
+        biografia_resumo: "",
+      });
     } catch (error: any) {
       console.error(error);
       const errorMsg = error.response?.data?.message || "Erro ao cadastrar usuário.";

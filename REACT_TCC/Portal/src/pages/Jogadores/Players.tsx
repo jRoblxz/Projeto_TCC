@@ -121,9 +121,25 @@ const Players: React.FC = () => {
   };
 
   const handleAttributeChange = (field: string, value: string) => {
+    // 1. Permite que o usuário apague o campo (deixe vazio) para poder digitar outro número
+    if (value === "") {
+      setAttributes((prev: any) => ({
+        ...prev,
+        [field]: "",
+      }));
+      return;
+    }
+
+    // 2. Converte para número
+    let numValue = Number(value);
+
+    // 3. Trava o valor entre 0 e 10
+    if (numValue < 0) numValue = 0;
+    if (numValue > 10) numValue = 10;
+
     setAttributes((prev: any) => ({
       ...prev,
-      [field]: Number(value),
+      [field]: numValue,
     }));
   };
 
@@ -310,7 +326,7 @@ const Players: React.FC = () => {
                         min="0"
                         max="10"
                         step="0.1"
-                        value={attributes[attr.key] || ""}
+                        value={attributes[attr.key] !== undefined ? attributes[attr.key] : ""}
                         onChange={(e) =>
                           handleAttributeChange(attr.key, e.target.value)
                         }
