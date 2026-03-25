@@ -30,7 +30,7 @@ class DashboardService
 
 
         // ==========================================
-        // 2. CONSULTAS DE JOGADORES (Corrigindo o Accessor)
+        // 2. CONSULTAS DE JOGADORES (Problema N+1 Resolvido!)
         // ==========================================
         $queryJogadores = Jogadores::when($subdivisao, function ($q) use ($subdivisao) {
             // O whereHas filtra usando o banco de dados primeiro
@@ -40,13 +40,15 @@ class DashboardService
         // Conta direto no banco
         $TotalCandidates = (clone $queryJogadores)->count();
 
-        // Como 'rating_medio' é calculado no PHP, nós trazemos a lista filtrada pra memória e ordenamos!
+        // O SEGREDO ESTÁ AQUI: withAvg()
+        // Ele vai na tabela 'avaliacoes', tira a média da coluna 'nota' e finge que o 
+        // nome dessa coluna é 'rating_medio'. Isso mata o N+1 instantaneamente!
         $jogadoresFiltrados = (clone $queryJogadores)
             ->with('pessoa')
-            ->get() // 1. Traz os jogadores do banco (apenas os que passaram no filtro)
-            ->sortByDesc('rating_medio') // 2. Ordena no PHP usando a sua função
-            ->take(10) // 3. Pega só os 10 primeiros
-            ->values(); // 4. Reorganiza os índices para o React não reclamar   
+            ->withAvg('avaliacoes as rating_medio', 'nota') // A Mágica do Laravel
+            ->orderByDesc('rating_medio') // Como a coluna agora existe, ordenamos no SQL!
+            ->take(10) // Trazemos APENAS 10 jogadores para a RAM
+            ->get();   
 
 
         // ==========================================
