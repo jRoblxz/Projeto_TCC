@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
+use Google\Cloud\Storage\StorageClient;
 
 class VideoJobController extends Controller
 {
@@ -24,25 +25,30 @@ class VideoJobController extends Controller
 
         $file     = $request->file('video');
         $uuid     = Str::uuid();
-        $filename = "{$uuid}.mp4";
-        $gcsPath  = "videos/input/{$filename}";
+        $gcsPath  = "videos/input/{$uuid}.mp4";
 
         try {
-            // 1. Mudamos para putFileAs (Otimizado, não trava a memória)
-            // Ele tenta salvar e retorna o caminho se der certo, ou false se falhar
-            $uploadSucesso = Storage::disk('gcs_videos')->putFileAs('videos/input', $file, $filename);
+            // 1. Instanciamos o Google Cloud SDK diretamente (Bypass no Laravel)
+            $storage = new StorageClient([
+                'keyFilePath' => env('GOOGLE_CLOUD_KEY_FILE'),
+                'projectId'   => env('GOOGLE_CLOUD_PROJECT_ID', 'projetotcc-478522')
+            ]);
 
-            // 2. A Trava: Se o Laravel retornar false, ele para aqui e te avisa
-            if (!$uploadSucesso) {
-                return response()->json([
-                    'message' => 'Falha silenciosa: O Laravel tentou enviar, mas o Google Cloud recusou. Verifique se a variável GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET está certa no .env!'
-                ], 500);
-            }
+            // 2. Selecionamos o bucket correto
+            $bucket = $storage->bucket(env('GOOGLE_CLOUD_STORAGE_VIDEO_BUCKET', 'videos-tcc'));
+
+            // 3. Fazemos o upload direto com a biblioteca nativa, forçando resumable = false de verdade!
+            $bucket->upload(
+                fopen($file->getRealPath(), 'r'),
+                [
+                    'name' => $gcsPath,
+                    'resumable' => false
+                ]
+            );
 
         } catch (\Exception $e) {
-            // 3. O Debugger: Se o Google Cloud cuspir um erro (403, 404), vai aparecer no seu React
             return response()->json([
-                'message' => 'Erro bloqueante do Google Cloud: ' . $e->getMessage()
+                'message' => 'Erro bloqueante do Google Cloud SDK: ' . $e->getMessage()
             ], 500);
         }
 

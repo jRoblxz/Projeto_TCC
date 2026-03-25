@@ -92,11 +92,17 @@ def process_video(
         bucket.blob(gcs_path).download_to_filename(local_path)
         print(f"Downloaded: {gcs_path} → {local_path}")
 
-    def gcs_upload(local_path: str, gcs_path: str) -> str:
+    def gcs_upload(local_path, gcs_path):
+        # ... código que conecta no bucket ...
+    
         blob = bucket.blob(gcs_path)
         blob.upload_from_filename(local_path)
-        blob.make_public()
-        print(f"Uploaded: {local_path} → {gcs_path}")
+        
+        # ❌ APAGUE OU COMENTE ESTA LINHA ABAIXO:
+        # blob.make_public() 
+        
+        # ✅ PODE MANTER O RETORNO DA URL:
+        # A propriedade public_url apenas monta a string da URL (não faz requisição), então não dá erro!
         return blob.public_url
 
     # ── Notifica Laravel ──────────────────────────────────────────────────────
