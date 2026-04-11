@@ -177,6 +177,13 @@ const Login: React.FC = () => {
           <a href="#" className="mt-4 text-xs text-[#c9c9c9] no-underline hover:text-white text-center block">
             Esqueceu a senha
           </a>
+          <button 
+            type="button"
+            onClick={() => navigate("/cadastros")} 
+            className="mt-4 text-xs text-[#c9c9c9] hover:text-white text-center w-full bg-transparent border-none cursor-pointer"
+          >
+            Cadastrar-se para testes
+          </button>
 
         </div>
       </div>

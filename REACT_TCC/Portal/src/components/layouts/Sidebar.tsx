@@ -102,13 +102,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   if (isAdmin){
     menuItems.push(
       {
-        title: "Análise de Desempenho",
-        path: "/analises",
-        icon: ChartLine,
-        Group: "Analises",
-      },
-      {
-        title: "Análise de Atributos",
+        title: "Análise de Dados",
         path: "/analise",
         icon: ChartPie,
         Group: "Analises",
@@ -117,6 +111,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         title: "Atletas em Destaque",
         path: "/destaques",
         icon: Trophy,
+        Group: "Analises",
+      },
+      {
+        title: "Análise de Desempenho",
+        path: "/analises",
+        icon: ChartLine,
         Group: "Analises",
       },
     );

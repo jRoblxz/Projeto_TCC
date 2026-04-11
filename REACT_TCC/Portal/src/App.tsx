@@ -32,6 +32,7 @@ import TrackingPartida from "@/pages/Analises/TrackingPartida";
 import AnaliseDados from "@/pages/Analises/AnaliseDados";
 import AtletasDestaque from "@/pages/Analises/AtletasDestaques";
 import AnalisesGaleria from "./pages/Analises/AnalisesGaleria";
+import CadastroTestes from "./pages/CadastroTestes";
 
 const App: FC = () => {
   return (
@@ -51,6 +52,7 @@ const App: FC = () => {
         <Routes>
           {/* Rota Pública */}
           <Route path="/login" element={<Login />} />
+          <Route path="/cadastros" element={<CadastroTestes />} />
           {/* Rota Protegida */}
           <Route
             path="/instrucoes"
@@ -167,29 +169,29 @@ const App: FC = () => {
               </ProtectedRoute>
             }
           />
-          <Route 
-            path="/analises" 
+          <Route
+            path="/analises"
             element={
               <ProtectedRoute>
                 <AnalisesGaleria />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/tracking/novo" 
+          <Route
+            path="/tracking/novo"
             element={
               <ProtectedRoute>
                 <TrackingPartida />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/tracking/:id" 
+          <Route
+            path="/tracking/:id"
             element={
               <ProtectedRoute>
                 <TrackingPartida />
               </ProtectedRoute>
-            } 
+            }
           />
 
           {/* Para ver um que já existe */}

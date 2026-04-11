@@ -20,6 +20,9 @@ Route::prefix('v1')->group(function () {
 
     // Webhook do Modal (Sem autenticação, mas com secret)
     Route::post('/webhook/modal', [WebhookController::class, 'modal']);
+
+    // Rota de cadastro de administradores/treinadores
+    Route::post('/cadastro', [AuthController::class, 'register']);
 });
 
 // --- Rotas Protegidas (Sanctum) ---
