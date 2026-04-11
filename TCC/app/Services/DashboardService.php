@@ -30,11 +30,32 @@ class DashboardService
 
 
         // ==========================================
-        // 2. CONSULTAS DE JOGADORES (Problema N+1 Resolvido!)
+        // 2. CONSULTAS DE JOGADORES (Filtro de Idade Corrigido!)
         // ==========================================
         $queryJogadores = Jogadores::when($subdivisao, function ($q) use ($subdivisao) {
-            // O whereHas filtra usando o banco de dados primeiro
-            $q->whereHas('pessoa', fn($query) => $query->where('sub_divisao', $subdivisao));
+            
+            // Converte a subdivisão nas idades correspondentes para filtrar pela data de nascimento
+            $idades = match ($subdivisao) {
+                'Sub-7'  => [6, 7],
+                'Sub-9'  => [8, 9],
+                'Sub-11' => [10, 11],
+                'Sub-13' => [12, 13],
+                'Sub-15' => [14, 15],
+                'Sub-17' => [16, 17],
+                'Sub-20' => [18, 21], // Baseado na sua model Pessoas.php
+                default  => null
+            };
+
+            if ($idades) {
+                // Transforma a idade numa janela de datas (Ano de nascimento)
+                $dataInicio = now()->subYears($idades[1] + 1)->format('Y-m-d');
+                $dataFim    = now()->subYears($idades[0])->format('Y-m-d');
+                
+                // Filtra usando a coluna real do banco de dados (data_nascimento)
+                $q->whereHas('pessoa', function($query) use ($dataInicio, $dataFim) {
+                    $query->whereBetween('data_nascimento', [$dataInicio, $dataFim]);
+                });
+            }
         });
 
         // Conta direto no banco
