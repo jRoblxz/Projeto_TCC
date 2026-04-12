@@ -199,7 +199,7 @@ const CadastroTestes: React.FC = () => {
               </div>
             </div>
 
-            {/* Lado Direito: Foto asa*/}
+            {/* Lado Direito: Foto */}
             <div className="flex flex-col items-center justify-start">
               <label className="block text-sm font-bold text-gray-700 mb-2 text-center w-full">
                 Foto de Perfil
