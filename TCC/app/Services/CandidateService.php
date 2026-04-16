@@ -36,6 +36,8 @@ class CandidateService
                 'rg' => $data['rg'] ?? null,
                 'telefone' => $data['telefone'] ?? null,
                 'cidade' => $data['cidade'] ?? null,
+                'latitude' => $data['latitude'] ?? null,
+                'longitude' => $data['longitude'] ?? null,
                 'data_nascimento' => $data['data_nascimento'],
                 'foto_perfil_url' => $path
             ]);

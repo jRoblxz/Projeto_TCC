@@ -19,6 +19,8 @@ class Pessoas extends Model
         'idade',
         'data_nascimento',
         'cidade',
+        'latitude',     // <-- ADICIONE ISTO
+        'longitude',    // <-- ADICIONE ISTO
         'cpf',
         'rg',
         'telefone',
@@ -70,5 +72,23 @@ class Pessoas extends Model
             return "https://storage.googleapis.com/{$bucket}/{$this->foto_perfil_url}";
         }
         return null;
+    }
+
+    // Relação com Treinadores (AQUI ESTÁ A CORREÇÃO DO ERRO)
+    public function treinador()
+    {
+        // Se o seu model se chamar apenas "Treinador", tire o "es"
+        return $this->hasOne(Treinadores::class, 'pessoa_id'); 
+    }
+
+    // Relação com o Usuário (Acesso ao sistema)
+    public function user()
+    {
+        // Se a tabela 'pessoas' tiver uma coluna 'user_id':
+        return $this->belongsTo(User::class, 'user_id');
+        
+        // OBS: Se a tabela 'users' é que tiver a coluna 'pessoa_id', 
+        // mude a linha de cima para: 
+        // return $this->hasOne(User::class, 'pessoa_id');
     }
 }

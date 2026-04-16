@@ -13,6 +13,10 @@ import {
   Trophy,
   FilePlus,
   ChartLine,
+  User,
+  Users2,
+  UsersRound,
+  Map,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
 import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
@@ -130,6 +134,19 @@ if (isAdmin){
         icon: FilePlus,
         Group: "Gestão",
       },
+      {
+        title: "Usuários",
+        path: "/usuarios",
+        icon: UsersRound,
+        Group: "Gestão",
+      },
+      {
+        title: "Mapa de Talentos",
+        path: "/usuarios/mapa",
+        icon: Map,
+        Group: "Gestão",
+      }
+
     );
 }
   const handleToggleSubmenu = (title: string) => {

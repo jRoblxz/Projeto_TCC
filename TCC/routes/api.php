@@ -80,6 +80,19 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::put('/video-jobs/{videoJob}', [VideoJobController::class, 'update']);
         Route::delete('/video-jobs/{videoJob}', [VideoJobController::class, 'destroy']);
 
+        // Gestão de Usuários
+        Route::get('/users', [App\Http\Controllers\Api\UserController::class, 'index']);
+        
+        // 1º As rotas fixas vêm PRIMEIRO
+        Route::get('/users/map-stats', [App\Http\Controllers\Api\UserController::class, 'mapStats']); 
+        
+        // 2º As rotas dinâmicas (com {id}) vêm DEPOIS
+        Route::get('/users/{id}', [App\Http\Controllers\Api\UserController::class, 'show']);
+        Route::put('/users/{id}', [App\Http\Controllers\Api\UserController::class, 'update']);
+        Route::delete('/users/{id}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
 
     });
+
+
+    
 });

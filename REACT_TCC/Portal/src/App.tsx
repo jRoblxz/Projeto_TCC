@@ -33,6 +33,9 @@ import AnaliseDados from "@/pages/Analises/AnaliseDados";
 import AtletasDestaque from "@/pages/Analises/AtletasDestaques";
 import AnalisesGaleria from "./pages/Analises/AnalisesGaleria";
 import CadastroTestes from "./pages/CadastroTestes";
+import UserControl from "./pages/Gestão/UserControl";
+import UserEdit from "./pages/Gestão/UserEdit";
+import UserMap from "./pages/Gestão/UserMap";
 
 const App: FC = () => {
   return (
@@ -190,6 +193,33 @@ const App: FC = () => {
             element={
               <ProtectedRoute>
                 <TrackingPartida />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/usuarios"
+            element={
+              <ProtectedRoute>
+                <UserControl />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/usuarios/:id/edit"
+            element={
+              <ProtectedRoute>
+                <UserEdit />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/usuarios/mapa"
+            element={
+              <ProtectedRoute>
+                <UserMap />
               </ProtectedRoute>
             }
           />
