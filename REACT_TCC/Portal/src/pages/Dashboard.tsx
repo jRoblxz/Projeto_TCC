@@ -13,8 +13,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import Logo from "../assets/img/logo-copia.png";
+import Logo from "../assets/img/fatec.png";
 import StatCard from "@/components/ui/StatCard";
+import FunilConversao from "@/components/ui/FunilConversao";
 
 // Interfaces para Tipagem
 interface Stats {
@@ -22,6 +23,11 @@ interface Stats {
   peneiras_ativas: number;
   peneiras_agendadas: number;
   total_peneiras: number;
+  funil_conversao?: {
+    etapa: string;
+    valor: number;
+    cor: string;
+  }[];
 }
 interface Peneira {
   id: number;
@@ -116,7 +122,7 @@ const Dashboard: React.FC = () => {
         {/* Loading Overlay */}
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-sm z-50 rounded-lg">
-            <Loader2 className="h-10 w-10 text-[#14244D] animate-spin" />
+            <Loader2 className="h-10 w-10 text-brand-primary animate-spin" />
           </div>
         )}
 
@@ -134,7 +140,7 @@ const Dashboard: React.FC = () => {
                   Sistema de Peneiras
                 </h1>
                 <p className="text-[#333] dark:text-gray-400 text-sm">
-                  Gestão e Formação de Atletas • Grêmio Prudente
+                  Gestão e Formação de Atletas • Fatec Prudente
                 </p>
               </div>
             </div>
@@ -152,7 +158,7 @@ const Dashboard: React.FC = () => {
                 id="subdivisao"
                 value={filterSub}
                 onChange={(e) => setFilterSub(e.target.value)}
-                className="bg-white text-[#14244D] font-bold py-1 px-3 rounded cursor-pointer outline-none focus:ring-2 focus:ring-blue-400"
+                className="bg-white text-brand-primary font-bold py-1 px-3 rounded cursor-pointer outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <option value="">Todas</option>
                 {[
@@ -183,22 +189,33 @@ const Dashboard: React.FC = () => {
           {/* ================= STATS CARDS ================= */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-20 mt-3">
             <StatCard label="Candidatos" value={stats?.total_candidatos || 0} />
-            <StatCard label="Total de Peneiras" value={stats?.total_peneiras || 0} /> {/* <- Arrumei o label aqui */}
-            <StatCard label="Peneiras Ativas" value={stats?.peneiras_ativas || 0} />
-            <StatCard label="Peneiras Agendadas" value={stats?.peneiras_agendadas || 0} />
+            <StatCard
+              label="Total de Peneiras"
+              value={stats?.total_peneiras || 0}
+            />{" "}
+            {/* <- Arrumei o label aqui */}
+            <StatCard
+              label="Peneiras Ativas"
+              value={stats?.peneiras_ativas || 0}
+            />
+            <StatCard
+              label="Peneiras Agendadas"
+              value={stats?.peneiras_agendadas || 0}
+            />
           </div>
         </div>
 
         {/* ================= MAIN GRID ================= */}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* ----- COLUNA 1: PENEIRAS ----- */}
           <Card className="p-0 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md transition">
-            <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D]  p-4 border-b dark:border-gray-700 border-gray-200 flex justify-between items-center transition">
+            <div className="bg-white dark:bg-gray-900  dark:text-white text-brand-primary  p-4 border-b dark:border-gray-700 border-gray-200 flex justify-between items-center transition">
               <h2 className="text-2xl font-bold  flex items-center gap-2">
                 Peneiras em Andamento
               </h2>
               <button
-                onClick={() => navigate("/peneiras/nova")}
+                onClick={() => navigate("/peneiras")}
                 className="text-xs font-bold uppercase tracking-wider bg-[#941B1B] text-white hover:text-red-700 border border-[#941B1B] hover:bg-red-50 px-3 py-1 rounded transition"
               >
                 Nova Peneira
@@ -257,7 +274,7 @@ const Dashboard: React.FC = () => {
 
           {/* ----- COLUNA 2: JOGADORES DESTAQUE ----- */}
           <Card className="p-0 overflow-hidden border border-gray-200 dark:border-gray-700 shadow-md transition">
-            <div className="bg-white dark:bg-gray-900  dark:text-white text-[#14244D] p-4 border-b dark:border-gray-700 border-gray-200 transition flex justify-between items-center">
+            <div className="bg-white dark:bg-gray-900  dark:text-white text-brand-primary p-4 border-b dark:border-gray-700 border-gray-200 transition flex justify-between items-center">
               <h2 className="text-2xl font-bold  flex items-center gap-2">
                 Jogadores Destaques
               </h2>
@@ -316,7 +333,7 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     {/* Rating */}
-                    <div className="flex flex-col items-center justify-center bg-[#14244D] dark:bg-[#941B1B] text-white h-10 w-10 rounded-lg font-bold shadow-sm">
+                    <div className="flex flex-col items-center justify-center bg-brand-primary dark:bg-[#941B1B] text-white h-10 w-10 rounded-lg font-bold shadow-sm">
                       <span>
                         {Number(jogador.rating_medio || 0).toFixed(1)}
                       </span>
@@ -329,6 +346,10 @@ const Dashboard: React.FC = () => {
             </div>
           </Card>
         </div>
+        {/* ================= Funil ================= */}
+        {stats?.funil_conversao && (
+          <FunilConversao dadosFunil={stats.funil_conversao} />
+        )}
       </div>
     </Layout>
   );

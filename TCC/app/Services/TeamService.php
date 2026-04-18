@@ -20,14 +20,18 @@ class TeamService
     public function getTeamsForPeneira($peneiraId)
     {
        // Carrega as equipes, os jogadores com suas pessoas e JÁ COM A MÉDIA DO BANCO!
+        // O "use ($peneiraId)" permite que a função enxergue o ID da peneira atual
         $equipes = Equipe::with([
-            'jogadores' => function ($query) {
+            'jogadores' => function ($query) use ($peneiraId) {
                 $query->with('pessoa')
-                      ->withAvg('avaliacoes as rating_medio', 'nota'); // Mata o N+1 aqui!
+                      // O PULO DO GATO ESTÁ AQUI: Limitamos a média APENAS para esta peneira!
+                      ->withAvg(['avaliacoes as rating_medio' => function($q) use ($peneiraId) {
+                          $q->where('peneira_id', $peneiraId);
+                      }], 'nota'); 
             }
         ])
         ->where('peneira_id', $peneiraId)
-        ->orderBy('nome') // Garante ordem (Time A, Time B)
+        ->orderBy('nome')
         ->get();
 
         $teamsList = []; // Mudamos o nome para indicar que é uma lista
@@ -40,7 +44,7 @@ class TeamService
                     'name' => $jogador->pessoa->nome_completo ?? 'Sem Nome',
                     'pos' => $jogador->posicao_principal, 
                     // Garante que o rating seja um número (float)
-                    'rating' => (float) ($jogador->rating_medio ?? 7.0),
+                    'rating' => (float) ($jogador->rating_medio ?? 0.0),    
                     // Mantém dados de posição se existirem na pivot
                     'x' => $jogador->pivot->posicao_campo_x ?? 0,
                     'y' => $jogador->pivot->posicao_campo_y ?? 0,

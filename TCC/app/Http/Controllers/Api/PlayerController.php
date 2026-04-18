@@ -7,13 +7,12 @@ use App\Models\Jogadores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Google\Cloud\Storage\StorageClient;
-use App\Services\PlayerService; // [1] Import the Service
+use App\Services\PlayerService;
 
 class PlayerController extends Controller
 {
     protected $playerService;
 
-    // [2] Add the Constructor for Injection
     public function __construct(PlayerService $playerService)
     {
         $this->playerService = $playerService;
@@ -26,7 +25,6 @@ class PlayerController extends Controller
             'sub_divisao' => $request->sub_divisao
         ];
 
-        // Now this will work because $this->playerService is no longer null
         $players = $this->playerService->getAllWithFilters(
             $request->input('per_page', 12), 
             $filters
@@ -34,12 +32,9 @@ class PlayerController extends Controller
 
         return response()->json($players);
     }
-
-    // ... keep the other methods (show, update, destroy, uploadPhoto) ...
     
     public function show($id)
     {
-        // ... existing code ...
         $jogador = \App\Models\Jogadores::with(['pessoa', 'ultima_avaliacao'])
             ->withAvg('avaliacoes as rating_calculado', 'nota')
             ->findOrFail($id);
@@ -74,8 +69,15 @@ class PlayerController extends Controller
             }
         }
 
+        // ==========================================
+        // CORREÇÃO: ENVIANDO O PENEIRA_ID PARA O SERVICE
+        // ==========================================
         if ($request->has('atributos')) {
-            $this->playerService->updateRating($jogador, $request->input('atributos'));
+            // Capturamos o peneira_id que vem do React
+            $peneiraId = $request->input('peneira_id'); 
+            
+            // Passamos o peneira_id como terceiro parâmetro para a função updateRating!
+            $this->playerService->updateRating($jogador, $request->input('atributos'), $peneiraId);
         }
 
         return response()->json([
@@ -86,7 +88,6 @@ class PlayerController extends Controller
 
     public function destroy($id)
     {
-        // ... existing destroy logic ...
         try {
             $jogador = Jogadores::with('pessoa')->findOrFail($id);
             \App\Models\Avaliacao::where('jogador_id', $id)->delete();
@@ -106,9 +107,6 @@ class PlayerController extends Controller
 
     public function uploadPhoto(Request $request, $id)
     {
-        // ... existing uploadPhoto logic ...
-        // Ideally, this should also move to the Service later, 
-        // but keep it here if it's working for now.
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
@@ -164,9 +162,7 @@ class PlayerController extends Controller
 
     public function stats()
     {
-        // O Controller apenas chama o Service e devolve a resposta em JSON
         $estatisticas = $this->playerService->getStats();
-        
         return response()->json($estatisticas);
     }
 }

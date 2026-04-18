@@ -218,7 +218,7 @@ const Peneiras: React.FC = () => {
       <div className="p-6 space-y-6 min-h-screen pb-20">
         {/* === CABEÇALHO COM BUSCA === */}
         <div className="transition flex flex-col md:flex-row justify-between items-center gap-4 dark:bg-gray-900 bg-white p-4 rounded-xl shadow-sm border dark:border-gray-700 border-gray-100">
-          <h1 className="text-2xl font-bold text-[#14244D] dark:text-gray-200">
+          <h1 className="text-2xl font-bold text-brand-primary dark:text-gray-200">
             Gerenciamento de Peneiras
           </h1>
           <div className="flex items-center gap-3 w-full md:w-auto">
@@ -232,14 +232,14 @@ const Peneiras: React.FC = () => {
                   setSearchTerm(e.target.value);
                   setPage(1);
                 }}
-                className=" transitionw-full pl-10 pr-4 py-2 border dark:bg-gray-800 dark:border-gray-700  border-gray-300 rounded-lg focus:ring-2 focus:ring-[#14244D] outline-none"
+                className=" transitionw-full pl-10 pr-4 py-2 border dark:bg-gray-800 dark:border-gray-700  border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary outline-none"
               />
             </div>
             {isAdmin && (
               <>
                 <button
                   onClick={handleOpenNew}
-                  className="flex items-center gap-2 bg-[#14244D] hover:bg-[#1e3a8a] text-gray-200 px-4 py-2 rounded-lg font-semibold transition shadow-md whitespace-nowrap"
+                  className="flex items-center gap-2 bg-brand-primary hover:bg-[#1e3a8a] text-gray-200 px-4 py-2 rounded-lg font-semibold transition shadow-md whitespace-nowrap"
                 >
                   <Plus className="h-5 w-5" />{" "}
                   <span className="hidden sm:inline">Nova Peneira</span>
@@ -259,7 +259,7 @@ const Peneiras: React.FC = () => {
                 setActiveStatus(e.target.value);
                 setPage(1);
               }}
-              className="transition w-full appearance-none bg-white dark:bg-gray-900 border dark:border-gray-700  border-gray-300 text-gray-700 dark:text-gray-300 py-2 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#14244D] cursor-pointer"
+              className="transition w-full appearance-none bg-white dark:bg-gray-900 border dark:border-gray-700  border-gray-300 text-gray-700 dark:text-gray-300 py-2 pl-4 pr-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary cursor-pointer"
             >
               <option value="">Status: Todos</option>
               <option value="AGENDADA">Agendada</option>
@@ -285,7 +285,7 @@ const Peneiras: React.FC = () => {
                             px-4 py-2 rounded-lg text-sm font-semibold transition whitespace-nowrap border
                             ${
                               activeFilter === sub
-                                ? "bg-[#14244D] text-white border-[#14244D] shadow-md"
+                                ? "bg-brand-primary text-white border-brand-primary shadow-md"
                                 : "bg-white dark:bg-gray-800 dark:text-gray-300  text-gray-600 border-gray-200 dark:border-gray-700  hover:bg-gray-50"
                             }
                         `}
@@ -299,7 +299,7 @@ const Peneiras: React.FC = () => {
         {/* === GRID DE PENEIRAS === */}
         {loading ? (
           <div className="flex justify-center h-64 items-center">
-            <Loader2 className="h-10 w-10 text-[#14244D] animate-spin" />
+            <Loader2 className="h-10 w-10 text-brand-primary animate-spin" />
           </div>
         ) : (
           <>
@@ -327,7 +327,7 @@ const Peneiras: React.FC = () => {
 
                     <div className="p-5 space-y-3 flex-1 text-sm text-gray-600 dark:text-gray-300">
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-[#941B1B]" />
+                        <Calendar className="h-4 w-4 text-brand-secondary" />
                         <span>
                           {peneira.date
                             ? new Date(peneira.date).toLocaleDateString()
@@ -335,11 +335,11 @@ const Peneiras: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-[#941B1B]" />
+                        <MapPin className="h-4 w-4 text-brand-secondary" />
                         <span className="truncate">{peneira.location}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Filter className="h-4 w-4 text-[#941B1B]" />
+                        <Filter className="h-4 w-4 text-brand-secondary" />
                         <span className="truncate font-medium text-gray-600 dark:text-gray-300">
                           {peneira.sub_divisao || "Geral"}
                         </span>
@@ -422,7 +422,7 @@ const Peneiras: React.FC = () => {
         {showFormModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
             <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
-              <div className="bg-[#14244D] p-4 flex justify-between items-center text-white">
+              <div className="bg-brand-primary p-4 flex justify-between items-center text-white">
                 <h3 className="font-bold text-lg">
                   {isEditing ? "Editar Peneira" : "Nova Peneira"}
                 </h3>
@@ -442,7 +442,7 @@ const Peneiras: React.FC = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, nome_evento: e.target.value })
                     }
-                    className="w-full dark:bg-gray-800 border-gray-300 dark:border-gray-700  border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D]"
+                    className="w-full dark:bg-gray-800 border-gray-300 dark:border-gray-700  border p-2 rounded outline-none focus:ring-2 focus:ring-brand-primary"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -460,7 +460,7 @@ const Peneiras: React.FC = () => {
                           data_evento: e.target.value,
                         })
                       }
-                      className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D]"
+                      className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-brand-primary"
                     />
                   </div>
                   <div>
@@ -474,7 +474,7 @@ const Peneiras: React.FC = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, local: e.target.value })
                       }
-                      className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D]"
+                      className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-brand-primary"
                     />
                   </div>
                 </div>
@@ -491,7 +491,7 @@ const Peneiras: React.FC = () => {
                           sub_divisao: e.target.value,
                         })
                       }
-                      className="w-full border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D] bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 "
+                      className="w-full border p-2 rounded outline-none focus:ring-2 focus:ring-brand-primary bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 "
                     >
                       <option value="">Selecione...</option>
                       {SUB_DIVISOES.filter((s) => s !== "Todas").map((s) => (
@@ -511,7 +511,7 @@ const Peneiras: React.FC = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, status: e.target.value })
                       }
-                      className="w-full dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D] bg-white"
+                      className="w-full dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-brand-primary bg-white"
                     >
                       <option value="AGENDADA">Agendada</option>
                       <option value="EM_ANDAMENTO">Em Andamento</option>
@@ -530,7 +530,7 @@ const Peneiras: React.FC = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, descricao: e.target.value })
                     }
-                    className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-[#14244D] resize-none"
+                    className="w-full bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-700 border p-2 rounded outline-none focus:ring-2 focus:ring-brand-primary resize-none"
                   />
                 </div>
                 <div className="flex justify-end gap-3 pt-4 border-t">
@@ -543,7 +543,7 @@ const Peneiras: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-[#14244D] text-white rounded hover:bg-[#1e3a8a]"
+                    className="px-4 py-2 bg-brand-primary text-white rounded hover:bg-[#1e3a8a]"
                   >
                     Salvar
                   </button>

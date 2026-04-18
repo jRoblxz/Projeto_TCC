@@ -28,12 +28,14 @@ class PlayerService
             // 2. Update Person Data
             $jogador->pessoa->update([
                 'nome_completo' => $data['nome_completo'] ?? $jogador->pessoa->nome_completo,
-                // Add other fields...
+                
             ]);
 
-            // 3. Update Rating Logic
+            // 3. Update Rating Logic (AGORA COM A PENEIRA!)
             if (isset($data['rating_medio'])) {
-                $this->updateRating($jogador, $data['rating_medio']);
+                // Pega a peneira enviada pelo Frontend. Se não enviar, usa null.
+                $peneiraId = $data['peneira_id'] ?? null; 
+                $this->updateRating($jogador, $data['rating_medio'], $peneiraId);
             }
 
             // 4. Update Player Data
@@ -48,25 +50,21 @@ class PlayerService
         });
     }
 
-    // Exemplo de como deve ficar a lógica da sua função updateRating
-    public function updateRating($jogador, array $atributos)
+    public function updateRating($jogador, array $atributos, $peneiraId = null)
     {
         $observacoes = $atributos['observacoes'] ?? null;
-        unset($atributos['observacoes']); // Tira o texto da conta matemática
+        unset($atributos['observacoes']); 
 
-        // Pega apenas as notas numéricas enviadas
         $notas = array_filter($atributos, function($valor) {
             return is_numeric($valor);
         });
 
-        // Calcula a média dinâmica (soma as notas e divide pela quantidade de notas)
         $qtdNotas = count($notas);
         $media = $qtdNotas > 0 ? array_sum($notas) / $qtdNotas : 0;
 
         $treinador = \App\Models\Treinadores::first();
         $treinadorId = $treinador ? $treinador->id : 1; 
 
-        // Monta os dados base
         $dadosParaSalvar = [
             'nota' => round($media, 1),
             'observacoes' => $observacoes,
@@ -74,13 +72,24 @@ class PlayerService
             'treinador_id' => $treinadorId
         ];
 
-        // Mescla as notas específicas (Técnica, Reflexo, etc) ao array de salvamento
         foreach ($notas as $chave => $valor) {
             $dadosParaSalvar[$chave] = $valor;
         }
 
+        // ==========================================
+        // CORREÇÃO CRÍTICA AQUI:
+        // ==========================================
+        $busca = [
+            'jogador_id' => $jogador->id,
+            'peneira_id' => $peneiraId // <--- AGORA ELE BUSCA O PAR JOGADOR+PENEIRA
+        ];
+
+        if ($peneiraId) {
+            $dadosParaSalvar['peneira_id'] = $peneiraId;
+        }
+
         $jogador->avaliacoes()->updateOrCreate(
-            ['jogador_id' => $jogador->id], 
+            $busca, 
             $dadosParaSalvar
         );
     }
@@ -132,23 +141,30 @@ class PlayerService
 
     // Cole isso dentro do PlayerService.php
     
-    public function getStats()
+    public function getStats($filtroSub = null) 
     {
-        // 1. Busca os IDs das peneiras que estão com status "Em Andamento"
-        $peneirasAtivasIds = DB::table('peneiras')
-            ->whereIn('status', ['EM_ANDAMENTO', 'Em Andamento', 'Em andamento', 'em_andamento'])
-            ->pluck('id');
+        // 1. Prepara a query base das peneiras ativas
+        $queryPeneiras = DB::table('peneiras')
+            ->whereIn('status', ['EM_ANDAMENTO', 'Em Andamento', 'Em andamento', 'em_andamento']);
 
-        // 2. Busca os IDs dos jogadores inscritos APENAS nessas peneiras ativas
+        // 2. Se o filtro chegou do React, nós aplicamos ele
+        if ($filtroSub) {
+            $queryPeneiras->where('sub_divisao', $filtroSub);
+        }
+
+        // 3. Pega os IDs (já com o filtro aplicado!)
+        $peneirasAtivasIds = $queryPeneiras->pluck('id');
+
+        // 4. Busca os IDs dos jogadores inscritos APENAS nessas peneiras
         $jogadoresAtivosIds = DB::table('inscricoes')
             ->whereIn('peneira_id', $peneirasAtivasIds)
             ->pluck('jogador_id')
             ->unique(); 
 
-        // 3. Total de jogadores ativos
+        // 5. Total de jogadores ativos
         $totalJogadores = $jogadoresAtivosIds->count();
         
-        // 4. Agrupamento por posição
+        // 6. Agrupamento por posição
         $posicoes = Jogadores::select('posicao_principal', DB::raw('count(*) as quantidade'))
             ->whereIn('id', $jogadoresAtivosIds)
             ->whereNotNull('posicao_principal')
@@ -158,30 +174,30 @@ class PlayerService
                 return ['name' => $item->posicao_principal, 'quantidade' => $item->quantidade];
             });
             
-        // 5. Média geral e Avaliados
+        // 7. Média geral e Avaliados
         $mediaGeral = Avaliacao::whereIn('jogador_id', $jogadoresAtivosIds)->avg('nota');
         $avaliados = Avaliacao::whereIn('jogador_id', $jogadoresAtivosIds)->distinct('jogador_id')->count('jogador_id');
 
-        // ---> CORREÇÃO DOS DESTAQUES <---
-        // Usamos get() antes de contar para evitar o erro de SQL com o withAvg()
-        // ---> CORREÇÃO DOS DESTAQUES <---
+        // 8. Base dos Destaques
         $baseDestaquesQuery = Jogadores::whereIn('id', $jogadoresAtivosIds)
             ->withAvg('avaliacoes as rating_medio', 'nota')
             ->having('rating_medio', '>=', 8.0);
 
-        // Conta DIRETO no banco de dados (rápido e não usa RAM)
-        // Nota: O Laravel usa get()->count() aqui apenas para o having não quebrar o SQL nativo,
-        // mas como não demos o ->with('pessoa'), é uma query extremamente leve só com IDs.
         $totalDestaques = (clone $baseDestaquesQuery)->get()->count(); 
 
-        // Puxa APENAS os 5 melhores para a memória, já com os dados completos
+        $totalAprovados = DB::table('inscricoes')
+            ->whereIn('peneira_id', $peneirasAtivasIds)
+            ->where('status', 'aprovado')
+            ->count();
+
+        // 9. Puxa os 5 melhores
         $topDestaques = (clone $baseDestaquesQuery)
             ->with('pessoa')
             ->orderByDesc('rating_medio')
             ->take(5)
             ->get();
 
-        // 6. Inscritos por Subdivisão
+        // 10. Inscritos por Subdivisão
         $inscritosSubdivisao = DB::table('inscricoes')
             ->join('peneiras', 'inscricoes.peneira_id', '=', 'peneiras.id')
             ->whereIn('peneiras.id', $peneirasAtivasIds)
@@ -197,14 +213,32 @@ class PlayerService
             'posicoes' => $posicoes,
             'media_geral' => round($mediaGeral ?? 0, 1),
             'total_avaliados' => $avaliados,
-            'total_destaques' => $totalDestaques, // Retorna o número total para o Card
+            'total_destaques' => $totalDestaques,
             'inscritos_subdivisao' => $inscritosSubdivisao,
+            'funil_conversao' => [
+                [
+                    'etapa' => 'Inscritos', 
+                    'valor' => $totalJogadores, 
+                    'cor' => 'bg-blue-100 text-blue-800 border-blue-200'
+                ],
+                [
+                    'etapa' => 'Avaliados (Compareceram)', 
+                    'valor' => $avaliados, 
+                    'cor' => 'bg-purple-100 text-purple-800 border-purple-200'
+                ],
+                [
+                    'etapa' => 'Aprovados (Seleção Final)', 
+                    'valor' => $totalAprovados, 
+                    'cor' => 'bg-green-100 text-green-800 border-green-200'
+                ],
+            ],
             'jogadores_destaque' => $topDestaques->map(function($jogador) {
                 return [
                     'id' => $jogador->id,
                     'nome_completo' => $jogador->pessoa->nome_completo,
                     'foto_perfil_url' => $jogador->pessoa->foto_perfil_url,
-                    'rating_medio' => round($jogador->rating_medio ?? 0, 1)
+                    'rating_medio' => round($jogador->rating_medio ?? 0, 1),
+                    'pessoa' => $jogador->pessoa
                 ];
             })
         ];

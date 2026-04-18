@@ -17,7 +17,7 @@ class Avaliacao extends Model
         'tecnica', 'condicionamento', 'finalizacao', 'velocidade', 'posicionamento', 'cabeceio',
         // NOVOS:
         'reflexo', 'saida_goleiro', 'jogo_aereo', 'um_contra_um', 'fisico', 
-        'marcacao', 'desarme', 'passe', 'cruzamento', 'visao_jogo'
+        'marcacao', 'desarme', 'passe', 'cruzamento', 'visao_jogo', 'peneira_id'
     ];
 
     // Relacionamento com jogador

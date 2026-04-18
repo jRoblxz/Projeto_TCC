@@ -22,7 +22,7 @@ class PeneiraController extends Controller
         $filters = [
             'search' => $request->input('search'),
             'sub_divisao' => $request->input('sub_divisao'),
-            'status' => $request->input('status') // <--- ADICIONE ESTA LINHA
+            'status' => $request->input('status') 
         ];
 
         $perPage = $request->input('per_page', 9);
@@ -49,24 +49,38 @@ class PeneiraController extends Controller
 
     public function show($id)
     {
-        // Carrega a peneira E os jogadores inscritos (com os dados da pessoa)
-        $peneira = Peneiras::with(['inscricoes.jogador.pessoa', 'inscricoes.jogador.ultima_avaliacao'])->findOrFail($id);
-
-        // Formata os dados para facilitar no frontend se necessário
-        // Ou retorna direto se a estrutura do JSON já for amigável
+        // Carrega a peneira E intercepta a chamada do jogador para injetar a média específica
+        $peneira = Peneiras::with([
+            'inscricoes.jogador' => function ($query) use ($id) {
+                $query->with('pessoa')
+                      // O SEGREDO AQUI: Calcula a média APENAS com as notas desta peneira ($id)
+                      ->withAvg(['avaliacoes as rating_medio' => function($q) use ($id) {
+                          $q->where('peneira_id', $id);
+                      }], 'nota');
+            }
+        ])->findOrFail($id);
 
         return response()->json([
             'peneira' => $peneira,
-            // Mapeia para pegar os jogadores de dentro das inscrições
+            
+            // Mapeia para pegar os jogadores e garantir que o rating vai formatado
             'jogadores' => $peneira->inscricoes->map(function ($inscricao) {
-                return $inscricao->jogador;
+                $jogador = $inscricao->jogador;
+                
+                // Se a base de dados não encontrar notas para ESTA peneira, 
+                // o rating_medio vem nulo. Transformamos em 0.0 para o React ler corretamente.
+                $jogador->rating_medio = (float) ($jogador->rating_medio ?? 0.0);
+                
+                // Opcional, mas muito útil: enviamos também o status da inscrição para o Frontend
+                $jogador->status_inscricao = $inscricao->status;
+                
+                return $jogador;
             })
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        // Validação similar ao store...
         $peneira = $this->peneiraService->update($id, $request->all());
         return new PeneiraResource($peneira);
     }
@@ -80,6 +94,4 @@ class PeneiraController extends Controller
             return response()->json(['error' => 'Erro ao deletar: ' . $e->getMessage()], 400);
         }
     }
-
-    
 }

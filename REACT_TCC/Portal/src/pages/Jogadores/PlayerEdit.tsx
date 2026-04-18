@@ -129,7 +129,7 @@ const PlayerEdit: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center mt-20">
-        <Loader2 className="animate-spin h-10 w-10 text-[#8B0000]" />
+        <Loader2 className="animate-spin h-10 w-10 text-brand-darkred" />
       </div>
     );
   }

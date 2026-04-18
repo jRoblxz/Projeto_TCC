@@ -53,7 +53,7 @@
 
 <footer>
     <div class="container">
-        <p>Grêmio Prudente &copy; 2025. Todos os direitos reservados.</p>
+        <p>Fatec Prudente &copy; 2025. Todos os direitos reservados.</p>
     </div>
 </footer>
 @endsection

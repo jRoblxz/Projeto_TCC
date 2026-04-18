@@ -59,6 +59,7 @@ class CandidateService
                 'jogador_id' => $jogador->id,
                 'peneira_id' => $data['peneira_id'],
                 'data_inscricao' => now(),
+                'status' => 'pendente',
             ]);
 
             // 5. Criar Usuário de Acesso
@@ -67,6 +68,7 @@ class CandidateService
                 'email' => $pessoa->email,
                 'password' => Hash::make($data['cpf']),
                 'role' => 'candidato',
+                'pessoa_id' => $pessoa->id,
             ]);
 
             return ['pessoa' => $pessoa, 'jogador' => $jogador];

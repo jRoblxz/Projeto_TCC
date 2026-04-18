@@ -8,7 +8,7 @@ interface PlayerEditInfoCardProps {
 const PlayerEditInfoCard: React.FC<PlayerEditInfoCardProps> = ({ isAdmin }) => {
   return (
     <div className="bg-[#f8f9fa] dark:bg-gray-900 rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)] h-fit">
-      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm mb-6">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-brand-primary shadow-sm mb-6">
         <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4 ">
           {isAdmin ? "Atenção" : "Meus Dados"}
         </h4>
@@ -19,7 +19,7 @@ const PlayerEditInfoCard: React.FC<PlayerEditInfoCardProps> = ({ isAdmin }) => {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-brand-primary shadow-sm">
         <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4 ">
           Informações
         </h4>

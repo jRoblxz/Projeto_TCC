@@ -23,6 +23,8 @@ Route::prefix('v1')->group(function () {
 
     // Rota de cadastro de administradores/treinadores
     Route::post('/cadastro', [AuthController::class, 'register']);
+
+    
 });
 
 // --- Rotas Protegidas (Sanctum) ---
@@ -30,6 +32,14 @@ Route::prefix('v1')->group(function () {
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 
     // === ROTAS COMUNS (ADMIN E JOGADOR PODEM ACESSAR) ===
+
+    // Rota para o jogador ver peneiras da idade dele
+    Route::get('/my-available-peneiras', [PublicController::class, 'getAvailableForMe']);
+    // --> ADICIONE ESTA LINHA PARA A ROTA FUNCIONAR <--
+    Route::get('/my-enrollments', [App\Http\Controllers\Api\PublicController::class, 'getMyEnrollments']);
+    // Rota para se inscrever apenas enviando o ID da peneira
+    Route::post('/enroll-again', [PublicController::class, 'quickEnroll']);
+    
     // Aqui ficam apenas os GETs (Visualização)
     
     Route::post('logout', [AuthController::class, 'logout']);
@@ -91,7 +101,9 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::put('/users/{id}', [App\Http\Controllers\Api\UserController::class, 'update']);
         Route::delete('/users/{id}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
 
-    });
+
+        
+            });
 
 
     

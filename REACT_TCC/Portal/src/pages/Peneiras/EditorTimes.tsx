@@ -51,8 +51,10 @@ const EditorTimes: React.FC = () => {
       let teamB = { name: "Equipe B", players: [], formation: "4-4-2" };
 
       if (Array.isArray(data)) {
-        teamA = data.find((t: any) => t.name?.includes("A")) || data[0] || teamA;
-        teamB = data.find((t: any) => t.name?.includes("B")) || data[1] || teamB;
+        teamA =
+          data.find((t: any) => t.name?.includes("A")) || data[0] || teamA;
+        teamB =
+          data.find((t: any) => t.name?.includes("B")) || data[1] || teamB;
       }
 
       // Garante que o objeto SEMPRE tenha as chaves A e B
@@ -144,13 +146,16 @@ const EditorTimes: React.FC = () => {
     const { id, fromTeam } = draggingItem.current;
 
     let targetTeam = fromTeam;
-    let targetRect = fieldRefs[fromTeam as "A" | "B"].current?.getBoundingClientRect();
+    let targetRect =
+      fieldRefs[fromTeam as "A" | "B"].current?.getBoundingClientRect();
 
     const rectA = fieldRefs["A"].current?.getBoundingClientRect();
     if (
       rectA &&
-      e.clientX >= rectA.left && e.clientX <= rectA.right &&
-      e.clientY >= rectA.top && e.clientY <= rectA.bottom
+      e.clientX >= rectA.left &&
+      e.clientX <= rectA.right &&
+      e.clientY >= rectA.top &&
+      e.clientY <= rectA.bottom
     ) {
       targetTeam = "A";
       targetRect = rectA;
@@ -159,8 +164,10 @@ const EditorTimes: React.FC = () => {
     const rectB = fieldRefs["B"].current?.getBoundingClientRect();
     if (
       rectB &&
-      e.clientX >= rectB.left && e.clientX <= rectB.right &&
-      e.clientY >= rectB.top && e.clientY <= rectB.bottom
+      e.clientX >= rectB.left &&
+      e.clientX <= rectB.right &&
+      e.clientY >= rectB.top &&
+      e.clientY <= rectB.bottom
     ) {
       targetTeam = "B";
       targetRect = rectB;
@@ -179,13 +186,15 @@ const EditorTimes: React.FC = () => {
         const newTeams = JSON.parse(JSON.stringify(prevTeams));
 
         // BLINDAGEM MÁXIMA: Previne a tela branca caso arraste rápido demais
-        if (!newTeams[fromTeam] || !newTeams[fromTeam].players) return prevTeams;
-        if (!newTeams[targetTeam]) newTeams[targetTeam] = { players: [], name: `Equipe ${targetTeam}` };
+        if (!newTeams[fromTeam] || !newTeams[fromTeam].players)
+          return prevTeams;
+        if (!newTeams[targetTeam])
+          newTeams[targetTeam] = { players: [], name: `Equipe ${targetTeam}` };
         if (!newTeams[targetTeam].players) newTeams[targetTeam].players = [];
 
         const sourcePlayers = newTeams[fromTeam].players;
         const pIndex = sourcePlayers.findIndex((p: any) => p.id === id);
-        
+
         if (pIndex === -1) return prevTeams;
 
         const playerObj = sourcePlayers[pIndex];
@@ -240,7 +249,7 @@ const EditorTimes: React.FC = () => {
   if (loading || !teams)
     return (
       <Layout>
-        <div className="flex justify-center p-20 text-[#14244D]">
+        <div className="flex justify-center p-20 text-brand-primary">
           Carregando...
         </div>
       </Layout>
@@ -258,7 +267,7 @@ const EditorTimes: React.FC = () => {
               <ArrowLeft />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-[#14244D]">
+              <h1 className="text-2xl font-bold text-brand-primary">
                 Editor de Times
               </h1>
               <p className="text-sm text-gray-500">
@@ -278,7 +287,7 @@ const EditorTimes: React.FC = () => {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="px-6 py-2 bg-[#14244D] text-white font-bold rounded-lg hover:bg-[#1e3a8a] shadow-md flex items-center gap-2 disabled:opacity-50 transition"
+                  className="px-6 py-2 bg-brand-primary text-white font-bold rounded-lg hover:bg-[#1e3a8a] shadow-md flex items-center gap-2 disabled:opacity-50 transition"
                 >
                   <Save size={18} /> {saving ? "Salvando..." : "Salvar Times"}
                 </button>

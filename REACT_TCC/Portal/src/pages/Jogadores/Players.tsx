@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { isUserAdmin } from "../../utils/auth";
-import { getAttributesByPosition } from "@/utils/playerAttributes"; 
+import { getAttributesByPosition } from "@/utils/playerAttributes";
 
 // 1. INTERFACE CORRIGIDA
 interface Player {
@@ -173,12 +173,15 @@ const Players: React.FC = () => {
     <Layout>
       <div className="p-6 min-h-screen pb-20">
         {/* === HEADER === */}
-        <div className="text-center mb-8 bg-[#14244D] dark:bg-gray-900 rounded-xl p-6 shadow-md text-white">
+        <div className="text-center mb-8 bg-brand-primary dark:bg-gray-900 rounded-xl p-6 shadow-md text-white">
           <h1 className="text-3xl font-bold mb-2 ">Jogadores Inscritos</h1>
-          <p className="text-gray-500">Sistema de Avaliação de Atletas 
-              <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                Gerencie os jogadores inscritos e suas avaliações (Para avaliar clique no icone de editar).
-              </p></p>
+          <p className="text-gray-500">
+            Sistema de Avaliação de Atletas
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+              Gerencie os jogadores inscritos e suas avaliações (Para avaliar
+              clique no icone de editar).
+            </p>
+          </p>
         </div>
 
         {/* === BARRA DE FILTROS E BUSCA === */}
@@ -193,7 +196,7 @@ const Players: React.FC = () => {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full pl-10 pr-4 py-3 border dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-full focus:ring-2 focus:ring-[#8B0000] outline-none transition"
+              className="w-full pl-10 pr-4 py-3 border dark:bg-gray-800 border-gray-300 dark:border-gray-700 rounded-full focus:ring-2 focus:ring-brand-darkred outline-none transition"
             />
           </div>
 
@@ -207,7 +210,7 @@ const Players: React.FC = () => {
                 }}
                 className={`px-4 py-2 rounded-full whitespace-nowrap text-sm font-bold transition border ${
                   activeFilter === f.value
-                    ? "bg-[#8B0000] text-white border-[#8B0000] shadow-md transform scale-105"
+                    ? "bg-brand-darkred text-white border-brand-darkred shadow-md transform scale-105"
                     : "bg-white text-gray-600 dark:text-white hover:bg-gray-50 dark:bg-gray-800 border-gray-300 dark:border-gray-700"
                 }`}
               >
@@ -220,7 +223,7 @@ const Players: React.FC = () => {
         {/* === GRID DE JOGADORES === */}
         {loading ? (
           <div className="flex justify-center h-64 items-center">
-            <Loader2 className="h-12 w-12 text-[#8B0000] animate-spin" />
+            <Loader2 className="h-12 w-12 text-brand-darkred animate-spin" />
           </div>
         ) : (
           <div className="grid gap-8 justify-items-center grid-cols-[repeat(auto-fit,minmax(280px,1fr))] w-full">
@@ -229,7 +232,7 @@ const Players: React.FC = () => {
                 key={player.id}
                 player={player}
                 isAdmin={isAdmin}
-                onEditRating={openRatingModal}
+                onEditRating={() => navigate(`/jogadores/${player.id}/edit`)}
                 onDelete={handleDelete}
                 onViewMore={(id) => navigate(`/jogadores/${id}`)}
               />
@@ -245,12 +248,12 @@ const Players: React.FC = () => {
             {isAdmin && (
               <div
                 onClick={() => navigate("/instrucoes")}
-                className="w-[280px] h-[380px] border-4 border-dashed border-[#8B0000]/30 bg-[#8B0000]/5 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-[#8B0000]/10 hover:border-[#8B0000] transition-all group"
+                className="w-[280px] h-[380px] border-4 border-dashed border-brand-darkred/30 bg-brand-darkred/5 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-brand-darkred/10 hover:border-brand-darkred transition-all group"
               >
-                <div className="w-20 h-20 bg-[#8B0000]/10 rounded-full flex items-center justify-center group-hover:scale-110 transition">
-                  <Plus className="h-10 w-10 text-[#8B0000]" />
+                <div className="w-20 h-20 bg-brand-darkred/10 rounded-full flex items-center justify-center group-hover:scale-110 transition">
+                  <Plus className="h-10 w-10 text-brand-darkred" />
                 </div>
-                <span className="mt-4 text-[#8B0000] font-bold text-lg">
+                <span className="mt-4 text-brand-darkred font-bold text-lg">
                   Novo Jogador
                 </span>
               </div>
@@ -292,7 +295,7 @@ const Players: React.FC = () => {
                 <X size={24} />
               </button>
 
-              <h2 className="text-2xl font-bold text-[#8B0000] mb-1">
+              <h2 className="text-2xl font-bold text-brand-darkred mb-1">
                 Avaliação Técnica
               </h2>
               <p className="text-gray-600 mb-4 font-medium">
@@ -305,7 +308,7 @@ const Players: React.FC = () => {
                   <span className="block text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">
                     Overall (Média)
                   </span>
-                  <span className="text-4xl font-extrabold text-[#14244D]">
+                  <span className="text-4xl font-extrabold text-brand-primary">
                     {currentAverage}
                   </span>
                 </div>
@@ -326,11 +329,15 @@ const Players: React.FC = () => {
                         min="0"
                         max="10"
                         step="0.1"
-                        value={attributes[attr.key] !== undefined ? attributes[attr.key] : ""}
+                        value={
+                          attributes[attr.key] !== undefined
+                            ? attributes[attr.key]
+                            : ""
+                        }
                         onChange={(e) =>
                           handleAttributeChange(attr.key, e.target.value)
                         }
-                        className="w-full text-lg font-bold text-gray-800 border-2 border-gray-200 rounded-lg p-2 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] outline-none transition"
+                        className="w-full text-lg font-bold text-gray-800 border-2 border-gray-200 rounded-lg p-2 focus:border-brand-darkred focus:ring-1 focus:ring-brand-darkred outline-none transition"
                       />
                     </div>
                   ))}
@@ -351,7 +358,7 @@ const Players: React.FC = () => {
                       }))
                     }
                     placeholder="Adicione comentários sobre a prestação do atleta..."
-                    className="w-full text-sm font-medium text-gray-800 border-2 border-gray-200 rounded-lg p-3 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] outline-none transition resize-none"
+                    className="w-full text-sm font-medium text-gray-800 border-2 border-gray-200 rounded-lg p-3 focus:border-brand-darkred focus:ring-1 focus:ring-brand-darkred outline-none transition resize-none"
                   />
                 </div>
 
@@ -365,7 +372,7 @@ const Players: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3 bg-[#8B0000] text-white rounded-lg font-bold hover:bg-[#a01519] transition shadow-lg"
+                    className="flex-1 py-3 bg-brand-darkred text-white rounded-lg font-bold hover:bg-[#a01519] transition shadow-lg"
                   >
                     Salvar Avaliação
                   </button>

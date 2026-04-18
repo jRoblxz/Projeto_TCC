@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-// Importando a logo do Grêmio Prudente exatamente como você usa nos outros arquivos
-import Logo from '@/assets/img/logo-copia.png'; 
+import React from "react";
+import styled from "styled-components";
+// Importando a logo do Fatec Prudente exatamente como você usa nos outros arquivos
+import Logo from "@/assets/img/logo-copia.png";
 
 const Loader: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const Loader: React.FC = () => {
       <div className="loader">
         <div className="box">
           <div className="logo">
-            <img src={Logo} alt="Grêmio Prudente" className="logo-img" />
+            <img src={Logo} alt="Fatec Prudente" className="logo-img" />
           </div>
         </div>
         <div className="box" />
@@ -25,18 +25,18 @@ const StyledWrapper = styled.div`
   .loader {
     --size: 250px;
     --duration: 2s;
-    
-    /* Cores Oficiais do Grêmio Prudente */
-    --color-blue: rgba(20, 36, 77, 1);    /* #14244D */
-    --color-red: rgba(133, 17, 20, 1);    /* #851114 */
-    
+
+    /* Cores Oficiais do Fatec Prudente */
+    --color-blue: rgba(20, 36, 77, 1); /* #14244D */
+    --color-red: rgba(133, 17, 20, 1); /* #851114 */
+
     /* Fundo dos círculos com um tom azul bem transparente */
     --background: linear-gradient(
       0deg,
       rgba(20, 36, 77, 0.1) 0%,
       rgba(20, 36, 77, 0.25) 100%
     );
-    
+
     height: var(--size);
     aspect-ratio: 1;
     position: relative;
@@ -93,7 +93,7 @@ const StyledWrapper = styled.div`
     display: grid;
     place-content: center;
     /* Ajuste o padding se a imagem ficar muito grande ou pequena */
-    padding: 15%; 
+    padding: 15%;
   }
 
   .loader .logo-img {

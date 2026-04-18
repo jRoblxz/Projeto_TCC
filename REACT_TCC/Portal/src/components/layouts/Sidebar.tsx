@@ -15,11 +15,12 @@ import {
   ChartLine,
   User,
   Users2,
+  CalendarRange,
   UsersRound,
   Map,
 } from "lucide-react";
 import { motion as Motion, AnimatePresence } from "framer-motion";
-import DefaultIcon from "../../assets/img/logo-copia.png"; // Renomeei para DefaultIcon
+import DefaultIcon from "../../assets/img/default.png"; // Renomeei para DefaultIcon
 import ThemeToggle from "../ui/ThemeToggle";
 import { getUserData, isUserAdmin } from "../../utils/auth"; // Importe o helper
 
@@ -48,17 +49,19 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  
-    const navigate = useNavigate();
+
+  const navigate = useNavigate();
 
   // Estados para dados do usuário
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isMaster, setIsMaster] = useState(false);
 
   useEffect(() => {
     const data = getUserData();
     setUser(data);
     setIsAdmin(isUserAdmin());
+    setIsMaster(data?.role === "adm"); // <-- VERIFICAÇÃO EXCLUSIVA
   }, []);
 
   // --- DEFINIÇÃO DOS MENUS ---
@@ -78,12 +81,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   if (user) {
     // Só mostra o link se REALMENTE tivermos um jogador_id válido
     if (user.jogador_id) {
-      menuItems.push({
-        Group: "CONTA",
-        title: "Meu Perfil",
-        path: `/jogadores/${user.jogador_id}`, // Usa direto o ID do jogador
-        icon: UserCircle,
-      });
+      menuItems.push(
+        {
+          Group: "CONTA",
+          title: "Meu Perfil",
+          path: `/jogadores/${user.jogador_id}`, // Usa direto o ID do jogador
+          icon: UserCircle,
+        },
+
+        {
+          title: "Minhas Peneiras",
+          path: "/nova-inscricao",
+          icon: CalendarRange,
+          Group: "Sistema",
+        },
+      );
     }
   }
 
@@ -103,7 +115,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     },
   );
 
-  if (isAdmin){
+  if (isAdmin) {
     menuItems.push(
       {
         title: "Análise de Dados",
@@ -124,9 +136,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         Group: "Analises",
       },
     );
-}
+  }
 
-if (isAdmin){
+  if (isMaster) {
     menuItems.push(
       {
         title: "Cadastros",
@@ -134,21 +146,20 @@ if (isAdmin){
         icon: FilePlus,
         Group: "Gestão",
       },
-      {
-        title: "Usuários",
-        path: "/usuarios",
-        icon: UsersRound,
-        Group: "Gestão",
-      },
-      {
-        title: "Mapa de Talentos",
-        path: "/usuarios/mapa",
-        icon: Map,
-        Group: "Gestão",
-      }
-
+      // {
+      //   title: "Usuários",
+      //   path: "/usuarios",
+      //   icon: UsersRound,
+      //   Group: "Gestão",
+      // },
+      // {
+      //   title: "Mapa de Talentos",
+      //   path: "/usuarios/mapa",
+      //   icon: Map,
+      //   Group: "Gestão",
+      // }
     );
-}
+  }
   const handleToggleSubmenu = (title: string) => {
     setOpenMenu((prev) => (prev === title ? null : title));
   };
@@ -173,7 +184,7 @@ if (isAdmin){
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 z-50 h-screen w-64 max-w-[16rem] bg-[#14244D] dark:bg-gray-900 
+          fixed top-0 left-0 z-50 h-screen w-64 max-w-[16rem] bg-brand-primary dark:bg-gray-900 
           shadow-xl transform transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0 lg:sticky lg:top-0 lg:z-auto
@@ -181,18 +192,20 @@ if (isAdmin){
       >
         <div className="flex flex-col h-full">
           {/* --- HEADER COM FOTO DO USUÁRIO --- */}
-          <div className="flex-none flex items-center justify-between p-6 border-b border-gray-500/30 dark:border-gray-700">
+          <div className="flex-none flex items-center justify-between p-6 bg border-b border-gray-500/30 dark:border-gray-700">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden bg-white border-2 border-white/20">
-              <a onClick={() => navigate(`/jogadores/${user.jogador_id}`)} className='cursor-pointer'>
-                <img
-                  src={userPhoto}
-                  alt="User"
-                  className="w-full h-full object-cover object-top"
-                  onError={(e) => (e.currentTarget.src = DefaultIcon)} // Fallback se a URL quebrar
-                />
-              </a>
-                
+                <a
+                  onClick={() => navigate(`/jogadores/${user.jogador_id}`)}
+                  className="cursor-pointer"
+                >
+                  <img
+                    src={userPhoto}
+                    alt="User"
+                    className="w-full h-full object-cover object-top"
+                    onError={(e) => (e.currentTarget.src = DefaultIcon)} // Fallback se a URL quebrar
+                  />
+                </a>
               </div>
               <div className="flex flex-col">
                 <span
@@ -236,7 +249,7 @@ if (isAdmin){
                     onClick={onClose}
                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "bg-[#8B0000] text-white shadow-md"
+                        ? "bg-brand-darkred text-white shadow-md"
                         : "text-gray-300 hover:bg-white/10 hover:text-white"
                     }`}
                   >
@@ -250,8 +263,8 @@ if (isAdmin){
             })}
           </nav>
 
-          {/* Rodapé */}
-          <footer className="flex-none bg-[#0f1b3a] dark:bg-black/20 border-t border-gray-500/30 p-4">
+          {/* Rodapé  bg-[#0f1b3a] */}
+          <footer className="flex-none bg-brand-secondary  dark:bg-black/20 border-t border-gray-500/30 p-4">
             <p className="text-xs text-gray-500 text-center">© 2026 SparkLab</p>
           </footer>
         </div>

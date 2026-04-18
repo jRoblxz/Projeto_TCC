@@ -139,8 +139,6 @@ const PeneiraDetalhes: React.FC = () => {
     }
   };
 
-
-
   useEffect(() => {
     loadData();
   }, [id, navigate]);
@@ -213,7 +211,7 @@ const PeneiraDetalhes: React.FC = () => {
   if (loading)
     return (
       <div className="flex justify-center mt-20">
-        <Loader2 className="animate-spin h-12 w-12 text-[#14244D]" />
+        <Loader2 className="animate-spin h-12 w-12 text-brand-primary" />
       </div>
     );
   if (!peneira) return null;
@@ -244,11 +242,18 @@ const PeneiraDetalhes: React.FC = () => {
     if (!selectedPlayer) return;
 
     try {
-      await api.put(`/players/${selectedPlayer.id}`, { atributos: attributes });
-      toast.success("Avaliação registrada!");
+      // ---> A CORREÇÃO É AQUI NA PALAVRA 'atributos' <---
+      await api.put(`/players/${selectedPlayer.id}`, {
+        atributos: attributes, // Estava rating_medio, mudamos para atributos
+        peneira_id: Number(id),
+      });
+
+      toast.success("Avaliação registrada com sucesso!");
       setShowRatingModal(false);
-      loadPlayers();
+
+      loadData();
     } catch (error) {
+      console.error(error);
       toast.error("Erro ao registrar avaliação");
     }
   };
@@ -287,7 +292,7 @@ const PeneiraDetalhes: React.FC = () => {
 
         {/* HEADER DA PENEIRA */}
         <div className="bg-white dark:bg-gray-900 transition rounded-2xl shadow-xl overflow-hidden relative">
-          <div className="h-2 bg-[#8B0000]" />
+          <div className="h-2 bg-brand-darkred" />
 
           <div className="p-8">
             {/* Título e Status */}
@@ -339,7 +344,7 @@ const PeneiraDetalhes: React.FC = () => {
             {/* Ações Principais (Gerador) */}
             <div className="border-t border-gray-100 dark:border-gray-700 pt-8">
               <h3 className="text-[#2d3748] dark:text-gray-100 font-bold text-xl mb-4 flex items-center gap-2">
-                <Shuffle size={24} className="text-[#8B0000]" />
+                <Shuffle size={24} className="text-brand-darkred" />
                 Gerador de Equipes
               </h3>
               {isAdmin ? (
@@ -370,7 +375,7 @@ const PeneiraDetalhes: React.FC = () => {
                           onClick={() =>
                             navigate(`/peneiras/${id}/editor-times`)
                           }
-                          className="bg-[#14244D] hover:bg-[#1e3a8a] text-white px-6 py-3 rounded-lg font-bold shadow-md transition flex items-center gap-2"
+                          className="bg-brand-primary hover:bg-[#1e3a8a] text-white px-6 py-3 rounded-lg font-bold shadow-md transition flex items-center gap-2"
                         >
                           <Users size={18} /> Ver / Editar Times
                         </button>
@@ -407,7 +412,7 @@ const PeneiraDetalhes: React.FC = () => {
                   {hasTeams ? (
                     <button
                       onClick={() => navigate(`/peneiras/${id}/editor-times`)}
-                      className="bg-[#14244D] text-white px-6 py-3 rounded-lg font-bold"
+                      className="bg-brand-primary text-white px-6 py-3 rounded-lg font-bold"
                     >
                       Ver Escalação dos Times
                     </button>
@@ -426,13 +431,14 @@ const PeneiraDetalhes: React.FC = () => {
         <div className="bg-whit dark:bg-gray-800 dark:border-gray-700  p-8 rounded-2xl shadow-xl border border-gray-100">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-gray-100 dark:border-gray-700 pb-6 gap-4">
             <h2 className="text-2xl font-bold text-[#2d3748] dark:text-gray-200 flex items-center gap-2">
-              <Users className="text-[#8B0000]" />
+              <Users className="text-brand-darkred" />
               Jogadores Inscritos
               <span className="text-sm font-normal text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
                 {jogadores.length}
               </span>
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                Gerencie os jogadores inscritos e suas avaliações (Para avaliar clique no icone de editar).
+                Gerencie os jogadores inscritos e suas avaliações (Para avaliar
+                clique no icone de editar).
               </p>
             </h2>
           </div>
@@ -473,10 +479,7 @@ const PeneiraDetalhes: React.FC = () => {
                 .filter((jogador) => jogador && jogador.id != null)
                 .map((jogador) => (
                   <PlayerCard
-                    key={
-                      jogador.id ??
-                      jogador?.pessoa?.nome_completo
-                    }
+                    key={jogador.id ?? jogador?.pessoa?.nome_completo}
                     player={jogador}
                     isAdmin={isAdmin}
                     onEditRating={openRatingModal}
@@ -532,7 +535,7 @@ const PeneiraDetalhes: React.FC = () => {
                   <X size={24} />
                 </button>
 
-                <h2 className="text-2xl font-bold text-[#8B0000] mb-1">
+                <h2 className="text-2xl font-bold text-brand-darkred mb-1">
                   Avaliação Técnica
                 </h2>
                 <p className="text-gray-600 mb-4 font-medium">
@@ -545,7 +548,7 @@ const PeneiraDetalhes: React.FC = () => {
                     <span className="block text-sm text-gray-500 font-bold uppercase tracking-wider mb-1">
                       Overall (Média)
                     </span>
-                    <span className="text-4xl font-extrabold text-[#14244D]">
+                    <span className="text-4xl font-extrabold text-brand-primary">
                       {currentAverage}
                     </span>
                   </div>
@@ -576,7 +579,7 @@ const PeneiraDetalhes: React.FC = () => {
                           onChange={(e) =>
                             handleAttributeChange(attr.key, e.target.value)
                           }
-                          className="w-full text-lg font-bold text-gray-800 border-2 border-gray-200 rounded-lg p-2 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] outline-none transition"
+                          className="w-full text-lg font-bold text-gray-800 border-2 border-gray-200 rounded-lg p-2 focus:border-brand-darkred focus:ring-1 focus:ring-brand-darkred outline-none transition"
                         />
                       </div>
                     ))}
@@ -596,7 +599,7 @@ const PeneiraDetalhes: React.FC = () => {
                         }))
                       }
                       placeholder="Adicione comentários sobre a prestação do atleta..."
-                      className="w-full text-sm font-medium text-gray-800 border-2 border-gray-200 rounded-lg p-3 focus:border-[#8B0000] focus:ring-1 focus:ring-[#8B0000] outline-none transition resize-none"
+                      className="w-full text-sm font-medium text-gray-800 border-2 border-gray-200 rounded-lg p-3 focus:border-brand-darkred focus:ring-1 focus:ring-brand-darkred outline-none transition resize-none"
                     />
                   </div>
 
@@ -610,7 +613,7 @@ const PeneiraDetalhes: React.FC = () => {
                     </button>
                     <button
                       type="submit"
-                      className="flex-1 py-3 bg-[#8B0000] text-white rounded-lg font-bold hover:bg-[#a01519] transition shadow-lg"
+                      className="flex-1 py-3 bg-brand-darkred text-white rounded-lg font-bold hover:bg-[#a01519] transition shadow-lg"
                     >
                       Salvar Avaliação
                     </button>

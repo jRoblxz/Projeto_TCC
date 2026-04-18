@@ -47,13 +47,13 @@ const AtletasDestaque: React.FC = () => {
         <span className="text-gray-600 dark:text-gray-300 uppercase">
           {label}
         </span>
-        <span className="text-[#14244D] dark:text-white">
+        <span className="text-brand-primary dark:text-white">
           {Number(value || 0).toFixed(1)}
         </span>
       </div>
       <div className="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full overflow-hidden">
         <div
-          className="bg-gradient-to-r from-[#14244D] to-[#8B0000] h-full transition-all duration-1000"
+          className="bg-gradient-to-r from-brand-primary to-brand-darkred h-full transition-all duration-1000"
           style={{ width: `${((value || 0) / 10) * 100}%` }}
         ></div>
       </div>
@@ -64,7 +64,7 @@ const AtletasDestaque: React.FC = () => {
     <Layout>
       <div className="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8">
         {/* HEADER ELITE */}
-        <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-[#14244D] to-[#0a1226] p-8 rounded-2xl shadow-xl mb-8 relative overflow-hidden">
+        <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-brand-primary to-[#0a1226] p-8 rounded-2xl shadow-xl mb-8 relative overflow-hidden">
           <div className="absolute -right-10 -top-10 opacity-10">
             <Trophy size={200} />
           </div>
@@ -89,7 +89,7 @@ const AtletasDestaque: React.FC = () => {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <Loader2 className="animate-spin h-12 w-12 text-[#8B0000]" />
+            <Loader2 className="animate-spin h-12 w-12 text-brand-darkred" />
           </div>
         ) : players.length === 0 ? (
           <div className="bg-white dark:bg-gray-900 p-12 rounded-2xl text-center border border-gray-100 dark:border-gray-800">
@@ -131,7 +131,7 @@ const AtletasDestaque: React.FC = () => {
                             player.pessoa?.foto_url_completa ||
                             "/img/avatar_padrao.png"
                           }
-                          className="w-16 h-16 rounded-full object-cover border-2 border-[#14244D] shadow-sm"
+                          className="w-16 h-16 rounded-full object-cover border-2 border-brand-primary shadow-sm"
                           onError={(e) =>
                             (e.currentTarget.src = "/img/avatar_padrao.png")
                           }
@@ -147,7 +147,7 @@ const AtletasDestaque: React.FC = () => {
                         )}
                       </div>
                       <div>
-                        <h3 className="font-extrabold text-lg text-[#14244D] dark:text-white leading-tight">
+                        <h3 className="font-extrabold text-lg text-brand-primary dark:text-white leading-tight">
                           {player.pessoa?.nome_completo}
                         </h3>
                         <p className="text-sm text-gray-500 dark:text-gray-400 font-bold">

@@ -29,6 +29,12 @@ class Peneiras extends Model
     public function avaliacoes() {
         return $this->hasMany(Avaliacao::class, 'peneira_id');
     }
+    // Se o seu Admin lista os JOGADORES direto, você precisa desta relação (Many-to-Many):
+    public function jogadores()
+    {
+        return $this->belongsToMany(Jogadores::class, 'inscricoes', 'peneira_id', 'jogador_id')
+                    ->withPivot('status', 'data_inscricao');
+    }
 
     // --- ADICIONE ISTO ---
     public function equipes() {

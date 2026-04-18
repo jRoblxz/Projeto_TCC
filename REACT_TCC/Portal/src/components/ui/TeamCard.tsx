@@ -35,7 +35,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
       className={`bg-white p-5 rounded-xl shadow-lg border-t-4 ${colorClass} h-full flex flex-col`}
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-[#14244D]">
+        <h3 className="text-xl font-bold text-brand-primary">
           {team?.nome || `Time ${teamKey}`}
         </h3>
         <select

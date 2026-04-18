@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Search, Menu, X } from "lucide-react";
 
-import { SocialIcon } from 'react-social-icons'
+import Logo from "@/assets/img/fatec.png";
+import { SocialIcon } from "react-social-icons";
 // 1. IMPORTANDO A IMAGEM DE FUNDO DO ESTÁDIO
 import FundoPrudentao from "@/assets/img/prudentao.png";
 
@@ -97,10 +98,15 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
         }}
       />
 
-      {/* ================= HEADER ORIGINAL GRÊMIO ================= */}
-      <header className="bg-white border-b-4 border-[#941B1B] shadow-md sticky top-0 z-50">
+      {/* ================= HEADER ORIGINAL Fatec ================= */}
+      <header className="bg-white border-b-4 border-brand-secondary shadow-md sticky top-0 z-50">
         <div className="max-w-[1400px] mx-auto px-4 h-24 flex items-center justify-between">
-          <a
+          <img
+            src={Logo}
+            alt="Logo Prudente"
+            className="h-20 md:h-66 flex-shrink-0 cursor-pointer"
+          />
+          {/* <a
             href="https://www.gdprudente.com.br"
             className="flex-shrink-0 cursor-pointer"
           >
@@ -201,7 +207,7 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
                 </g>
               </g>
             </svg>
-          </a>
+          </a> */}
 
           <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
@@ -210,18 +216,17 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
                 href={link.href}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[#18274d] font-bold uppercase text-[13px] tracking-wide hover:border-b-[3px] hover:border-[#941B1B] transition-all pb-1"
+                className="text-[#18274d] font-bold uppercase text-[13px] tracking-wide hover:border-b-[3px] hover:border-brand-secondary transition-all pb-1"
               >
                 {link.name}
               </a>
             ))}
             <Link
               to="/instrucoes"
-              className="text-[#941B1B] font-extrabold uppercase text-[13px] tracking-wide hover:text-[#18274d] hover:border-b-[3px] hover:border-[#941B1B] transition-all pb-1"
+              className="text-brand-secondary font-extrabold uppercase text-[13px] tracking-wide hover:text-[#18274d] hover:border-b-[3px] hover:border-brand-secondary transition-all pb-1"
             >
               Peneiras
             </Link>
-            
           </nav>
 
           <div className="flex items-center gap-4">
@@ -242,7 +247,7 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
             <div className="flex flex-col px-4 py-4 space-y-4">
               <Link
                 to="/instrucoes"
-                className="text-[#941B1B] font-bold uppercase text-sm border-b border-gray-100 pb-2"
+                className="text-brand-secondary font-bold uppercase text-sm border-b border-gray-100 pb-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Peneiras
@@ -276,7 +281,7 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
 
-      {/* ================= FOOTER ORIGINAL GRÊMIO ================= */}
+      {/* ================= FOOTER ORIGINAL Fatec ================= */}
       <footer className="bg-[#18274d] mt-auto relative z-20">
         <div className="max-w-[1200px] mx-auto px-5 py-12">
           <div className="flex items-center justify-center gap-4 mb-10">
@@ -315,19 +320,31 @@ const LayoutSiteGremio: React.FC<LayoutProps> = ({ children }) => {
           <div className="border-t border-white/10 pt-8 flex flex-col items-center justify-center text-center gap-6">
             {/* Redes Sociais */}
             <div className="flex justify-center gap-4">
-              
-              
-              <SocialIcon  bgColor="white" fgColor="transparent" network="x" url="https://X.com/gdprudente" />
-              
-              <SocialIcon bgColor="white" fgColor="transparent" network="facebook" url="https://www.facebook.com/GremioDPrudenteOficial/" />
-              
-              <SocialIcon bgColor="white" fgColor="transparent" network="instagram" url="https://www.instagram.com/gremioprudenteoficial/" />
-           
+              <SocialIcon
+                bgColor="white"
+                fgColor="transparent"
+                network="x"
+                url="https://X.com/gdprudente"
+              />
+
+              <SocialIcon
+                bgColor="white"
+                fgColor="transparent"
+                network="facebook"
+                url="https://www.facebook.com/GremioDPrudenteOficial/"
+              />
+
+              <SocialIcon
+                bgColor="white"
+                fgColor="transparent"
+                network="instagram"
+                url="https://www.instagram.com/gremioprudenteoficial/"
+              />
             </div>
 
             {/* Texto de Direitos Autorais */}
             <p className="text-white/60 text-sm">
-              Grêmio Prudente &copy; 2025. Todos os direitos reservados.
+              João e Kaynan &copy; 2025. Todos os direitos reservados.
             </p>
           </div>
         </div>

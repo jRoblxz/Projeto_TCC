@@ -36,6 +36,7 @@ import CadastroTestes from "./pages/CadastroTestes";
 import UserControl from "./pages/Gestão/UserControl";
 import UserEdit from "./pages/Gestão/UserEdit";
 import UserMap from "./pages/Gestão/UserMap";
+import NovaInscricao from "./pages/Inscricoes/NovaInscricao";
 
 const App: FC = () => {
   return (
@@ -222,6 +223,15 @@ const App: FC = () => {
                 <UserMap />
               </ProtectedRoute>
             }
+          />
+
+          <Route 
+            path="/nova-inscricao" 
+            element={
+              <ProtectedRoute>
+                <NovaInscricao />
+              </ProtectedRoute>
+            } 
           />
 
           {/* Para ver um que já existe */}

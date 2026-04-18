@@ -22,7 +22,7 @@ const PlayerDetails: React.FC<PlayerDetailsProps> = ({
         </div>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm">
+      <div className="bg-white dark:bg-gray-800 p-5 rounded-[10px] border-l-[5px] border-brand-primary shadow-sm">
         {canViewDetails && (
           <>
             <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4">

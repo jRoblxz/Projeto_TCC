@@ -75,8 +75,8 @@ const UserMap: React.FC = () => {
       <div className="max-w-[1200px] mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         <div className="flex justify-between items-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
           <div>
-            <h1 className="text-2xl font-bold text-[#14244D] dark:text-white flex items-center gap-2">
-              <MapIcon className="text-[#8B0000]" /> Mapa de Talentos
+            <h1 className="text-2xl font-bold text-brand-primary dark:text-white flex items-center gap-2">
+              <MapIcon className="text-brand-darkred" /> Mapa de Talentos
             </h1>
             <p className="text-sm text-gray-500 mt-1">
               Distribuição geográfica dos jogadores inscritos.
@@ -87,7 +87,7 @@ const UserMap: React.FC = () => {
         <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden h-[600px] relative z-0">
           {loading && (
             <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-[1000] flex items-center justify-center">
-              <Loader2 className="animate-spin text-[#14244D]" size={40} />
+              <Loader2 className="animate-spin text-brand-primary" size={40} />
             </div>
           )}
           <div
@@ -129,7 +129,7 @@ const UserMap: React.FC = () => {
                 >
                   <Popup>
                     <div className="p-2">
-                      <h4 className="font-bold text-[#14244D]">
+                      <h4 className="font-bold text-brand-primary">
                         {loc.cidade}
                       </h4>
                       <p className="text-sm font-medium">

@@ -18,7 +18,7 @@ const Header: FC<HeaderProps> = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="bg-[#14244D] dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-brand-primary dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
       <div className="flex items-center justify-between px-6 py-5">
         {/* Lado esquerdo */}
         <div className="flex items-center space-x-4">
@@ -31,7 +31,7 @@ const Header: FC<HeaderProps> = ({ onMenuClick }) => {
 
           <div>
             <h1 className="text-3xl font-semibold text-white">
-              Grêmio Prudente
+              Sistema de Sccout e grenciamento de Peneiras.
             </h1>
             <p className="text-sm text-gray-400 dark:text-gray-400">
               Bem-vindo

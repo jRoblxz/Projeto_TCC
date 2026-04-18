@@ -90,7 +90,7 @@ const PlayerInfo: React.FC = () => {
   if (loading)
     return (
       <div className="flex justify-center mt-20">
-        <Loader2 className="animate-spin h-10 w-10 text-[#8B0000]" />
+        <Loader2 className="animate-spin h-10 w-10 text-brand-darkred" />
       </div>
     );
   if (!player) return null;
@@ -139,7 +139,7 @@ const PlayerInfo: React.FC = () => {
         )}
 
         {/* ========== CÓDIGO ANTIGO COMENTADO PARA VISUALIZAÇÃO ==========
-        <div className="bg-[#14244D] dark:bg-gray-900 p-8 text-white text-center mb-5 rounded-none md:rounded-t-lg relative shadow-md">
+        <div className="bg-brand-primary dark:bg-gray-900 p-8 text-white text-center mb-5 rounded-none md:rounded-t-lg relative shadow-md">
           <button
             onClick={() => navigate(-1)}
             className="absolute left-5 top-1/2 -translate-y-1/2 text-white/80 hover:text-white hover:scale-110 transition-transform"
@@ -265,7 +265,7 @@ const PlayerInfo: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm">
+            <div className="bg-white dark:bg-gray-800 p-5 rounded-[10px] border-l-[5px] border-brand-primary shadow-sm">
               {canViewDetails && (
                 <>
                   <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4  ">

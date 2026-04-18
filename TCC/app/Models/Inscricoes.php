@@ -15,6 +15,7 @@ class Inscricoes extends Model
         'jogador_id',
         'peneira_id',
         'data_inscricao',
+        'status',
     ];
 
     public function jogador()

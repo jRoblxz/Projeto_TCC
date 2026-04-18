@@ -122,7 +122,7 @@ const AnaliseDados: React.FC = () => {
     return (
       <Layout>
         <div className="flex justify-center items-center h-screen">
-          <Loader2 className="animate-spin h-12 w-12 text-[#8B0000]" />
+          <Loader2 className="animate-spin h-12 w-12 text-brand-darkred" />
         </div>
       </Layout>
     );
@@ -141,7 +141,7 @@ const AnaliseDados: React.FC = () => {
               <ArrowLeft className="text-gray-700 dark:text-gray-300" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-[#14244D] dark:text-white">
+              <h1 className="text-2xl font-bold text-brand-primary dark:text-white">
                 Central de Análise de Dados
               </h1>
               <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -158,8 +158,8 @@ const AnaliseDados: React.FC = () => {
             onClick={() => setActiveTab("geral")}
             className={`flex items-center gap-2 px-4 py-2 font-bold transition-all whitespace-nowrap ${
               activeTab === "geral"
-                ? "text-[#8B0000] border-b-4 border-[#8B0000]"
-                : "text-gray-500 hover:text-[#14244D]"
+                ? "text-brand-darkred border-b-4 border-brand-darkred"
+                : "text-gray-500 hover:text-brand-primary"
             }`}
           >
             <BarChart3 size={20} /> Visão Geral (Plantel)
@@ -168,8 +168,8 @@ const AnaliseDados: React.FC = () => {
             onClick={() => setActiveTab("individual")}
             className={`flex items-center gap-2 px-4 py-2 font-bold transition-all whitespace-nowrap ${
               activeTab === "individual"
-                ? "text-[#8B0000] border-b-4 border-[#8B0000]"
-                : "text-gray-500 hover:text-[#14244D]"
+                ? "text-brand-darkred border-b-4 border-brand-darkred"
+                : "text-gray-500 hover:text-brand-primary"
             }`}
           >
             <User size={20} /> Análise Individual
@@ -183,7 +183,7 @@ const AnaliseDados: React.FC = () => {
           <div className="animate-in fade-in duration-500">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
               <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4">
-                <div className="w-14 h-14 bg-[#14244D]/10 rounded-full flex items-center justify-center text-[#14244D]">
+                <div className="w-14 h-14 bg-brand-primary/10 rounded-full flex items-center justify-center text-brand-primary">
                   <Users size={28} />
                 </div>
                 <div>
@@ -196,7 +196,7 @@ const AnaliseDados: React.FC = () => {
                 </div>
               </div>
               <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4">
-                <div className="w-14 h-14 bg-[#8B0000]/10 rounded-full flex items-center justify-center text-[#8B0000]">
+                <div className="w-14 h-14 bg-brand-darkred/10 rounded-full flex items-center justify-center text-brand-darkred">
                   <Activity size={28} />
                 </div>
                 <div>
@@ -248,7 +248,7 @@ const AnaliseDados: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Gráfico de Barras: Inscritos por Categoria */}
               <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
-                <h3 className="text-lg font-bold text-[#14244D] dark:text-white mb-6">
+                <h3 className="text-lg font-bold text-brand-primary dark:text-white mb-6">
                   Inscritos por Categoria (Em Andamento)
                 </h3>
                 <div className="h-[300px] w-full">
@@ -298,7 +298,7 @@ const AnaliseDados: React.FC = () => {
               </div>
 
               <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center">
-                <h3 className="text-lg font-bold text-[#14244D] dark:text-white mb-2 self-start">
+                <h3 className="text-lg font-bold text-brand-primary dark:text-white mb-2 self-start">
                   Proporção do Plantel
                 </h3>
                 <div className="h-[300px] w-full">
@@ -355,7 +355,7 @@ const AnaliseDados: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
               <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl shadow-sm flex flex-col h-[650px]">
                 <div className="p-4 border-b border-gray-100 dark:border-gray-800">
-                  <h3 className="font-bold text-[#14244D] dark:text-white mb-3">
+                  <h3 className="font-bold text-brand-primary dark:text-white mb-3">
                     Selecionar Atleta
                   </h3>
                   <div className="relative">
@@ -368,7 +368,7 @@ const AnaliseDados: React.FC = () => {
                       placeholder="Buscar no servidor..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-[#8B0000] text-sm dark:text-white transition-all"
+                      className="w-full pl-9 pr-3 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-brand-darkred text-sm dark:text-white transition-all"
                     />
                   </div>
                 </div>
@@ -376,7 +376,7 @@ const AnaliseDados: React.FC = () => {
                 <div className="flex-1 overflow-y-auto p-2 space-y-1 scrollbar-thin relative">
                   {loadingPlayers && (
                     <div className="absolute inset-0 bg-white/60 dark:bg-gray-900/60 z-10 flex justify-center items-center backdrop-blur-[1px]">
-                      <Loader2 className="animate-spin text-[#8B0000]" />
+                      <Loader2 className="animate-spin text-brand-darkred" />
                     </div>
                   )}
                   {players.length > 0
@@ -385,7 +385,7 @@ const AnaliseDados: React.FC = () => {
                           key={p.id}
                           onClick={() => setSelectedPlayerId(p.id)}
                           className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left group
-                          ${selectedPlayerId === p.id ? "bg-[#8B0000] text-white shadow-md" : "hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"}`}
+                          ${selectedPlayerId === p.id ? "bg-brand-darkred text-white shadow-md" : "hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"}`}
                         >
                           <img
                             src={
@@ -447,7 +447,7 @@ const AnaliseDados: React.FC = () => {
               {selectedPlayer ? (
                 <div className="grid grid-cols-1 md:grid-cols-[1fr_1.5fr] gap-6">
                   <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center">
-                    <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-[#14244D] mb-4 shadow-md">
+                    <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-brand-primary mb-4 shadow-md">
                       <img
                         src={
                           selectedPlayer.pessoa?.foto_url_completa ||
@@ -460,10 +460,10 @@ const AnaliseDados: React.FC = () => {
                         }
                       />
                     </div>
-                    <h2 className="text-xl font-bold text-[#14244D] dark:text-white text-center mb-1">
+                    <h2 className="text-xl font-bold text-brand-primary dark:text-white text-center mb-1">
                       {selectedPlayer.pessoa?.nome_completo}
                     </h2>
-                    <span className="bg-[#8B0000] text-white px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 shadow-sm">
+                    <span className="bg-brand-darkred text-white px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 shadow-sm">
                       {selectedPlayer.posicao_principal}
                     </span>
 
@@ -472,7 +472,7 @@ const AnaliseDados: React.FC = () => {
                         <span className="text-gray-500 font-bold text-sm">
                           Overall
                         </span>
-                        <span className="text-[#8B0000] font-extrabold text-lg">
+                        <span className="text-brand-darkred font-extrabold text-lg">
                           {Number(selectedPlayer.rating_medio).toFixed(1)}
                         </span>
                       </div>

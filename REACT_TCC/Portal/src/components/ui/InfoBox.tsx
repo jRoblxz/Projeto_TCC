@@ -8,7 +8,7 @@ interface InfoBoxProps {
 
 const InfoBox: React.FC<InfoBoxProps> = ({ icon, title, value }) => (
   <div className="flex items-center gap-4 dark:bg-gray-800 dark:border-gray-700 bg-[#f7fafc] p-4 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-    <div className="w-12 h-12 rounded-xl bg-[#14244D] flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-950 shrink-0">
+    <div className="w-12 h-12 rounded-xl bg-brand-primary flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-950 shrink-0">
       {icon}
     </div>
     <div>

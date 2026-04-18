@@ -93,7 +93,7 @@ const PlayerEdit: React.FC = () => {
   if (loading)
     return (
       <div className="flex justify-center mt-20">
-        <Loader2 className="animate-spin h-10 w-10 text-[#8B0000]" />
+        <Loader2 className="animate-spin h-10 w-10 text-brand-darkred" />
       </div>
     );
 
@@ -109,7 +109,7 @@ const PlayerEdit: React.FC = () => {
   return (
     <Layout>
       <div className="max-w-[1400px] mx-auto p-5">
-        <div className="bg-[#14244D] dark:bg-gray-900 p-8 text-white  text-center mb-5 rounded-lg shadow-md">
+        <div className="bg-brand-primary dark:bg-gray-900 p-8 text-white  text-center mb-5 rounded-lg shadow-md">
           <h1 className="text-4xl mb-2 drop-shadow-md">Editar Jogador</h1>
           <p className="opacity-90 text-lg">Sistema de Avaliação de Atletas</p>
         </div>
@@ -269,7 +269,7 @@ const PlayerEdit: React.FC = () => {
 
             {/* COLUNA DIREITA (NOTAS E AVISOS) */}
             <div className="bg-[#f8f9fa] dark:bg-gray-900 rounded-[15px] p-6 shadow-[0_5px_20px_rgba(0,0,0,0.05)] h-fit">
-              <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-[#14244D] shadow-sm mb-6">
+              <div className="bg-white dark:bg-gray-800 dark:border-gray-700 p-5 rounded-[10px] border-l-[5px] border-brand-primary shadow-sm mb-6">
                 <h4 className="text-[#333] dark:text-white text-lg font-bold mb-4 ">
                   Atenção
                 </h4>

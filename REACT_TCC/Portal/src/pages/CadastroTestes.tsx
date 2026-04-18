@@ -91,7 +91,7 @@ const CadastroTestes: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#14244D] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-brand-primary flex items-center justify-center p-4">
       <div className="w-full max-w-[800px] bg-white rounded-[10px] overflow-hidden shadow-[0px_15px_15px_rgba(0,0,0,0.5)] flex flex-col">
         {/* HEADER DO FORMULÁRIO */}
         <div className="bg-gray-50 border-b border-gray-200 p-6 flex items-center justify-between">
