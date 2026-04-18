@@ -33,7 +33,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({
         )}
         style={{
           transformStyle: "preserve-3d",
-          WebkitTransformStyle: "preserve-3d", // [2] TransformStyle Habilitado pro Safari
+          WebkitTransformStyle: "preserve-3d", // [2] TransformStyle Habilitado pro Safariss
         }}
       >
         {/* === FRENTE DO CARD === */}
