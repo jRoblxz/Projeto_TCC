@@ -346,10 +346,11 @@ const Dashboard: React.FC = () => {
             </div>
           </Card>
         </div>
-        {/* ================= Funil ================= */}
+        {/* ================= Funil ================= 
         {stats?.funil_conversao && (
           <FunilConversao dadosFunil={stats.funil_conversao} />
-        )}
+        )}        
+        */}        
       </div>
     </Layout>
   );
