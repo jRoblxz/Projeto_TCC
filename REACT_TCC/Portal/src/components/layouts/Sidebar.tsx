@@ -265,7 +265,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
 
           {/* Rodapé  bg-[#0f1b3a] */}
           <footer className="flex-none bg-brand-secondary  dark:bg-black/20 border-t border-gray-500/30 p-4">
-            <p className="text-xs text-gray-500 text-center">© 2026 SparkLab</p>
+            <p className="text-xs text-gray-900 text-center">© 2026 Fatec Presidente Prudente</p>
           </footer>
         </div>
       </aside>

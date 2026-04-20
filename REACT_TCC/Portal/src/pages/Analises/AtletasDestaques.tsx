@@ -64,7 +64,7 @@ const AtletasDestaque: React.FC = () => {
     <Layout>
       <div className="max-w-[1400px] mx-auto p-4 sm:p-6 lg:p-8">
         {/* HEADER ELITE */}
-        <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-brand-primary to-[#0a1226] p-8 rounded-2xl shadow-xl mb-8 relative overflow-hidden">
+        <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-brand-primary to-brand-secondary p-8 rounded-2xl shadow-xl mb-8 relative overflow-hidden">
           <div className="absolute -right-10 -top-10 opacity-10">
             <Trophy size={200} />
           </div>
