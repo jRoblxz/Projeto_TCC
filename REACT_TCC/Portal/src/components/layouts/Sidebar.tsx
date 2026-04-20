@@ -249,7 +249,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                     onClick={onClose}
                     className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
                       isActive
-                        ? "bg-brand-darkred text-white shadow-md"
+                        ? "bg-brand-secondary text-white shadow-md"
                         : "text-gray-300 hover:bg-white/10 hover:text-white"
                     }`}
                   >
