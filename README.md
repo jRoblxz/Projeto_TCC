@@ -24,7 +24,7 @@
   </p>
 </div>
 
----
+---.
 
 ## 🚀 Sobre o Projeto
 
