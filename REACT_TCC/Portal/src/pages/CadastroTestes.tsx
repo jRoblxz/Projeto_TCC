@@ -12,7 +12,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import Logo from "@/assets/img/logo-copia.png"; // Importando a sua logo
+import Logo from "@/assets/img/fatec.png"; 
 
 const CadastroTestes: React.FC = () => {
   const navigate = useNavigate();

@@ -247,7 +247,7 @@ const InscricaoForm: React.FC = () => {
                   <CustomInput label="CPF:" value={formData.cpf} onChange={(v) => handleInputChange("cpf", v)} mask="cpf" />
                 </div>
                 <div className="md:col-span-4">
-                  <CustomInput label="RG:" value={formData.rg} onChange={(v) => handleInputChange("rg", v)} type="number" />
+                  <CustomInput label="RG:" value={formData.rg} onChange={(v) => handleInputChange("rg", v)} mask="rg" />
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">

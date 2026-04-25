@@ -68,7 +68,6 @@ class CandidateService
                 'email' => $pessoa->email,
                 'password' => Hash::make($data['cpf']),
                 'role' => 'candidato',
-                'pessoa_id' => $pessoa->id,
             ]);
 
             return ['pessoa' => $pessoa, 'jogador' => $jogador];

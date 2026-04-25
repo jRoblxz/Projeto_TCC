@@ -13,7 +13,7 @@ interface CustomInputProps {
   maxLength?: number;
   // Estendemos os tipos para incluir 'select'
   type?: "text" | "number" | "email" | "password" | "date" | "file" | "select";
-  mask?: "cpf" | "cnpj" | "telefone" | "cep" | "data" | "numero" | "moeda";
+  mask?: "cpf" | "rg" | "cnpj" | "telefone" | "cep" | "data" | "numero" | "moeda";
   error?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
@@ -34,6 +34,13 @@ const applyMask = (value: string, mask?: string) => {
         .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
         .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, "$1.$2.$3-$4")
         .slice(0, 14);
+    case "rg":
+      return v
+        .replace(/[^0-9xX]/g, "") 
+        .replace(/^(\d{2})(\d)/, "$1.$2") 
+        .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3") 
+        .replace(/^(\d{2})\.(\d{3})\.(\d{3})([0-9xX])/, "$1.$2.$3-$4") 
+        .slice(0, 12);
     case "cnpj":
       return v
         .replace(/\D/g, "")
