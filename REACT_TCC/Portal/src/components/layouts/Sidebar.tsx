@@ -146,12 +146,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         icon: FilePlus,
         Group: "Gestão",
       },
-      // {
-      //   title: "Usuários",
-      //   path: "/usuarios",
-      //   icon: UsersRound,
-      //   Group: "Gestão",
-      // },
+       {
+         title: "Usuários",
+         path: "/usuarios",
+         icon: UsersRound,
+         Group: "Gestão",
+       },
       // {
       //   title: "Mapa de Talentos",
       //   path: "/usuarios/mapa",

@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "@/assets/img/logo-copia.png";
+import Logo from "@/assets/img/fatec.png";
 // 1. Importe a imagem aqui
 import FundoPrudentao from "@/assets/img/prudentao.png";
 

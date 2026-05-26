@@ -543,7 +543,7 @@ const Peneiras: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-brand-primary text-white rounded hover:bg-[#1e3a8a]"
+                    className="px-4 py-2 bg-brand-primary text-white rounded hover:bg-brand-secondary/50"
                   >
                     Salvar
                   </button>
