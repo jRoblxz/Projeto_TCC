@@ -137,7 +137,7 @@ const Dashboard: React.FC = () => {
               />
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold tracking-wider uppercase font-Jersey">
-                  Sistema de Peneiras
+                  Visão geral
                 </h1>
                 <p className="text-[#333] dark:text-gray-400 text-sm">
                   Gestão e Formação de Atletas • Fatec Prudente
@@ -350,7 +350,7 @@ const Dashboard: React.FC = () => {
         {stats?.funil_conversao && (
           <FunilConversao dadosFunil={stats.funil_conversao} />
         )}        
-        */}        
+        */}
       </div>
     </Layout>
   );

@@ -31,10 +31,10 @@ const Header: FC<HeaderProps> = ({ onMenuClick }) => {
 
           <div>
             <h1 className="text-3xl font-semibold text-white">
-              Sistema de Sccout e grenciamento de Peneiras.
+              Sistema de Avaliação Categorias de Base.
             </h1>
             <p className="text-sm text-gray-400 dark:text-gray-400">
-              Bem-vindo
+              Seja Bem-vindo!
             </p>
           </div>
         </div>

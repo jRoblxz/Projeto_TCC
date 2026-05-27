@@ -176,10 +176,9 @@ const Players: React.FC = () => {
         <div className="text-center mb-8 bg-brand-primary dark:bg-gray-900 rounded-xl p-6 shadow-md text-white">
           <h1 className="text-3xl font-bold mb-2 ">Jogadores Inscritos</h1>
           <p className="text-gray-500">
-            Sistema de Avaliação de Atletas
+            Gerencie os jogadores inscritos.
             <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-              Gerencie os jogadores inscritos e suas avaliações (Para avaliar
-              clique no icone de editar).
+              
             </p>
           </p>
         </div>
